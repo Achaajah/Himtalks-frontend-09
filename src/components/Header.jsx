@@ -1,0 +1,175 @@
+"use client";
+import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { Cormorant_Garamond } from "next/font/google";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+const links = [
+  { name: "Home", path: "/" },
+  { name: "Songfess", path: "/himtalks/songfess" },
+  { name: "Chat Anonym", path: "/himtalks/chat-anonym" },
+  { name: "Mini Forum", path: "/himtalks/mini-forum" },
+];
+
+export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const navRef = useRef(null);
+  const pathname = usePathname();
+
+  const toggleNavbar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // klik di luar navbar
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsOpen(false);
+        setIsDesktop(true);
+      } else {
+        setIsDesktop(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // pindah halaman
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  return (
+    <header className="w-full fixed px-6 py-5 bg-[#839E8F] text-white z-20 transition-all sm:px-16 lg:px-28 lg:py-6">
+      <div className="flex justify-between items-center">
+
+{/* Logo */}
+<Link
+  href="/"
+  className={`${cormorant.className} font-bold text-2xl md:text-3xl lg:text-4xl tracking-wider text-[#F6E7BA]`}
+  >
+  Himtalks
+</Link>
+
+        <div ref={navRef}>
+          {/* Hamburger */}
+          {!isDesktop && (
+            <button
+              onClick={toggleNavbar}
+              type="button"
+              className="block lg:hidden"
+            >
+              <span
+                className={`w-7 h-[3px] my-[5px] rounded-full block bg-white origin-top-left transition duration-300 ${
+                  isOpen ? "rotate-45 translate-x-2 -translate-y-[2px]" : ""
+                }`}
+              ></span>
+              <span
+                className={`w-7 h-[3px] my-[5px] rounded-full block bg-white transition duration-300 ${
+                  isOpen ? "scale-0" : ""
+                }`}
+              ></span>
+              <span
+                className={`w-7 h-[3px] my-[5px] rounded-full block bg-white origin-bottom-left transition duration-300 ${
+                  isOpen ? "-rotate-45 translate-x-2" : ""
+                }`}
+              ></span>
+            </button>
+          )}
+
+          {/* Mobile Menu */}
+          {!isDesktop && (
+            <AnimatePresence>
+              {isOpen && (
+                <motion.nav
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute transform p-6 bg-[#F5F1E8] shadow-lg rounded-xl left-5 right-5 sm:left-16 sm:right-16 top-[77px] md:top-20"
+                >
+                  <ul className="flex flex-col items-center gap-4 text-center">
+                    {links.map((link, index) => {
+                      const isActive =
+                        link.path === pathname ||
+                        pathname.startsWith(link.path);
+
+                      return (
+                        <Link
+                          href={link.path}
+                          key={index}
+                          className={`w-full rounded-lg py-2 text-lg transition
+                          ${
+                            isActive
+                              ? "bg-[#7A918D] text-white"
+                              : "text-[#3F4F44] hover:bg-[#7A918D] hover:text-white"
+                          }`}
+                        >
+                          <li>{link.name}</li>
+                        </Link>
+                      );
+                    })}
+                  </ul>
+                </motion.nav>
+              )}
+            </AnimatePresence>
+          )}
+
+          {/* Desktop Menu */}
+          {isDesktop && (
+            <nav>
+              <ul className="flex gap-[60px] text-center">
+                {links.map((link, index) => {
+                  const isActive =
+                    link.path === pathname ||
+                    pathname.startsWith(link.path);
+
+                  return (
+                    <li key={index}>
+                      <Link
+                        href={link.path}
+                        className={`text-lg font-medium transition ${
+                          isActive
+                            ? "underline underline-offset-4"
+                            : "hover:opacity-80"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
