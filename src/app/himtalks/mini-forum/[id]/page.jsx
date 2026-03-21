@@ -5,16 +5,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-await fetch("http://localhost:8080/forums", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    title: "Test dari FE",
-    content: "Ini isi forum",
-  }),
-});
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 function timeAgo(date) {
   if (!date) return "-";
@@ -40,6 +31,9 @@ export default function ForumDetailPage() {
 
   const [topic, setTopic] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("");
+  const [commentContent, setCommentContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 🔥 buat auto update timeAgo tiap menit
   const [, setTick] = useState(0);
@@ -56,7 +50,7 @@ export default function ForumDetailPage() {
 
     async function fetchTopic() {
       try {
-        const res = await fetch(`${API_BASE}/topics/${id}`);
+        const res = await fetch(`${API_BASE}/forums/${id}`);
 
         if (!res.ok) throw new Error("Gagal fetch");
 
@@ -80,6 +74,33 @@ export default function ForumDetailPage() {
 
   if (!topic) {
     return <p className="text-center mt-20">Topic tidak ditemukan</p>;
+  }
+
+  async function handleCommentSubmit() {
+    if (!commentContent.trim()) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE}/forums/${id}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          author: username || "Anonymous",
+          content: commentContent,
+        }),
+      });
+      if (res.ok) {
+        // Refresh topic
+        const freshRes = await fetch(`${API_BASE}/forums/${id}`);
+        const freshData = await freshRes.json();
+        setTopic(freshData);
+        setCommentContent("");
+        setUsername("");
+      }
+    } catch (err) {
+      console.error("Gagal mengirim komentar:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -141,6 +162,32 @@ export default function ForumDetailPage() {
         ) : (
           <p className="text-gray-500">Belum ada komentar</p>
         )}
+
+        {/* COMMENT INPUT FORM */}
+        <div className="mt-8 bg-white p-6 rounded-lg shadow">
+          <h3 className="font-semibold text-lg mb-4 text-[#5E6F64]">Tuangkan Pikiranmu</h3>
+          <input
+            placeholder="Masukkan Username (Anonim)"
+            className="w-full border-b p-2 mb-3 outline-none"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <div className="flex items-center gap-3">
+            <textarea
+              placeholder="Tulis komentar..."
+              className="flex-1 border-b p-2 outline-none"
+              value={commentContent}
+              onChange={(e) => setCommentContent(e.target.value)}
+            />
+            <button 
+              onClick={handleCommentSubmit}
+              disabled={isSubmitting}
+              className="bg-[#5E6F64] text-white px-4 py-2 rounded-full disabled:opacity-50"
+            >
+              {isSubmitting ? "..." : "Kirim"}
+            </button>
+          </div>
+        </div>
 
       </div>
 

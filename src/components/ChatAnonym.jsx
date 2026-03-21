@@ -182,12 +182,12 @@ Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
                                 </div>
                                 <div className="mb-6 relative">
                                     <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">Recipient name</label>
-                                                                        <input
+                                    <input
                                     type="text"
-                                    name="name"
-                                    value={formData.name}
+                                    name="recipient"
+                                    value={formData.recipient}
                                     onChange={handleChangeDiscard}
-                                    placeholder="Enter your name"
+                                    placeholder="Enter recipient name"
                                     className="w-full mt-2 rounded-md bg-white text-gray-700 p-3 text-sm focus:outline-none"
                                     />
                                 </div>

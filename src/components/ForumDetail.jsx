@@ -5,30 +5,52 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-await fetch("http://localhost:8080/forums", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    title: "Test dari FE",
-    content: "Ini isi forum",
-  }),
-});
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function ForumDetail() {
 
   const { id } = useParams();
   const [topic, setTopic] = useState(null);
+  const [username, setUsername] = useState("");
+  const [commentContent, setCommentContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function fetchTopic() {
-      const res = await fetch(`${API_BASE}/topics/${id}`);
+      const res = await fetch(`${API_BASE}/forums/${id}`);
       const data = await res.json();
       setTopic(data);
     }
 
     if (id) fetchTopic();
   }, [id]);
+
+  async function handleCommentSubmit() {
+    if (!commentContent.trim()) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE}/forums/${id}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          author: username || "Anonymous",
+          content: commentContent,
+        }),
+      });
+      if (res.ok) {
+        // Refresh topic to get new comments
+        const freshRes = await fetch(`${API_BASE}/forums/${id}`);
+        const freshData = await freshRes.json();
+        setTopic(freshData);
+        setCommentContent("");
+        setUsername("");
+      }
+    } catch (err) {
+      console.error("Gagal mengirim komentar:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   if (!topic) return <p className="text-center mt-20">Loading...</p>;
 
@@ -92,6 +114,8 @@ export default function ForumDetail() {
             <input
               placeholder="Masukkan Username (Anonim)"
               className="w-full border-b p-2 mb-3 outline-none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
 
             <div className="flex items-center gap-3">
@@ -99,10 +123,16 @@ export default function ForumDetail() {
               <textarea
                 placeholder="Tulis komentar..."
                 className="flex-1 border-b p-2 outline-none"
+                value={commentContent}
+                onChange={(e) => setCommentContent(e.target.value)}
               />
 
-              <button className="bg-[#5E6F64] text-white px-4 py-2 rounded-full">
-                →
+              <button 
+                onClick={handleCommentSubmit}
+                disabled={isSubmitting}
+                className="bg-[#5E6F64] text-white px-4 py-2 rounded-full disabled:opacity-50"
+              >
+                {isSubmitting ? "..." : "→"}
               </button>
 
             </div>
@@ -124,32 +154,20 @@ export default function ForumDetail() {
 
             <div className="space-y-6">
 
-              <div>
-                <p className="font-medium">
-                  Burung Berkicau • 30 scn ago
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Lorem ipsum dolor sit amet consectetur...
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium">
-                  Harimau Pagi • 5 mnt ago
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Lorem ipsum dolor sit amet consectetur...
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium">
-                  MBG Enjoyer • 1 days ago
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Lorem ipsum dolor sit amet consectetur...
-                </p>
-              </div>
+              {topic.comments?.length > 0 ? (
+                topic.comments.map((comment) => (
+                  <div key={comment.id}>
+                    <p className="font-medium">
+                      {comment.author || "Anonymous"} • {comment.created_at || "Baru saja"}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      {comment.content}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-sm">Belum ada komentar.</p>
+              )}
 
             </div>
 
