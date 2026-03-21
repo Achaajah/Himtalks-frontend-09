@@ -3,16 +3,7 @@
 import { useEffect, useState } from "react";
 import ForumCard from "@/components/ForumCard";
 
-await fetch("http://localhost:8080/forums", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    title: "Test dari FE",
-    content: "Ini isi forum",
-  }),
-});
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function ForumBrowse() {
 
@@ -23,7 +14,7 @@ export default function ForumBrowse() {
   // 🔥 fetch data
   async function fetchTopics() {
     try {
-      const res = await fetch(`${API_BASE}/topics`);
+      const res = await fetch(`${API_BASE}/forums`);
       const data = await res.json();
 
       // ✅ urutkan terbaru
