@@ -35,8 +35,8 @@ export default function SongfessForm() {
     name: "",
     recipient: "",
     message: "",
-    startTime: 0,
-    endTime: 30,
+    startTime: "",
+    endTime: "" ,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const audioRef = useRef(null);
@@ -105,20 +105,24 @@ export default function SongfessForm() {
   }, [selected]);
 
   // (Bang Raika) mengontrol pause/play
-  const handlePlayPause = () => {
-    if (!selected || !selected.preview_url) return;
-    if (!audioRef.current) return;
+const handlePlayPause = () => {
+  if (!selected?.preview_url) {
+    alert("Lagu ini tidak punya preview 😢");
+    return;
+  }
 
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => console.error("Audio play error:", err));
-    }
-  };
+  if (!audioRef.current) return;
+
+  if (isPlaying) {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  } else {
+    audioRef.current
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => alert("Gagal play audio"));
+  }
+};
 
   // (Raika) Untuk pengaturan hiddenkan icon play ketika lagu menyala
   // useEffect(() => {
@@ -151,13 +155,11 @@ export default function SongfessForm() {
     console.log("Selected song:", song); // Cek isi data
     setSelected(song);
     // setIsPlaying(true);
-    setFormData({
-      ...formData,
-      startTime: "",
-      endTime: "",
-      // startTime: 0,
-      // endTime: Math.min(30, Math.floor((song?.duration_ms || 0) / 1000)),
-    });
+    setFormData((prev) => ({
+  ...prev,
+  startTime: "",
+  endTime: "",
+}));
   }
 
   // Filter lagu berdasarkan input
@@ -181,46 +183,54 @@ export default function SongfessForm() {
   }
 
   // (Raika) Fungsi validasi format waktu
-  const isValidTimeFormat = (time) => {
-    return /^\d{0,2}(\.\d{0,2})?$/.test(time);
-  };
+ const isValidTimeFormat = (time) => {
+  return /^\d{1,2}(\.\d{1,2})?$/.test(time);
+};
 
-  // (Raika) Fungsi konversi format waktu ke detik
-  const convertToSeconds = (time) => {
-    if (!time || !/^\d{0,2}(\.\d{0,2})?$/.test(time)) return 0; // Pastikan format benar
+const convertToSeconds = (time) => {
+  if (!time) return 0;
 
-    const [minutes, seconds] = time.split(".").map(Number); // Pisahkan menjadi angka
-    return minutes * 60 + seconds; // Konversi ke detik
-  };
+  const parts = time.split(".");
+  const minutes = parseInt(parts[0]) || 0;
+  const seconds = parseInt(parts[1]) || 0;
 
-  // (Raika) Fungsi validasi input waktu
-  const validateTimeInput = (name, value) => {
-    let newErrors = { ...errors };
+  return minutes * 60 + seconds;
+};
 
-    const start = name === "startTime" ? value : formData.startTime;
-    const end = name === "endTime" ? value : formData.endTime;
+const validateTimeInput = (name, value) => {
+  let newErrors = { ...errors };
 
-    if (value === "") {
-      newErrors[name] = "";
-    } else if (!isValidTimeFormat(value)) {
-      newErrors[name] = "Format menit salah! Gunakan format 00.00";
-    } else {
-      newErrors[name] = "";
+  if (!value) {
+    newErrors[name] = "";
+  } else if (!isValidTimeFormat(value)) {
+    newErrors[name] = "Format mm.ss (contoh: 01.30)";
+  } else {
+    newErrors[name] = "";
+  }
+
+  const start = name === "startTime" ? value : formData.startTime;
+  const end = name === "endTime" ? value : formData.endTime;
+
+  if (start && end) {
+    if (convertToSeconds(end) < convertToSeconds(start)) {
+      newErrors.endTime = "End harus lebih besar dari start";
     }
+  }
 
-    if (start && end && parseFloat(end) < parseFloat(start)) {
-      newErrors.endTime = "End time tidak boleh lebih kecil dari start time";
-    }
-
-    setErrors(newErrors);
-  };
+  setErrors(newErrors);
+};
 
   // (Raika) Handle perubahan input
-  const handleTimeChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    validateTimeInput(name, value);
-  };
+const handleTimeChange = (e) => {
+  const { name, value } = e.target;
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  validateTimeInput(name, value);
+};
 
   // Ubah isi form berdasarkan name input
   function handleChange(e) {
@@ -655,7 +665,7 @@ export default function SongfessForm() {
                 <button
                   type="submit"
                   className="text-white font-[Poppins] rounded-md w-full bg-purple font-medium hover:bg-white hover:text-darkPurple py-2 transition-all duration-500 selection:bg-white selection:text-purple"
-                  disabled={isSubmitting || errors.startTime || errors.endTime}
+                  disabled={isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
