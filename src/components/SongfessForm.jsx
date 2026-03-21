@@ -35,8 +35,8 @@ export default function SongfessForm() {
     name: "",
     recipient: "",
     message: "",
-    startTime: 0,
-    endTime: 30,
+    startTime: "",
+    endTime: "" ,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const audioRef = useRef(null);
@@ -105,20 +105,24 @@ export default function SongfessForm() {
   }, [selected]);
 
   // (Bang Raika) mengontrol pause/play
-  const handlePlayPause = () => {
-    if (!selected || !selected.preview_url) return;
-    if (!audioRef.current) return;
+const handlePlayPause = () => {
+  if (!selected?.preview_url) {
+    alert("Lagu ini tidak punya preview 😢");
+    return;
+  }
 
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => console.error("Audio play error:", err));
-    }
-  };
+  if (!audioRef.current) return;
+
+  if (isPlaying) {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  } else {
+    audioRef.current
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => alert("Gagal play audio"));
+  }
+};
 
   // (Raika) Untuk pengaturan hiddenkan icon play ketika lagu menyala
   // useEffect(() => {
@@ -151,11 +155,13 @@ export default function SongfessForm() {
     console.log("Selected song:", song); // Cek isi data
     if (!song) return;
     setSelected(song);
-    setQuery("");
+    // setIsPlaying(true);
     setFormData({
       ...formData,
       startTime: "",
       endTime: "",
+      // startTime: 0,
+      // endTime: Math.min(30, Math.floor((song?.duration_ms || 0) / 1000)),
     });
   }
 
@@ -180,43 +186,47 @@ export default function SongfessForm() {
   }
 
   // (Raika) Fungsi validasi format waktu
-  const isValidTimeFormat = (time) => {
-    return /^\d{0,2}(\.\d{0,2})?$/.test(time);
-  };
+ const isValidTimeFormat = (time) => {
+  return /^\d{1,2}(\.\d{1,2})?$/.test(time);
+};
 
-  // (Raika) Fungsi konversi format waktu ke detik
-  const convertToSeconds = (time) => {
-    if (!time || !/^\d{0,2}(\.\d{0,2})?$/.test(time)) return 0; // Pastikan format benar
+const convertToSeconds = (time) => {
+  if (!time) return 0;
 
-    const [minutes, seconds] = time.split(".").map(Number); // Pisahkan menjadi angka
-    return minutes * 60 + seconds; // Konversi ke detik
-  };
+  const parts = time.split(".");
+  const minutes = parseInt(parts[0]) || 0;
+  const seconds = parseInt(parts[1]) || 0;
 
-  // (Raika) Fungsi validasi input waktu
-  const validateTimeInput = (name, value) => {
-    let newErrors = { ...errors };
+  return minutes * 60 + seconds;
+};
 
-    const start = name === "startTime" ? value : formData.startTime;
-    const end = name === "endTime" ? value : formData.endTime;
+const validateTimeInput = (name, value) => {
+  let newErrors = { ...errors };
 
-    if (value === "") {
-      newErrors[name] = "";
-    } else if (!isValidTimeFormat(value)) {
-      newErrors[name] = "Format menit salah! Gunakan format 00.00";
-    } else {
-      newErrors[name] = "";
+  if (!value) {
+    newErrors[name] = "";
+  } else if (!isValidTimeFormat(value)) {
+    newErrors[name] = "Format mm.ss (contoh: 01.30)";
+  } else {
+    newErrors[name] = "";
+  }
+
+  const start = name === "startTime" ? value : formData.startTime;
+  const end = name === "endTime" ? value : formData.endTime;
+
+  if (start && end) {
+    if (convertToSeconds(end) < convertToSeconds(start)) {
+      newErrors.endTime = "End harus lebih besar dari start";
     }
+  }
 
-    if (start && end && parseFloat(end) < parseFloat(start)) {
-      newErrors.endTime = "End time tidak boleh lebih kecil dari start time";
-    }
+  setErrors(newErrors);
+};
 
-    setErrors(newErrors);
-  };
-
+  // (Raika) Handle perubahan input
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [name]: value });
     validateTimeInput(name, value);
   };
 
@@ -386,7 +396,7 @@ export default function SongfessForm() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
               </div>
               <div className="mb-6">
@@ -401,7 +411,7 @@ export default function SongfessForm() {
                   onChange={handleChange}
                   placeholder="Masukkan nama penerima ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
               </div>
               <div className="relative">
@@ -415,13 +425,11 @@ export default function SongfessForm() {
                       <div className="flex justify-between sm:gap-0 items-center w-full">
                         <Combobox.Input
                           className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
-                          displayValue={(song) => {
-                            if (!song) return "";
-                            const artistNames = song.artists
-                              ?.map((a) => (typeof a === "string" ? a : a.name))
-                              .join(", ") || "Unknown Artist";
-                            return `${song.name} • ${artistNames}`;
-                          }}
+                          displayValue={(song) =>
+                            song
+                              ? `${song.name} • ${song.artists.map((a) => a.name).join(", ")}`
+                              : ""
+                          }
                           onChange={(e) => setQuery(e.target.value)}
                           placeholder="Masukkan lagu ..."
                         />
@@ -604,7 +612,7 @@ export default function SongfessForm() {
                   value={formData.startTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
                 {errors.startTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -625,7 +633,7 @@ export default function SongfessForm() {
                   value={formData.endTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
                 {errors.endTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -643,7 +651,7 @@ export default function SongfessForm() {
                   onChange={handleMessageChange}
                   placeholder="Type your message ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white resize-none overflow-hidden"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
                 />
               </div>
               <div className="flex max-w-64 w-full gap-4">
@@ -657,7 +665,7 @@ export default function SongfessForm() {
                 <button
                   type="submit"
                   className="text-white font-[Poppins] rounded-md w-full bg-purple font-medium hover:bg-white hover:text-darkPurple py-2 transition-all duration-500 selection:bg-white selection:text-purple"
-                  disabled={isSubmitting || errors.startTime || errors.endTime}
+                  disabled={isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}
                 </button>

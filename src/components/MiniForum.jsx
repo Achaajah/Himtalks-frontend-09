@@ -10,7 +10,7 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-const API_BASE = "http://localhost:8080"; // ✅ FIX
+const API_BASE = "http://localhost:8080";
 
 function timeAgo(date) {
   if (!date) return "-";
@@ -38,7 +38,6 @@ export default function MiniForum() {
     async function getForums() {
       try {
         const res = await fetch(`${API_BASE}/forums`);
-
         if (!res.ok) throw new Error("Gagal fetch");
 
         const data = await res.json();
@@ -64,66 +63,69 @@ export default function MiniForum() {
   }
 
   return (
-    <main className="bg-[#efe9df] min-h-screen">
-       {/* 🔥 HERO */}
-    <section className="text-center py-20 px-6">
+    <main className="bg-[#F3EEE6] min-h-screen">
 
-      <h1 className="
-      max-w-2xl mx-auto
-      pt-15
-      font-playfair 
-      font-semibold 
-      italic 
-      text-[48px] 
-      leading-[100%] 
-      tracking-[-0.04em] 
-      text-center 
-    text-[#5E6F69]
-      mb-4
-      ">
-        Every voice deserves to be heard and understood
-      </h1>
+      {/* 🔥 HERO */}
+      <section className="text-center py-24 px-6">
 
-      <p className="text-gray-500 mb-6">
-        Let your thoughts find their place here
-      </p>
+        <h1 className="
+          max-w-3xl mx-auto
+          font-playfair
+          font-semibold
+          italic
+          text-[52px]
+          leading-[120%]
+          tracking-[-0.02em]
+          text-[#5E6F69]
+          mb-5
+        ">
+          Every voice deserves to be heard and understood
+        </h1>
 
-      <button className="bg-[#5E6F69] text-white px-6 py-2 rounded-lg hover:opacity-90 transition">
-        Start Discussion!
-      </button>
+        <p className="text-gray-500 mb-8 text-[15px]">
+          Let your thoughts find their place here
+        </p>
 
-      {/* 🔥 GAMBAR */}
-      <div className="mt-10 flex justify-center">
-        <Image
-          src="/birds.png" // pastiin ada di public/
-          width={300}
-          height={200}
-          alt="birds"
-        />
-      </div>
+        <button className="bg-[#5E6F69] text-white px-7 py-3 rounded-full shadow-sm hover:opacity-90 transition">
+          Start Discussion!
+        </button>
 
-    </section>
+        {/* 🔥 IMAGE + SHAPE */}
+        <div className="mt-14 flex justify-center relative">
+          <div className="absolute w-[320px] h-[220px] bg-[#7C948A] rounded-full opacity-80 blur-sm"></div>
+
+          <Image
+            src="/birds.png"
+            width={320}
+            height={220}
+            alt="birds"
+            className="relative z-10"
+          />
+        </div>
+
+      </section>
+
       {/* 🔥 LATEST DISCUSSION */}
       {latest && (
-        <section className="max-w-5xl mt-30 mx-auto px-6 pb-16">
+        <section className="max-w-5xl mt-32 mx-auto px-6 pb-16">
 
-          <h2 className="text-3xl text-[#5E6F69] font-serif mb-10">
+          <h2 className="text-[32px] italic font-playfair text-[#5E6F69] mb-10 text-center">
             Latest Discussion
           </h2>
 
           <Link href={`/himtalks/mini-forum/${latest.id}`}>
-            <div className="bg-white rounded-2xl shadow p-6 hover:shadow-lg transition cursor-pointer">
+            <div className="bg-white rounded-[20px] shadow-md p-8 hover:shadow-lg transition cursor-pointer">
 
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+              <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
                 <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
                 Himtalks • {timeAgo(latest.created_at)}
               </div>
 
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="text-xl font-semibold text-[#2f3e39] mb-2">
                 {latest.title}
               </h3>
 
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-gray-500 mb-4 line-clamp-2">
                 {latest.content}
               </p>
 
@@ -132,12 +134,12 @@ export default function MiniForum() {
                   src={latest.image}
                   width={800}
                   height={400}
-                  className="rounded-xl"
+                  className="rounded-2xl mt-3"
                   alt="discussion"
                 />
               )}
 
-              <div className="mt-4 text-sm bg-[#E6E6E6] px-4 py-1 rounded-full inline-block">
+              <div className="mt-5 text-sm bg-[#EAEAEA] px-4 py-1.5 rounded-full inline-block">
                 💬 {latest.comment_count ?? 0} Komentar
               </div>
 
@@ -149,17 +151,17 @@ export default function MiniForum() {
 
       {/* 🔥 RECENT DISCUSSIONS */}
       {recent.length > 0 && (
-        <section className="max-w-6xl mx-auto px-6 pb-20">
+        <section className="max-w-6xl mx-auto px-6 pb-24">
 
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-10">
 
-            <h2 className="text-3xl text-[#5E6F69] font-serif">
+            <h2 className="text-[32px] italic font-playfair text-[#5E6F69]">
               Recent Discussions
             </h2>
 
             <Link
               href="/himtalks/mini-forum/browse-forum"
-              className="text-sm text-[#5E6F69]"
+              className="text-sm text-[#5E6F69] hover:underline"
             >
               Continue Exploring →
             </Link>
