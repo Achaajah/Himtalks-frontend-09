@@ -396,7 +396,7 @@ const handleTimeChange = (e) => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
               </div>
               <div className="mb-6">
@@ -411,7 +411,7 @@ const handleTimeChange = (e) => {
                   onChange={handleChange}
                   placeholder="Masukkan nama penerima ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
               </div>
               <div className="relative">
@@ -424,7 +424,7 @@ const handleTimeChange = (e) => {
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white shadow-md text-left focus:outline-none focus:ring-2 focus:ring-darkPurple sm:text-sm">
                       <div className="flex justify-between sm:gap-0 items-center w-full">
                         <Combobox.Input
-                          className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                          className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                           displayValue={(song) =>
                             song
                               ? `${song.name} • ${song.artists.map((a) => a.name).join(", ")}`
@@ -612,7 +612,7 @@ const handleTimeChange = (e) => {
                   value={formData.startTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
                 {errors.startTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -633,7 +633,7 @@ const handleTimeChange = (e) => {
                   value={formData.endTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
                 {errors.endTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -651,7 +651,7 @@ const handleTimeChange = (e) => {
                   onChange={handleMessageChange}
                   placeholder="Type your message ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
                 />
               </div>
               <div className="flex max-w-64 w-full gap-4">
