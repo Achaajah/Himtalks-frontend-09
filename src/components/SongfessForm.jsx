@@ -149,14 +149,13 @@ export default function SongfessForm() {
   // Pilih lagu dari hasil pencarian
   function handleSelectSong(song) {
     console.log("Selected song:", song); // Cek isi data
+    if (!song) return;
     setSelected(song);
-    // setIsPlaying(true);
+    setQuery("");
     setFormData({
       ...formData,
       startTime: "",
       endTime: "",
-      // startTime: 0,
-      // endTime: Math.min(30, Math.floor((song?.duration_ms || 0) / 1000)),
     });
   }
 
@@ -215,26 +214,27 @@ export default function SongfessForm() {
     setErrors(newErrors);
   };
 
-  // (Raika) Handle perubahan input
   const handleTimeChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
     validateTimeInput(name, value);
   };
 
-  // Ubah isi form berdasarkan name input
   function handleChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
-  // Atur textarea agar tidak overscroll
   function handleMessageChange(e) {
-    handleChange(e);
-    textareaRef.current.style.height = "auto";
-    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   }
 
   // function untuk mengatur discard semua input
@@ -294,7 +294,7 @@ export default function SongfessForm() {
         setFormData({
           name: "",
           recipient: "",
-          message: "",
+          message: ""   ,
           startTime: "",
           endTime: "",
         });
@@ -342,7 +342,7 @@ export default function SongfessForm() {
           Jangan simpan ceritamu sendiri. Biarkan musik menjadi jembatan untuk
           menyampaikan perasaanmu.
         </p>
-        <div className="relative bg-[#7D9A8B] w-full max-w-[520px] mt-24 md:mt-16 px-8 py-10 text-white rounded-2xl mx-auto">
+        <div className="relative z-10 bg-[#7D9A8B] w-full max-w-[520px] mt-24 md:mt-16 px-8 py-10 text-white rounded-2xl mx-auto">
           <AnimatePresence>
             {submitStatus === "success" && (
               <motion.div
@@ -386,7 +386,7 @@ export default function SongfessForm() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
                 />
               </div>
               <div className="mb-6">
@@ -401,7 +401,7 @@ export default function SongfessForm() {
                   onChange={handleChange}
                   placeholder="Masukkan nama penerima ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
                 />
               </div>
               <div className="relative">
@@ -415,11 +415,13 @@ export default function SongfessForm() {
                       <div className="flex justify-between sm:gap-0 items-center w-full">
                         <Combobox.Input
                           className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
-                          displayValue={(song) =>
-                            song
-                              ? `${song.name} • ${song.artists.map((a) => a.name).join(", ")}`
-                              : ""
-                          }
+                          displayValue={(song) => {
+                            if (!song) return "";
+                            const artistNames = song.artists
+                              ?.map((a) => (typeof a === "string" ? a : a.name))
+                              .join(", ") || "Unknown Artist";
+                            return `${song.name} • ${artistNames}`;
+                          }}
                           onChange={(e) => setQuery(e.target.value)}
                           placeholder="Masukkan lagu ..."
                         />
@@ -602,7 +604,7 @@ export default function SongfessForm() {
                   value={formData.startTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
                 />
                 {errors.startTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -623,7 +625,7 @@ export default function SongfessForm() {
                   value={formData.endTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white"
                 />
                 {errors.endTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -641,7 +643,7 @@ export default function SongfessForm() {
                   onChange={handleMessageChange}
                   placeholder="Type your message ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#4B0088] rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#4B0088]/50 placeholder:italic hover:placeholder-[#4B0088]/90 selection:bg-[#4B0088] selection:text-white resize-none overflow-hidden"
                 />
               </div>
               <div className="flex max-w-64 w-full gap-4">
