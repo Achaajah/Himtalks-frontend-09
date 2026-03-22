@@ -66,7 +66,7 @@ export default function ForumDetail() {
   if (!forum) return null;
 
   return (
-    <section className="bg-[#E7DFD5] min-h-screen px-6 lg:px-24 py-16">
+    <section className="bg-[#E7DFD5] mt-20 min-h-screen px-6 lg:px-24 py-16">
 
       {/* BACK */}
       <Link href="/himtalks/mini-forum" className="text-gray-600 mb-10 block">

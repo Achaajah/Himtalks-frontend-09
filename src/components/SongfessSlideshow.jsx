@@ -33,7 +33,7 @@ export default function SongfessSlideshow() {
   ];
 
   return (
-    <section className="px-6 lg:px-24 pb-28 bg-[#E7DFD5]">
+    <section className="px-6 lg:px-24 pb-28 bg-[#EFE9DF]">
       <div className="overflow-x-auto">
 <div className="flex gap-6">
 
