@@ -5,61 +5,99 @@ import Link from "next/link";
 
 function slugify(text) {
   return text
-    .toLowerCase()
+    ?.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .trim()
     .replace(/\s+/g, "-");
 }
 
+function timeAgo(date) {
+  if (!date) return "-";
+
+  const now = new Date();
+  const past = new Date(date);
+  const diff = Math.floor((now - past) / 1000);
+
+  const minutes = Math.floor(diff / 60);
+  const hours = Math.floor(diff / 3600);
+  const days = Math.floor(diff / 86400);
+
+  if (minutes < 1) return "Baru saja";
+  if (minutes < 60) return `${minutes} menit lalu`;
+  if (hours < 24) return `${hours} jam lalu`;
+  return `${days} hari lalu`;
+}
+
 export default function ForumCard({ forum }) {
+  const slug = `${forum.id}-${slugify(forum.title)}`;
+
+  const isClosed = (() => {
+    const now = new Date();
+    const created = new Date(forum.created_at);
+    const diffDays = (now - created) / (1000 * 60 * 60 * 24);
+    return diffDays > 7;
+  })();
+
   return (
-
     <Link
-      href={`/himtalks/mini-forum/${forum.id}-${slugify(forum.title)}`}
-      className="bg-white rounded-3xl shadow-md p-6 hover:shadow-xl transition block"
+      href={`/himtalks/mini-forum/${slug}`}
+      className="block"
     >
+      <div className="bg-white rounded-2xl shadow-md p-5 relative border border-gray-100 
+                      hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
 
-      {/* HEADER */}
-      <div className="flex justify-between items-center text-sm text-gray-500 mb-3">
+        {/* CLOSED */}
+        {isClosed && (
+          <span className="absolute top-4 right-4 bg-[#C2A88D] text-white text-xs px-3 py-1 rounded-full">
+            Closed
+          </span>
+        )}
 
-        <span className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-gray-300 rounded-full"></span>
-          Himtalks • {forum.time || "5 mnt ago"}
-        </span>
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
+            <span>Himtalks</span>
+            <span>•</span>
+            <span>{timeAgo(forum.created_at)}</span>
+          </div>
 
-        <span className="border px-3 py-1 rounded-full text-xs">
-          19.00 - 21.00 WIB
-        </span>
+          {!isClosed && (
+            <span className="text-xs border px-3 py-1 rounded-full text-gray-500">
+              19.00 - 21.00 WIB
+            </span>
+          )}
+        </div>
 
-      </div>
+        {/* TITLE */}
+        <h2 className="text-xl font-serif text-[#5E6F64] mb-2">
+          {forum.title}
+        </h2>
 
-      {/* TITLE */}
-      <h2 className="text-2xl font-serif text-[#5E6F64] mb-2">
-        {forum.title}
-      </h2>
+        {/* DESC */}
+        <p className="text-gray-500 text-sm mb-4 line-clamp-2">
+          {forum.content}
+        </p>
 
-      {/* CONTENT */}
-      <p className="text-gray-500 text-sm mb-4 line-clamp-2">
-        {forum.content}
-      </p>
-
-      {/* IMAGE */}
-      {forum.image && (
-        <div className="relative w-full h-[230px] mb-5">
+        {/* IMAGE */}
+        <div className="overflow-hidden rounded-xl mb-4">
           <Image
             src={forum.image}
-            fill
-            alt="topic"
-            className="rounded-2xl object-cover"
+            width={500}
+            height={300}
+            className="w-full h-[180px] object-cover"
+            alt=""
           />
         </div>
-      )}
 
-      {/* COMMENT */}
-      <div className="inline-flex items-center gap-2 bg-[#5E6F64] text-white px-4 py-1 rounded-full text-sm">
-        💬 {forum.comment_count || forum.comments || 0} Komentar
+        {/* COMMENT */}
+        <div>
+          <span className="inline-flex items-center gap-2 bg-[#EAEAEA] text-[#2f3e39] px-4 py-2 rounded-full text-sm">
+            💬 {forum.comment_count} Komentar
+          </span>
+        </div>
+
       </div>
-
     </Link>
   );
 }

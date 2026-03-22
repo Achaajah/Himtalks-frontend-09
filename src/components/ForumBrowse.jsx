@@ -1,105 +1,110 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ForumCard from "@/components/ForumCard";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-
 export default function ForumBrowse() {
-
-  const [topics, setTopics] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("newest");
 
-  // 🔥 fetch data
-  async function fetchTopics() {
-    try {
-      const res = await fetch(`${API_BASE}/forums`);
-      const data = await res.json();
+  // 🔥 DUMMY DATA (4 CARD PERSIS)
+  const topics = [
+    {
+      id: 1,
+      title: "Benarkah Hitler Orang Bekasi?",
+      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
+      created_at: new Date(),
+      image: "/New folder/1.jpg",
+      comment_count: 67,
+    },
+    {
+      id: 2,
+      title: "Kalian Buka Puasa Pakai Apa?",
+      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
+      created_at: new Date(Date.now() - 60 * 60 * 1000),
+      image: "/New folder/2.jpg",
+      comment_count: 67,
+    },
+    {
+      id: 3,
+      title: "Gimana Cara Dapat IPK 5?",
+      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
+      created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
+      image: "/New folder/2.jpg",
+      comment_count: 67,
+    },
+    {
+      id: 4,
+      title: "Benarkah Fasilkom Banyak Femboy?",
+      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
+      created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+      image: "/New folder/2.jpg",
+      comment_count: 67,
+    },
+  ];
 
-      // ✅ urutkan terbaru
-      const sorted = data.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-      );
-
-      setTopics(sorted);
-
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchTopics();
-
-    // 🔥 auto refresh tiap 30 detik (biar kayak live forum)
-    const interval = setInterval(fetchTopics, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // 🔥 filter search
+  // 🔍 SEARCH
   const filteredTopics = topics.filter((topic) =>
     topic.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  // 🔽 SORT (simple aja)
+  const sortedTopics = [...filteredTopics].sort((a, b) => {
+    if (sort === "newest") {
+      return new Date(b.created_at) - new Date(a.created_at);
+    } else {
+      return new Date(a.created_at) - new Date(b.created_at);
+    }
+  });
+
   return (
     <section className="bg-[#E7DFD5] min-h-screen px-6 lg:px-24 py-20">
 
-      {/* TITLE */}
-      <div className="text-center mt-20 mb-14">
-
-        <h1 className="text-6xl italic font-serif text-[#5E6F64]">
+      {/* 🔥 TITLE */}
+      <div className="text-center mt-16 mb-12">
+        <h1 className="text-5xl md:text-6xl italic font-serif text-[#5E6F64] leading-tight tracking-tight">
           Explore the thoughts shared by others
         </h1>
 
-        <p className="text-gray-500 mt-4">
+        <p className="text-gray-500 mt-4 max-w-xl mx-auto leading-relaxed">
           Ada banyak pemikiran yang ingin dibagikan—temukan sudut pandang yang mungkin juga kamu rasakan.
         </p>
-
       </div>
 
-      {/* SEARCH */}
-      <div className="max-w-2xl mx-auto mb-20 relative">
-
+      {/* 🔍 SEARCH */}
+      <div className="max-w-2xl mx-auto mb-6 relative">
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Enter the topic title"
-          className="w-full px-6 py-4 rounded-full bg-white shadow outline-none"
+          className="w-full px-6 py-4 rounded-full bg-white shadow-md outline-none 
+          focus:ring-2 focus:ring-[#5E6F64]"
         />
 
-        <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#5E6F64] w-10 h-10 rounded-full text-white flex items-center justify-center">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
           🔍
-        </button>
-
+        </div>
       </div>
 
-      {/* LOADING */}
-      {loading ? (
-        <p className="text-center text-lg">Loading forum...</p>
-      ) : filteredTopics.length === 0 ? (
-        <p className="text-center text-gray-500">
-          Tidak ada forum ditemukan
-        </p>
-      ) : (
+      {/* 🔽 SORT */}
+      <div className="max-w-2xl mx-auto mb-10 flex justify-end">
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="px-4 py-2 rounded-lg border text-sm bg-white"
+        >
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+        </select>
+      </div>
 
-        /* GRID */
-        <div className="grid md:grid-cols-2 gap-12">
-
-          {filteredTopics.map((topic) => (
-            <ForumCard
-              key={topic.id}
-              forum={topic}
-            />
-          ))}
-
-        </div>
-
-      )}
+      {/* 🔥 GRID */}
+      <div className="grid md:grid-cols-2 gap-10">
+        {sortedTopics.map((topic) => (
+          <ForumCard key={topic.id} forum={topic} />
+        ))}
+      </div>
 
     </section>
   );

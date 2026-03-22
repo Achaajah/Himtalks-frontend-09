@@ -26,8 +26,9 @@ function timeAgo(date) {
 
 export default function ForumDetailPage() {
 
-  const { slug } = useParams();
-  const id = slug?.split("-")[0];
+  // 🔥 FIX PARAM (slug → ambil id)
+  const { id: slug } = useParams();
+  const idOnly = slug?.split("-")[0];
 
   const [topic, setTopic] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,28 +36,24 @@ export default function ForumDetailPage() {
   const [commentContent, setCommentContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 🔥 buat auto update timeAgo tiap menit
+  // 🔥 auto update timeAgo
   const [, setTick] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTick((t) => t + 1);
     }, 60000);
-
     return () => clearInterval(interval);
   }, []);
 
+  // 🔥 FETCH DATA
   useEffect(() => {
-
     async function fetchTopic() {
       try {
-        const res = await fetch(`${API_BASE}/forums/${id}`);
-
+        const res = await fetch(`${API_BASE}/forums/${idOnly}`);
         if (!res.ok) throw new Error("Gagal fetch");
 
         const data = await res.json();
         setTopic(data);
-
       } catch (err) {
         console.error(err);
       } finally {
@@ -64,9 +61,8 @@ export default function ForumDetailPage() {
       }
     }
 
-    if (id) fetchTopic();
-
-  }, [id]);
+    if (idOnly) fetchTopic();
+  }, [idOnly]);
 
   if (loading) {
     return <p className="text-center mt-20">Loading...</p>;
@@ -76,117 +72,143 @@ export default function ForumDetailPage() {
     return <p className="text-center mt-20">Topic tidak ditemukan</p>;
   }
 
+  // 🔥 SUBMIT KOMENTAR
   async function handleCommentSubmit() {
     if (!commentContent.trim()) return;
+
     setIsSubmitting(true);
+
     try {
-      const res = await fetch(`${API_BASE}/forums/${id}/comments`, {
+      const res = await fetch(`${API_BASE}/forums/${idOnly}/comments`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           author: username || "Anonymous",
           content: commentContent,
         }),
       });
+
       if (res.ok) {
-        // Refresh topic
-        const freshRes = await fetch(`${API_BASE}/forums/${id}`);
-        const freshData = await freshRes.json();
+        // refresh data
+        const fresh = await fetch(`${API_BASE}/forums/${idOnly}`);
+        const freshData = await fresh.json();
         setTopic(freshData);
+
         setCommentContent("");
         setUsername("");
       }
+
     } catch (err) {
-      console.error("Gagal mengirim komentar:", err);
+      console.error("Gagal kirim komentar:", err);
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <section className="min-h-screen bg-[#F6EFE7] px-6 lg:px-24 py-16">
+    <section className="min-h-screen bg-[#F3EEE6] px-6 py-16">
 
-      <Link href="/mini-forum/browse-forum" className="mb-8 inline-block">
-        ← Back to Forum
-      </Link>
+      {/* 🔥 BACK */}
+      <div className="max-w-3xl mx-auto mb-6">
+        <Link
+          href="/himtalks/mini-forum/browse-forum"
+          className="text-[#5E6F64]"
+        >
+          ← Back to Forum
+        </Link>
+      </div>
 
-      {/* TITLE */}
-      <h1 className="text-4xl font-bold mb-4">
-        {topic.title}
-      </h1>
+      {/* 🔥 CARD WRAPPER */}
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded-3xl shadow">
 
-      {/* AUTHOR + TIME */}
-      <p className="text-sm text-gray-500 mb-6">
-        {topic.author || "Anonymous"} • {timeAgo(topic.created_at)}
-      </p>
+        {/* TITLE */}
+        <h1 className="text-[40px] font-playfair italic text-[#5E6F64] mb-4">
+          {topic.title}
+        </h1>
 
-      {/* IMAGE */}
-      {topic.image && (
-        <div className="relative w-full max-w-3xl h-[320px] mb-6">
-          <Image
-            src={topic.image}
-            alt="topic"
-            fill
-            className="object-cover rounded-xl"
-          />
-        </div>
-      )}
+        {/* AUTHOR */}
+        <p className="text-sm text-gray-500 mb-6">
+          {topic.author || "Anonymous"} • {timeAgo(topic.created_at)}
+        </p>
 
-      {/* CONTENT */}
-      <p className="max-w-3xl text-gray-700 mb-10">
-        {topic.content}
-      </p>
-
-      {/* COMMENTS */}
-      <div className="max-w-3xl">
-
-        <h2 className="text-2xl font-semibold mb-4">
-          Comments
-        </h2>
-
-        {topic.comments?.length > 0 ? (
-          topic.comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="bg-white p-4 rounded-lg mb-3 shadow"
-            >
-              <p className="text-gray-700">
-                {comment.content}
-              </p>
-
-              <span className="text-xs text-gray-400">
-                {comment.author || "Anonymous"} • {timeAgo(comment.created_at)}
-              </span>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">Belum ada komentar</p>
+        {/* IMAGE */}
+        {topic.image && (
+          <div className="relative w-full h-[300px] mb-6">
+            <Image
+              src={topic.image}
+              alt="topic"
+              fill
+              className="object-cover rounded-2xl"
+            />
+          </div>
         )}
 
-        {/* COMMENT INPUT FORM */}
-        <div className="mt-8 bg-white p-6 rounded-lg shadow">
-          <h3 className="font-semibold text-lg mb-4 text-[#5E6F64]">Tuangkan Pikiranmu</h3>
-          <input
-            placeholder="Masukkan Username (Anonim)"
-            className="w-full border-b p-2 mb-3 outline-none"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <div className="flex items-center gap-3">
-            <textarea
-              placeholder="Tulis komentar..."
-              className="flex-1 border-b p-2 outline-none"
-              value={commentContent}
-              onChange={(e) => setCommentContent(e.target.value)}
+        {/* CONTENT */}
+        <p className="text-gray-700 mb-10 leading-relaxed">
+          {topic.content}
+        </p>
+
+        {/* 🔥 COMMENTS */}
+        <div>
+
+          <h2 className="text-xl font-semibold mb-4 text-[#5E6F64]">
+            Komentar
+          </h2>
+
+          {topic.comments?.length > 0 ? (
+            topic.comments.map((comment) => (
+              <div
+                key={comment.id}
+                className="bg-[#F6EFE7] p-4 rounded-xl mb-3"
+              >
+                <p className="text-gray-700">
+                  {comment.content}
+                </p>
+
+                <span className="text-xs text-gray-400">
+                  {comment.author || "Anonymous"} • {timeAgo(comment.created_at)}
+                </span>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Belum ada komentar</p>
+          )}
+
+          {/* 🔥 INPUT */}
+          <div className="mt-8 bg-white p-6 rounded-xl shadow-sm">
+
+            <h3 className="font-semibold mb-3 text-[#5E6F64]">
+              Tuangkan Pikiranmu
+            </h3>
+
+            <input
+              placeholder="Masukkan Username (Anonim)"
+              className="w-full bg-[#F6EFE7] p-3 rounded-lg mb-3 outline-none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
-            <button 
-              onClick={handleCommentSubmit}
-              disabled={isSubmitting}
-              className="bg-[#5E6F64] text-white px-4 py-2 rounded-full disabled:opacity-50"
-            >
-              {isSubmitting ? "..." : "Kirim"}
-            </button>
+
+            <div className="flex gap-2">
+              <textarea
+                placeholder="Tulis komentar..."
+                className="flex-1 bg-[#F6EFE7] p-3 rounded-lg outline-none"
+                value={commentContent}
+                onChange={(e) => setCommentContent(e.target.value)}
+              />
+
+              <button
+                onClick={handleCommentSubmit}
+                disabled={isSubmitting}
+                className="bg-[#5E6F64] text-white px-5 rounded-full disabled:opacity-50"
+              >
+                {isSubmitting ? "..." : "Kirim"}
+              </button>
+            </div>
+
           </div>
+
         </div>
 
       </div>

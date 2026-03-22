@@ -10,8 +10,16 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-const API_BASE = "http://localhost:8080";
+/* 🔥 SLUG */
+function slugify(text) {
+  return text
+    ?.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
 
+/* 🔥 TIME FORMAT */
 function timeAgo(date) {
   if (!date) return "-";
 
@@ -29,56 +37,112 @@ function timeAgo(date) {
   return `${days} hari lalu`;
 }
 
+/* 🔥 FULL DUMMY DATA */
+const dummyForums = [
+  {
+    id: 1,
+    title: "Bagaimana cara menjaga kesehatan mental?",
+    content:
+      "Diskusi tentang pentingnya menjaga kesehatan mental di tengah kesibukan.",
+    image: "/New folder/forum burung.svg",
+    author: "Anonymous",
+    created_at: new Date(Date.now() - 1000 * 60 * 5),
+    comment_count: 12,
+  },
+  {
+    id: 2,
+    title: "Tips belajar efektif untuk mahasiswa",
+    content: "Share cara belajar kalian biar ga burnout...",
+    image: "/New folder/forum burung.svg",
+    author: "Anon",
+    created_at: new Date(Date.now() - 1000 * 60 * 30),
+    comment_count: 5,
+  },
+  {
+    id: 3,
+    title: "Overthinking tiap malam, normal ga sih?",
+    content: "Sering banget kepikiran hal-hal kecil sampe susah tidur...",
+    image: "/New folder/forum burung.svg",
+    author: "User123",
+    created_at: new Date(Date.now() - 1000 * 60 * 60),
+    comment_count: 8,
+  },
+  {
+    id: 4,
+    title: "Gimana cara konsisten ngoding?",
+    content: "Udah niat tiap hari tapi suka males di tengah jalan 😭",
+    image: "/New folder/forum burung.svg",
+    author: "DevNewbie",
+    created_at: new Date(Date.now() - 1000 * 60 * 120),
+    comment_count: 3,
+  },
+  {
+    id: 5,
+    title: "Circle pertemanan makin kecil, wajar?",
+    content: "Makin dewasa kok makin sedikit temen ya...",
+    image: "/New folder/forum burung.svg",
+    author: "Anon",
+    created_at: new Date(Date.now() - 1000 * 60 * 240),
+    comment_count: 10,
+  },
+  {
+    id: 6,
+    title: "Produktif tapi capek, solusi?",
+    content: "Kerja terus tapi burnout juga 😩",
+    image: "/New folder/forum burung.svg",
+    author: "Worker",
+    created_at: new Date(Date.now() - 1000 * 60 * 360),
+    comment_count: 6,
+  },
+];
+
 export default function MiniForum() {
   const [latest, setLatest] = useState(null);
   const [recent, setRecent] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function getForums() {
-      try {
-        const res = await fetch(`${API_BASE}/forums`);
-        if (!res.ok) throw new Error("Gagal fetch");
+    // 🔥 FAKE LOADING (BIAR KAYAK ADA API)
+    setTimeout(() => {
+      const sorted = [...dummyForums].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
 
-        const data = await res.json();
-
-        const sorted = data.sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
-
-        setLatest(sorted[0] || null);
-        setRecent(sorted.slice(1, 10));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    getForums();
+      setLatest(sorted[0]);
+      setRecent(sorted.slice(1, 6)); // tetap 5 card
+      setLoading(false);
+    }, 1200); // delay 1.2 detik
   }, []);
 
+  /* 🔥 LOADING (TETEP SAMA) */
   if (loading) {
-    return <p className="text-center mt-20">Loading forum...</p>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
+
+        <Image
+          src="/New folder/burung-mikir.svg"
+          width={200}
+          height={200}
+          alt="loading"
+          className="mb-4 animate-bounce"
+        />
+
+        <div className="w-10 h-10 border-4 border-[#5E6F69] border-t-transparent rounded-full animate-spin"></div>
+
+        <p className="mt-4 text-[#5E6F69] text-sm">
+          Menyiapkan diskusi...
+        </p>
+
+      </div>
+    );
   }
 
   return (
     <main className="bg-[#F3EEE6] min-h-screen">
 
-      {/* 🔥 HERO */}
+      {/* HERO */}
       <section className="text-center py-24 px-6">
-
-        <h1 className="
-          max-w-3xl mx-auto
-          font-playfair
-          font-semibold
-          italic
-          text-[52px]
-          leading-[120%]
-          tracking-[-0.02em]
-          text-[#5E6F69]
-          mb-5
-        ">
+        <h1 className="max-w-3xl mx-auto font-playfair italic text-[52px] text-[#5E6F69] mb-5">
           Every voice deserves to be heard and understood
         </h1>
 
@@ -86,109 +150,94 @@ export default function MiniForum() {
           Let your thoughts find their place here
         </p>
 
-        <button className="bg-[#5E6F69] text-white px-7 py-3 rounded-full shadow-sm hover:opacity-90 transition">
-          Start Discussion!
-        </button>
+        <Link href="/himtalks/mini-forum/browse-forum">
+          <button className="bg-[#5E6F69] text-white px-7 py-3 rounded-full shadow-sm hover:opacity-90 transition">
+            Start Discussion!
+          </button>
+        </Link>
 
-        {/* 🔥 IMAGE + SHAPE */}
-        <div className="mt-14 flex justify-center relative">
-          <div className="absolute w-[320px] h-[220px] bg-[#7C948A] rounded-full opacity-80 blur-sm"></div>
-
+        <div className="mt-14 flex justify-center">
           <Image
-            src="/birds.png"
+            src="/New folder/forum burung.svg"
             width={320}
             height={220}
             alt="birds"
-            className="relative z-10"
           />
         </div>
-
       </section>
 
-      {/* 🔥 LATEST DISCUSSION */}
-      {latest && (
-        <section className="max-w-5xl mt-32 mx-auto px-6 pb-16">
+      {/* LATEST */}
+<section className="max-w-5xl mt-20 mx-auto px-6 pb-16">
 
-          <h2 className="text-[32px] italic font-playfair text-[#5E6F69] mb-10 text-center">
-            Latest Discussion
-          </h2>
+  <h2 className="text-[32px] italic font-playfair text-[#5E6F69] mb-10 text-center">
+    Latest Discussion
+  </h2>
 
-          <Link href={`/himtalks/mini-forum/${latest.id}`}>
-            <div className="bg-white rounded-[20px] shadow-md p-8 hover:shadow-lg transition cursor-pointer">
+  <Link
+    href={`/himtalks/mini-forum/${latest.id}-${slugify(latest.title)}`}
+    className="block"
+  >
+    <div className="bg-white rounded-[24px] shadow-md p-6 md:p-8 hover:shadow-lg transition cursor-pointer">
 
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-                Himtalks • {timeAgo(latest.created_at)}
-              </div>
-
-              <h3 className="text-xl font-semibold text-[#2f3e39] mb-2">
-                {latest.title}
-              </h3>
-
-              <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                {latest.content}
-              </p>
-
-              {latest.image && (
-                <Image
-                  src={latest.image}
-                  width={800}
-                  height={400}
-                  className="rounded-2xl mt-3"
-                  alt="discussion"
-                />
-              )}
-
-              <div className="mt-5 text-sm bg-[#EAEAEA] px-4 py-1.5 rounded-full inline-block">
-                💬 {latest.comment_count ?? 0} Komentar
-              </div>
-
-            </div>
-          </Link>
-
-        </section>
+      {/* IMAGE */}
+      {latest.image && (
+        <div className="relative w-full h-[240px] mb-5">
+          <Image
+            src={latest.image}
+            alt="latest"
+            fill
+            className="object-cover rounded-2xl"
+          />
+        </div>
       )}
 
-      {/* 🔥 RECENT DISCUSSIONS */}
-      {recent.length > 0 && (
-        <section className="max-w-6xl mx-auto px-6 pb-24">
+      {/* TITLE */}
+      <h3 className="text-xl font-semibold mb-2">
+        {latest.title}
+      </h3>
 
-          <div className="flex justify-between items-center mb-10">
+      {/* CONTENT */}
+      <p className="text-sm text-gray-500 mb-4">
+        {latest.content}
+      </p>
 
-            <h2 className="text-[32px] italic font-playfair text-[#5E6F69]">
-              Recent Discussions
-            </h2>
+      {/* META */}
+      <span className="text-sm text-gray-400">
+        💬 {latest.comment_count} Komentar • {timeAgo(latest.created_at)}
+      </span>
 
-            <Link
-              href="/himtalks/mini-forum/browse-forum"
-              className="text-sm text-[#5E6F69] hover:underline"
-            >
-              Continue Exploring →
-            </Link>
+    </div>
+  </Link>
 
-          </div>
+</section>
 
-          <Swiper
-            modules={[Navigation]}
-            navigation
-            spaceBetween={24}
-            slidesPerView={1}
-            breakpoints={{
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-          >
+      {/* RECENT */}
+      <section className="max-w-6xl mx-auto px-6 pb-24">
 
-            {recent.map((forum) => (
-              <SwiperSlide key={forum.id}>
-                <ForumCard forum={forum} />
-              </SwiperSlide>
-            ))}
+        <h2 className="text-[32px] italic font-playfair text-[#5E6F69] mb-10">
+          Recent Discussions
+        </h2>
 
-          </Swiper>
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          spaceBetween={20}
+          slidesPerView={1.2}
+          grabCursor={true}
+          breakpoints={{
+            640: { slidesPerView: 1.5 },
+            768: { slidesPerView: 2.2 },
+            1024: { slidesPerView: 3 },
+          }}
+        >
+          {recent.map((forum) => (
+            <SwiperSlide key={forum.id}>
+              <ForumCard forum={forum} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-        </section>
-      )}
+      </section>
 
     </main>
   );

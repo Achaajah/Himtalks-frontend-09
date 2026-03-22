@@ -1,260 +1,196 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-
 export default function ForumDetail() {
 
-  const { id } = useParams();
-  const [topic, setTopic] = useState(null);
-  const [username, setUsername] = useState("");
-  const [commentContent, setCommentContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // 🔥 DUMMY DATA POST
+  const forum = {
+    title: "Benarkah Hitler orang Bekasi?",
+    content:
+      "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Neque erat orci tincidunt eget sit. Tellus pellentesque vel commodo tortor. Sapien eu commodo et mauris purus mollis.",
+    image: "/New folder/1.jpg",
+  };
 
-  useEffect(() => {
-    async function fetchTopic() {
-      const res = await fetch(`${API_BASE}/forums/${id}`);
-      const data = await res.json();
-      setTopic(data);
-    }
-
-    if (id) fetchTopic();
-  }, [id]);
-
-  async function handleCommentSubmit() {
-    if (!commentContent.trim()) return;
-    setIsSubmitting(true);
-    try {
-      const res = await fetch(`${API_BASE}/forums/${id}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          author: username || "Anonymous",
-          content: commentContent,
-        }),
-      });
-      if (res.ok) {
-        // Refresh topic to get new comments
-        const freshRes = await fetch(`${API_BASE}/forums/${id}`);
-        const freshData = await freshRes.json();
-        setTopic(freshData);
-        setCommentContent("");
-        setUsername("");
-      }
-    } catch (err) {
-      console.error("Gagal mengirim komentar:", err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  if (!topic) return <p className="text-center mt-20">Loading...</p>;
+  // 🔥 DUMMY KOMENTAR (PANJANG BIAR SCROLL)
+  const comments = Array.from({ length: 25 }, (_, i) => ({
+    id: i,
+    user: ["Burung Berkicau", "Harimau Pagi", "MBG Enjoyer"][i % 3],
+    time: `${i + 1} jam lalu`,
+    text: "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
+  }));
 
   return (
-    <section className="bg-[#E9E1D6] min-h-screen px-6 lg:px-24 py-16">
+    <section className="bg-[#E7DFD5] min-h-screen px-6 lg:px-24 py-16">
 
-      {/* back */}
+      {/* 🔙 BACK */}
       <Link
-        href="/himtalks/mini-forum/browse-forum"
-        className="text-[#5E6F64] mb-10 inline-block"
+        href="/himtalks/mini-forum"
+        className="text-gray-600 mb-10 block"
       >
         ← Return to discussion list
       </Link>
 
       <div className="grid lg:grid-cols-3 gap-8">
 
-        {/* LEFT SIDE */}
+        {/* 🔥 LEFT CONTENT */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* DISCUSSION CARD */}
-          <div className="bg-white rounded-2xl shadow p-6">
+          {/* 📝 POST */}
+          <div className="bg-white p-6 rounded-2xl shadow">
 
-            <div className="flex justify-between text-sm text-gray-500 mb-3">
-              <span>Himtalks • {topic.time || "5 mnt ago"}</span>
-              <span className="border px-3 py-1 rounded-full text-xs">
+            <div className="flex justify-between mb-3">
+              <div className="text-sm text-gray-500">
+                Himtalks • 5 mnt ago
+              </div>
+
+              <span className="text-xs border px-3 py-1 rounded-full text-gray-500">
                 19.00 - 21.00 WIB
               </span>
             </div>
 
-            <h1 className="text-2xl font-semibold text-[#5E6F64] mb-3">
-              {topic.title}
+            <h1 className="text-2xl font-serif text-[#5E6F64] mb-4">
+              {forum.title}
             </h1>
 
-            <p className="text-gray-500 mb-4">
-              {topic.content}
+            <p className="text-gray-600 mb-4">
+              {forum.content}
             </p>
 
-            {topic.image && (
+            <div className="overflow-hidden rounded-xl mb-4">
               <Image
-                src={topic.image}
-                width={800}
-                height={400}
-                className="rounded-xl"
-                alt="topic"
+                src={forum.image}
+                width={600}
+                height={300}
+                className="w-full h-[220px] object-cover"
+                alt=""
               />
-            )}
+            </div>
 
-            <button className="mt-4 text-sm bg-gray-200 px-4 py-1 rounded-full">
-              💬 {topic.comment_count || 0} komentar
-            </button>
-
+            <div className="bg-[#5E6F64] text-white px-4 py-2 rounded-full inline-block text-sm">
+              💬 67 Komentar
+            </div>
           </div>
 
-          {/* COMMENT INPUT */}
-          <div className="bg-white rounded-2xl shadow p-6">
+          {/* ✍️ INPUT */}
+          <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-3">
 
-            <h3 className="text-[#5E6F64] mb-4 font-semibold">
-              Tuangkan Pikiranmu
-            </h3>
+            <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
 
             <input
               placeholder="Masukkan Username (Anonim)"
-              className="w-full border-b p-2 mb-3 outline-none"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              className="flex-1 outline-none text-sm"
             />
 
-            <div className="flex items-center gap-3">
-
-              <textarea
-                placeholder="Tulis komentar..."
-                className="flex-1 border-b p-2 outline-none"
-                value={commentContent}
-                onChange={(e) => setCommentContent(e.target.value)}
-              />
-
-              <button 
-                onClick={handleCommentSubmit}
-                disabled={isSubmitting}
-                className="bg-[#5E6F64] text-white px-4 py-2 rounded-full disabled:opacity-50"
-              >
-                {isSubmitting ? "..." : "→"}
-              </button>
-
-            </div>
-
+            <button className="bg-[#5E6F64] text-white px-4 py-2 rounded-full">
+              →
+            </button>
           </div>
 
-          {/* COMMENT LIST */}
-          <div className="bg-white rounded-2xl shadow p-6">
+          {/* 💬 KOMENTAR */}
+          <div className="bg-white p-6 rounded-2xl shadow">
 
-            <div className="flex justify-between mb-6">
-              <h3 className="font-semibold text-[#5E6F64]">
+            <div className="flex justify-between mb-4">
+              <h2 className="font-serif text-lg text-[#5E6F64]">
                 Pikiran yang Dibagikan
-              </h3>
+              </h2>
 
               <span className="text-sm text-gray-500">
-                Terbaru ▼
+                Terbaru
               </span>
             </div>
 
-            <div className="space-y-6">
+            {comments.map((c) => (
+              <div key={c.id} className="mb-6 border-b pb-4">
 
-              {topic.comments?.length > 0 ? (
-                topic.comments.map((comment) => (
-                  <div key={comment.id}>
-                    <p className="font-medium">
-                      {comment.author || "Anonymous"} • {comment.created_at || "Baru saja"}
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      {comment.content}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500 text-sm">Belum ada komentar.</p>
-              )}
+                <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+                  <div className="w-5 h-5 bg-gray-300 rounded-full"></div>
+                  {c.user} • {c.time}
+                </div>
 
-            </div>
+                <p className="text-gray-600 text-sm">
+                  {c.text}
+                </p>
+              </div>
+            ))}
 
-            <p className="text-center mt-6 text-sm text-gray-500 cursor-pointer">
+            <p className="text-center text-gray-500 text-sm">
               Lihat tanggapan lain...
             </p>
-
           </div>
 
         </div>
 
-        {/* RIGHT SIDEBAR */}
-        <div className="space-y-6">
+        {/* 👉 RIGHT SIDEBAR */}
+        <div className="space-y-6 lg:sticky lg:top-24 h-fit">
 
-          {/* SUMMARY */}
-          <div className="bg-white rounded-2xl shadow p-6">
-
-            <h3 className="font-semibold mb-3 text-[#5E6F64]">
+          {/* 📌 RINGKASAN */}
+          <div className="bg-white p-5 rounded-2xl shadow">
+            <h3 className="font-serif text-[#5E6F64] mb-2">
               Ringkasan Diskusi
             </h3>
 
-            <p className="text-sm text-gray-500">
-              {topic.summary || "Lorem ipsum dolor sit amet consectetur..."}
+            <p className="text-sm text-gray-600">
+              Lorem ipsum dolor sit amet consectetur. Viverra adipiscing amet tortor massa. 
+              Sodales id ullamcorper eget id etiam nibh magna pellentesque mauris.
             </p>
-
           </div>
 
-          {/* GUIDELINE */}
-          <div className="bg-white rounded-2xl shadow p-6">
+          {/* 📖 PANDUAN */}
+          <div className="bg-white rounded-2xl shadow overflow-hidden">
 
-            <h3 className="font-semibold mb-3 text-[#5E6F64]">
-              Panduan Diskusi
-            </h3>
+            <Image
+              src="/New folder/2.jpg"
+              width={400}
+              height={150}
+              className="w-full h-[120px] object-cover"
+              alt=""
+            />
 
-            <ul className="text-sm text-gray-500 list-disc ml-4 space-y-2">
-              <li>Saling menghargai.</li>
-              <li>Fokus pada topik.</li>
-              <li>No Hate Speech.</li>
-              <li>Gunakan bahasa yang sopan.</li>
-            </ul>
+            <div className="p-5">
+              <h3 className="font-serif text-[#5E6F64] mb-2">
+                Panduan Diskusi
+              </h3>
 
+              <ul className="text-sm text-gray-600 list-disc pl-4 space-y-1">
+                <li>Saling menghargai</li>
+                <li>Fokus tema</li>
+                <li>No hate speech</li>
+                <li>Gunakan bahasa sopan</li>
+                <li>Anonim tetap sopan</li>
+              </ul>
+            </div>
           </div>
 
-          {/* OTHER FEATURE */}
-          <div className="space-y-4">
-
-            <Link href="/himtalks/songfess">
-              <div className="bg-white rounded-2xl shadow p-4 flex gap-3 items-center cursor-pointer">
-                <Image
-                  src="/flowerbird.jpg"
-                  width={70}
-                  height={70}
-                  className="rounded-lg"
-                  alt="songfess"
-                />
-                <div>
-                  <p className="font-semibold">Songfess</p>
-                  <p className="text-sm text-gray-500">
-                    Ekspresikan perasaanmu melalui lagu!
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/himtalks/chat-anonym">
-              <div className="bg-white rounded-2xl shadow p-4 flex gap-3 items-center cursor-pointer">
-                <Image
-                  src="/flowerbird.jpg"
-                  width={70}
-                  height={70}
-                  className="rounded-lg"
-                  alt="chat"
-                />
-                <div>
-                  <p className="font-semibold">Chat Anonym</p>
-                  <p className="text-sm text-gray-500">
-                    Kirimkan pesan tanpa identitas.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
+          {/* 🎤 EXTRA CARD */}
+          <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-3">
+            <Image
+              src="/New folder/2.jpg"
+              width={80}
+              height={80}
+              className="rounded-xl object-cover"
+              alt=""
+            />
+            <div>
+              <p className="font-serif text-[#5E6F64]">Songfess</p>
+              <p className="text-sm text-gray-500">
+                Ekspresikan perasaanmu lewat lagu!
+              </p>
+            </div>
           </div>
 
         </div>
 
       </div>
+
+      {/* 🔝 BACK TO TOP */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 right-6 bg-[#5E6F64] text-white p-3 rounded-full shadow-lg hover:scale-110 transition"
+      >
+        ↑
+      </button>
 
     </section>
   );
