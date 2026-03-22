@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react"; // ✅ tambah useEffect
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,10 @@ const pilihan = [
 ]
 
 export default function ChatAnonym() {
+
+    // 🔥 TAMBAHAN LOADING (AMAN)
+    const [loading, setLoading] = useState(true);
+
     const [isClicked, setIsClicked] = useState(false);
     const [selected, setSelected] = useState(null);
     const [formData, setFormData] = useState({
@@ -26,8 +30,41 @@ export default function ChatAnonym() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
     const textareaRef = useRef(null);
-    
-    // function untuk mengatur discard semua input
+
+    // 🔥 EFFECT LOADING (TAMBAHAN)
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    // 🔥 LOADING UI (TAMBAHAN)
+    if (loading) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
+                
+                <Image
+                    src="/New folder/burung-mikir.svg"
+                    width={200}
+                    height={200}
+                    alt="loading"
+                    className="mb-4 animate-bounce"
+                />
+
+                <div className="w-10 h-10 border-4 border-[#5E6F69] border-t-transparent rounded-full animate-spin"></div>
+
+                <p className="mt-4 text-[#5E6F69] text-sm">
+                    Menyiapkan diskusi...
+                </p>
+
+            </div>
+        );
+    }
+
+    // ================= KODE LU (GA DIUBAH) =================
+
     const handleChangeDiscard = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -36,7 +73,7 @@ export default function ChatAnonym() {
         setFormData({ name: "", recipient: ""});
         setSelected(null);
         setMessage("");
-        textareaRef.current.style.height = "auto"; // Reset height
+        textareaRef.current.style.height = "auto";
         setIsClicked(true);
         
         setTimeout(() => {
@@ -44,18 +81,15 @@ export default function ChatAnonym() {
         }, 2000)
     };
 
-    // function untuk textarea supaya menurun kebawah dan tidak ada scroll bar
     const handleChange = (e) => {
         setMessage(e.target.value);
-        textareaRef.current.style.height = "auto"; // Reset height
-        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Sesuaikan dengan konten
+        textareaRef.current.style.height = "auto";
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     };
 
-    // Fungsi untuk menangani submit form
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Validasi input
         if (!message.trim()) {
             alert("Pesan tidak boleh kosong");
             return;
@@ -79,7 +113,7 @@ export default function ChatAnonym() {
                     content: message,
                     sender_name: formData.name || "Anonymous",
                     recipient_name: formData.recipient || "HIMTI",
-                    category: selected.value, // Gunakan value (lowercase) agar sesuai format API
+                    category: selected.value,
                 }),
             });
             
@@ -90,7 +124,6 @@ export default function ChatAnonym() {
             const result = await response.json();
             console.log("Message submitted successfully:", result);
             
-            // Reset form setelah berhasil
             setFormData({ name: "", recipient: "" });
             setSelected(null);
             setMessage("");

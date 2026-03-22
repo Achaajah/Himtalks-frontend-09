@@ -1,13 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ForumCard from "@/components/ForumCard";
 
 export default function ForumBrowse() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // 🔥 DUMMY DATA (4 CARD PERSIS)
+  // 🔥 LOADING STATE
+  const [loading, setLoading] = useState(true);
+
+  // 🔥 SIMULASI LOADING (BIAR KELIATAN)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000); // 1 detik
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 🔥 DUMMY DATA
   const topics = [
     {
       id: 1,
@@ -48,7 +60,7 @@ export default function ForumBrowse() {
     topic.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 🔽 SORT (simple aja)
+  // 🔽 SORT
   const sortedTopics = [...filteredTopics].sort((a, b) => {
     if (sort === "newest") {
       return new Date(b.created_at) - new Date(a.created_at);
@@ -57,10 +69,32 @@ export default function ForumBrowse() {
     }
   });
 
+  // 🔥 LOADING UI (WAJIB ADA SEBELUM RETURN UTAMA)
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
+        
+        <img
+          src="/New folder/burung-mikir.svg"
+          className="w-40 mb-4 animate-bounce"
+          alt="loading"
+        />
+
+        <div className="w-10 h-10 border-4 border-[#5E6F69] border-t-transparent rounded-full animate-spin"></div>
+
+        <p className="mt-4 text-[#5E6F69] text-sm">
+          Menyiapkan diskusi...
+        </p>
+
+      </div>
+    );
+  }
+
+  // 🔥 UI UTAMA
   return (
     <section className="bg-[#E7DFD5] min-h-screen px-6 lg:px-24 py-20">
 
-      {/* 🔥 TITLE */}
+      {/* TITLE */}
       <div className="text-center mt-16 mb-12">
         <h1 className="text-5xl md:text-6xl italic font-serif text-[#5E6F64] leading-tight tracking-tight">
           Explore the thoughts shared by others
@@ -71,7 +105,7 @@ export default function ForumBrowse() {
         </p>
       </div>
 
-      {/* 🔍 SEARCH */}
+      {/* SEARCH */}
       <div className="max-w-2xl mx-auto mb-6 relative">
         <input
           type="text"
@@ -87,7 +121,7 @@ export default function ForumBrowse() {
         </div>
       </div>
 
-      {/* 🔽 SORT */}
+      {/* SORT */}
       <div className="max-w-2xl mx-auto mb-10 flex justify-end">
         <select
           value={sort}
@@ -99,7 +133,7 @@ export default function ForumBrowse() {
         </select>
       </div>
 
-      {/* 🔥 GRID */}
+      {/* GRID */}
       <div className="grid md:grid-cols-2 gap-10">
         {sortedTopics.map((topic) => (
           <ForumCard key={topic.id} forum={topic} />

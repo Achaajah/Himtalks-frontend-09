@@ -2,42 +2,83 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function ForumDetail() {
 
-  // 🔥 DUMMY DATA POST
-  const forum = {
-    title: "Benarkah Hitler orang Bekasi?",
-    content:
-      "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Neque erat orci tincidunt eget sit. Tellus pellentesque vel commodo tortor. Sapien eu commodo et mauris purus mollis.",
-    image: "/New folder/1.jpg",
-  };
+  // 🔥 LOADING STATE
+  const [loading, setLoading] = useState(true);
 
-  // 🔥 DUMMY KOMENTAR (PANJANG BIAR SCROLL)
-  const comments = Array.from({ length: 25 }, (_, i) => ({
-    id: i,
-    user: ["Burung Berkicau", "Harimau Pagi", "MBG Enjoyer"][i % 3],
-    time: `${i + 1} jam lalu`,
-    text: "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
-  }));
+  // 🔥 DUMMY DATA POST
+  const [forum, setForum] = useState(null);
+  const [comments, setComments] = useState([]);
+
+  // 🔥 SIMULASI FETCH
+  useEffect(() => {
+    const timer = setTimeout(() => {
+
+      setForum({
+        title: "Benarkah Hitler orang Bekasi?",
+        content:
+          "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
+        image: "/New folder/1.jpg",
+      });
+
+      setComments(
+        Array.from({ length: 25 }, (_, i) => ({
+          id: i,
+          user: ["Burung Berkicau", "Harimau Pagi", "MBG Enjoyer"][i % 3],
+          time: `${i + 1} jam lalu`,
+          text: "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget.",
+        }))
+      );
+
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 🔥 LOADING UI
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
+        
+        <Image
+          src="/New folder/burung-mikir.svg"
+          width={200}
+          height={200}
+          alt="loading"
+          className="mb-4 animate-bounce"
+        />
+
+        <div className="w-10 h-10 border-4 border-[#5E6F69] border-t-transparent rounded-full animate-spin"></div>
+
+        <p className="mt-4 text-[#5E6F69] text-sm">
+          Menyiapkan diskusi...
+        </p>
+
+      </div>
+    );
+  }
+
+  // 🔥 SAFETY
+  if (!forum) return null;
 
   return (
     <section className="bg-[#E7DFD5] min-h-screen px-6 lg:px-24 py-16">
 
-      {/* 🔙 BACK */}
-      <Link
-        href="/himtalks/mini-forum"
-        className="text-gray-600 mb-10 block"
-      >
+      {/* BACK */}
+      <Link href="/himtalks/mini-forum" className="text-gray-600 mb-10 block">
         ← Return to discussion list
       </Link>
 
       <div className="grid lg:grid-cols-3 gap-8">
 
-        {/* 🔥 LEFT CONTENT */}
+        {/* LEFT */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* 📝 POST */}
+          {/* POST */}
           <div className="bg-white p-6 rounded-2xl shadow">
 
             <div className="flex justify-between mb-3">
@@ -69,11 +110,11 @@ export default function ForumDetail() {
             </div>
 
             <div className="bg-[#5E6F64] text-white px-4 py-2 rounded-full inline-block text-sm">
-              💬 67 Komentar
+              💬 {comments.length} Komentar
             </div>
           </div>
 
-          {/* ✍️ INPUT */}
+          {/* INPUT */}
           <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-3">
 
             <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
@@ -88,7 +129,7 @@ export default function ForumDetail() {
             </button>
           </div>
 
-          {/* 💬 KOMENTAR */}
+          {/* KOMENTAR */}
           <div className="bg-white p-6 rounded-2xl shadow">
 
             <div className="flex justify-between mb-4">
@@ -122,24 +163,22 @@ export default function ForumDetail() {
 
         </div>
 
-        {/* 👉 RIGHT SIDEBAR */}
-        <div className="space-y-6 lg:sticky lg:top-24 h-fit">
+        {/* RIGHT (🔥 FIXED / STICKY) */}
+        <div className="space-y-6 lg:sticky lg:top-28 self-start">
 
-          {/* 📌 RINGKASAN */}
+          {/* Ringkasan */}
           <div className="bg-white p-5 rounded-2xl shadow">
             <h3 className="font-serif text-[#5E6F64] mb-2">
               Ringkasan Diskusi
             </h3>
 
             <p className="text-sm text-gray-600">
-              Lorem ipsum dolor sit amet consectetur. Viverra adipiscing amet tortor massa. 
-              Sodales id ullamcorper eget id etiam nibh magna pellentesque mauris.
+              Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
 
-          {/* 📖 PANDUAN */}
+          {/* Panduan */}
           <div className="bg-white rounded-2xl shadow overflow-hidden">
-
             <Image
               src="/New folder/2.jpg"
               width={400}
@@ -163,20 +202,26 @@ export default function ForumDetail() {
             </div>
           </div>
 
-          {/* 🎤 EXTRA CARD */}
-          <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-3">
-            <Image
-              src="/New folder/2.jpg"
-              width={80}
-              height={80}
-              className="rounded-xl object-cover"
-              alt=""
-            />
-            <div>
-              <p className="font-serif text-[#5E6F64]">Songfess</p>
-              <p className="text-sm text-gray-500">
-                Ekspresikan perasaanmu lewat lagu!
-              </p>
+          {/* 🔥 QUICK ACCESS */}
+          <div className="bg-white p-5 rounded-2xl shadow">
+            <h3 className="font-serif text-[#5E6F64] mb-3">
+              Akses Cepat
+            </h3>
+
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/himtalks/songfess"
+                className="text-sm text-[#5E6F64] hover:underline"
+              >
+                🎵 Songfess
+              </Link>
+
+              <Link
+                href="/himtalks/chat-anonym"
+                className="text-sm text-[#5E6F64] hover:underline"
+              >
+                💬 Chat Anonym
+              </Link>
             </div>
           </div>
 
@@ -184,7 +229,7 @@ export default function ForumDetail() {
 
       </div>
 
-      {/* 🔝 BACK TO TOP */}
+      {/* BACK TO TOP */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="fixed bottom-6 right-6 bg-[#5E6F64] text-white p-3 rounded-full shadow-lg hover:scale-110 transition"
