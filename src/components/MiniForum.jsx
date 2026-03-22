@@ -173,10 +173,10 @@ export default function MiniForum() {
     Latest Discussion
   </h2>
 
-  <Link
-    href={`/himtalks/mini-forum/${latest.id}-${slugify(latest.title)}`}
-    className="block"
-  >
+  <Link 
+  href="/himtalks/mini-forum/form-forum"
+  className="block"
+>
     <div className="bg-white rounded-[24px] shadow-md p-6 md:p-8 hover:shadow-lg transition cursor-pointer">
 
       {/* IMAGE */}

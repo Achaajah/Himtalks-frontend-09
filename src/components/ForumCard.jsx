@@ -39,10 +39,10 @@ export default function ForumCard({ forum }) {
   })();
 
   return (
-    <Link
-      href={`/himtalks/mini-forum/${slug}`}
-      className="block"
-    >
+  <Link 
+  href="/himtalks/mini-forum/form-forum"
+  className="block"
+>
       <div className="bg-white rounded-2xl shadow-md p-5 relative border border-gray-100 
                       hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
 
