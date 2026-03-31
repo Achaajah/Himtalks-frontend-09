@@ -13,6 +13,11 @@ export default function ForumDetail() {
   const [forum, setForum] = useState(null);
   const [comments, setComments] = useState([]);
 
+  // 🔥 STATE TAMBAHAN
+const [username, setUsername] = useState("");
+const [isTyping, setIsTyping] = useState(false);
+const [commentText, setCommentText] = useState("");
+
   // 🔥 SIMULASI FETCH
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -115,19 +120,88 @@ export default function ForumDetail() {
           </div>
 
           {/* INPUT */}
-          <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-3">
+{/* INPUT */}
+<div className="bg-white p-4 rounded-2xl shadow flex flex-col gap-3">
 
-            <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
+  {/* STEP 1: USERNAME */}
+  {!isTyping && (
+    <div className="flex items-center gap-3">
+      <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
 
-            <input
-              placeholder="Masukkan Username (Anonim)"
-              className="flex-1 outline-none text-sm"
-            />
+      <input
+        placeholder="Masukkan Username (Anonim)"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="flex-1 outline-none text-sm"
+      />
 
-            <button className="bg-[#5E6F64] text-white px-4 py-2 rounded-full">
-              →
-            </button>
-          </div>
+      <button
+        onClick={() => {
+          if (username.trim() !== "") {
+            setIsTyping(true);
+          }
+        }}
+        className="bg-[#5E6F64] text-white px-4 py-2 rounded-full"
+      >
+        →
+      </button>
+    </div>
+  )}
+
+  {/* STEP 2: KOMENTAR */}
+  {isTyping && (
+    <div className="flex flex-col gap-2">
+
+      <div className="text-sm text-gray-500">
+        Mengirim sebagai <span className="font-medium">{username}</span>
+      </div>
+
+      <textarea
+        placeholder="Tulis komentarmu..."
+        value={commentText}
+        onChange={(e) => setCommentText(e.target.value)}
+        className="w-full outline-none text-sm border rounded-lg p-3 resize-none"
+        rows={3}
+      />
+
+      <div className="flex justify-end gap-2">
+
+        {/* GANTI USERNAME */}
+        <button
+          onClick={() => setIsTyping(false)}
+          className="text-sm text-gray-500"
+        >
+          Ganti nama
+        </button>
+
+        {/* KIRIM */}
+        <button
+          onClick={() => {
+            if (commentText.trim() === "") return;
+
+            setComments([
+              {
+                id: Date.now(),
+                user: username,
+                time: "baru saja",
+                text: commentText,
+              },
+              ...comments,
+            ]);
+
+            setCommentText("");
+          }}
+          className="bg-[#5E6F64] text-white px-4 py-2 rounded-full text-sm"
+        >
+          Kirim
+        </button>
+
+      </div>
+
+    </div>
+  )}
+
+</div>
 
           {/* KOMENTAR */}
           <div className="bg-white p-6 rounded-2xl shadow">
@@ -156,9 +230,11 @@ export default function ForumDetail() {
               </div>
             ))}
 
+            <button>
             <p className="text-center text-gray-500 text-sm">
               Lihat tanggapan lain...
             </p>
+            </button>
           </div>
 
         </div>

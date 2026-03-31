@@ -345,10 +345,10 @@ const validateTimeInput = (name, value) => {
           className="absolute top-[320px] z-10 right-0 sm:top-52 sm:right-0 md:top-72 md:right-5 lg:top-68 lg:right-85 transition-all duration-500"
         />
 
-        <h1 className="font-[Caveat] font-bold max-w-md text-5xl md:max-w-xl lg:max-w-full sm:text-6xl md:text-[64px] lg:text-7xl text-purple mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
+        <h1 className="font-[Caveat] font-bold max-w-md text-5xl md:max-w-xl lg:max-w-full sm:text-6xl md:text-[64px] lg:text-7xl text-[#5F6F6C] mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
           Send your songfess on Himtalks
         </h1>
-        <p className="font-medium text-sm md:text-base text-center text-darkPurple leading-6 sm:leading-7 mt-7 lg:mt-8 max-w-sm sm:max-w-md lg:max-w-3xl flex justify-center mx-auto transition-all duration-500">
+        <p className="font-medium text-sm md:text-base text-center text-[#5F6F6C] leading-6 sm:leading-7 mt-7 lg:mt-8 max-w-sm sm:max-w-md lg:max-w-3xl flex justify-center mx-auto transition-all duration-500">
           Jangan simpan ceritamu sendiri. Biarkan musik menjadi jembatan untuk
           menyampaikan perasaanmu.
         </p>
@@ -380,12 +380,12 @@ const validateTimeInput = (name, value) => {
           <form onSubmit={handleSubmit}>
             <div className="w-full">
               <div className="mb-6">
-                <h3 className="font-handlee font-bold text-xl font-[Plus Jakarta Sans] cursor-default selection:bg-white selection:text-darkPurple">
+                <h3 className="font-handlee font-bold text-xl font-[Plus Jakarta Sans] cursor-default selection:bg-white selection:text-[#5F6F6C]">
                   ♫ Send ur Songfess ♬
                 </h3>
               </div>
               <div className="mb-6">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">
+                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
                   Enter ur name
                 </label>
                 <input
@@ -396,11 +396,11 @@ const validateTimeInput = (name, value) => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
               </div>
               <div className="mb-6">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">
+                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
                   Recipient name
                 </label>
                 <input
@@ -411,20 +411,20 @@ const validateTimeInput = (name, value) => {
                   onChange={handleChange}
                   placeholder="Masukkan nama penerima ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
               </div>
               <div className="relative">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">
+                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
                   Choose song
                 </label>
                 <Combobox value={selected} onChange={handleSelectSong}>
                   <div className="relative w-full mt-1">
                     {/* Input Field */}
-                    <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white shadow-md text-left focus:outline-none focus:ring-2 focus:ring-darkPurple sm:text-sm">
+                    <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white shadow-md text-left focus:outline-none focus:ring-2 focus:ring-text-[#5F6F6C] sm:text-sm">
                       <div className="flex justify-between sm:gap-0 items-center w-full">
                         <Combobox.Input
-                          className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                          className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                           displayValue={(song) =>
                             song
                               ? `${song.name} • ${song.artists.map((a) => a.name).join(", ")}`
@@ -504,7 +504,7 @@ const validateTimeInput = (name, value) => {
                                     </div>
                                     {selected && (
                                       <span
-                                        className={`${active ? "text-white" : "text-darkPurple"}`}
+                                        className={`${active ? "text-white" : "text-[#5F6F6C]"}`}
                                       >
                                         <CheckIcon
                                           className="h-5 w-5"
@@ -601,7 +601,7 @@ const validateTimeInput = (name, value) => {
               </div>
 
               <div className="mb-6 mt-6 relative">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">
+                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
                   Song start minute (e.g. 00.00)
                 </label>
                 <input
@@ -612,7 +612,7 @@ const validateTimeInput = (name, value) => {
                   value={formData.startTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
                 {errors.startTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -622,7 +622,7 @@ const validateTimeInput = (name, value) => {
               </div>
 
               <div className="mb-6 relative">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">
+                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
                   Song end minute (e.g. 00.30)
                 </label>
                 <input
@@ -633,7 +633,7 @@ const validateTimeInput = (name, value) => {
                   value={formData.endTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
                 />
                 {errors.endTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -651,20 +651,20 @@ const validateTimeInput = (name, value) => {
                   onChange={handleMessageChange}
                   placeholder="Type your message ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-darkPurple rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-darkPurple/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
+                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
                 />
               </div>
               <div className="flex max-w-64 w-full gap-4">
                 <button
                   onClick={handleDiscard}
                   type="reset"
-                  className={`selection:bg-white selection:text-darkPurple transition-all duration-500 font-[Poppins] rounded-md w-full font-medium hover:text-darkPurple py-2 ${isClicked ? "border-2 border-[#5F6F6C80] bg-[#5F6F6C80] hover:bg-[#5F6F6C80]  hover:text-white text-white rounded-lg" : "text-white rounded-lg hover:bg-white active:bg-[#5F6F6C80] active:text-white active:border-[#5F6F6C80] hover:text-darkPurple hover:border-white border-2 border-purple"}`}
+                  className={`selection:bg-white selection:text-[#5F6F6C] transition-all duration-500 font-[Poppins] rounded-md w-full font-medium hover:text-[#5F6F6C] py-2 ${isClicked ? "border-2 border-[#5F6F6C80] bg-[#5F6F6C80] hover:bg-[#5F6F6C80]  hover:text-white text-white rounded-lg" : "text-white rounded-lg hover:bg-white active:bg-[#5F6F6C80] active:text-white active:border-[#5F6F6C80] hover:text-[#5F6F6C] hover:border-white border-2 border-purple"}`}
                 >
                   Discard
                 </button>
                 <button
                   type="submit"
-                  className="text-white font-[Poppins] rounded-md w-full bg-purple font-medium hover:bg-white hover:text-darkPurple py-2 transition-all duration-500 selection:bg-white selection:text-purple"
+                  className="text-white font-[Poppins] rounded-md w-full bg-purple font-medium hover:bg-white hover:text-[#5F6F6C] py-2 transition-all duration-500 selection:bg-white selection:text-purple"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}
