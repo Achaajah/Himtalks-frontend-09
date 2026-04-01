@@ -60,15 +60,7 @@ export default function Hero() {
       {/* Title */}
       <h1
         className="
-          font-cormorant 
-          italic 
-          font-semibold 
-          text-5xl sm:text-6xl md:text-7xl 
-          text-[#7A918D] 
-          text-center 
-          mb-6 
-          tracking-[-0.03em] 
-          leading-[110%]
+font-serif italic font-semibold text-5xl text-[#6B7C72] text-center
         "
       >
         HIMTALKS

@@ -51,7 +51,7 @@ export default function SongfessHero() {
     <section className="pt-[120px] pb-24 px-6 bg-[#EFE9DF] text-center">
 
       {/* TITLE */}
-      <h1 className={`${playfair.className} italic text-[#5E6F69] text-3xl md:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight`}>
+      <h1 className="font-serif italic font-semibold text-5xl text-[#6B7C72] text-center">
         Even the toughest feelings can be shared in
         <br />
         unique and meaningful ways.

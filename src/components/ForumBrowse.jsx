@@ -96,7 +96,7 @@ export default function ForumBrowse() {
 
       {/* TITLE */}
       <div className="text-center mt-16 mb-12">
-        <h1 className="text-5xl md:text-6xl italic font-serif text-[#5E6F64] leading-tight tracking-tight">
+        <h1 className="font-serif italic font-semibold text-5xl text-[#6B7C72] text-center">
           Explore the thoughts shared by others
         </h1>
 

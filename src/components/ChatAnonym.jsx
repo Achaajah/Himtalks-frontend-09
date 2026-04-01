@@ -163,7 +163,7 @@ export default function ChatAnonym() {
           alt="bear-yellow-illustrasion"
           className="absolute top-[320px] z-10 right-0 sm:top-52 sm:right-0 md:top-72 md:right-5 lg:top-66 lg:right-90 transition-all duration-500"
         />
-                <h1 className="font-serif italic font-semibold text-6xl text-[#6B7C72] text-center">
+                <h1 className="font-serif italic font-semibold text-5xl text-[#6B7C72] text-center">
                     Speak freely, stay anonymous
                 </h1>
 <p className="text-center text-[#7A8B80] mt-6 max-w-xl mx-auto">

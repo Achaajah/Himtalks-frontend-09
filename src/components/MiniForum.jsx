@@ -3,6 +3,7 @@
 import { Navigation } from "swiper/modules";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useRouter } from "next/navigation";
 import ForumCard from "@/components/ForumCard";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -10,7 +11,9 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-/* 🔥 SLUG */
+
+
+/*  SLUG */
 function slugify(text) {
   return text
     ?.toLowerCase()
@@ -19,7 +22,7 @@ function slugify(text) {
     .replace(/\s+/g, "-");
 }
 
-/* 🔥 TIME FORMAT */
+/*  TIME FORMAT */
 function timeAgo(date) {
   if (!date) return "-";
 
@@ -37,7 +40,7 @@ function timeAgo(date) {
   return `${days} hari lalu`;
 }
 
-/* 🔥 FULL DUMMY DATA */
+/*  FULL DUMMY DATA */
 const dummyForums = [
   {
     id: 1,
@@ -97,12 +100,13 @@ const dummyForums = [
 ];
 
 export default function MiniForum() {
+  const router = useRouter();
   const [latest, setLatest] = useState(null);
   const [recent, setRecent] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 🔥 FAKE LOADING (BIAR KAYAK ADA API)
+    //  FAKE LOADING (BIAR KAYAK ADA API)
     setTimeout(() => {
       const sorted = [...dummyForums].sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -114,7 +118,7 @@ export default function MiniForum() {
     }, 1200); // delay 1.2 detik
   }, []);
 
-  /* 🔥 LOADING (TETEP SAMA) */
+  /*  LOADING (TETEP SAMA) */
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
@@ -142,8 +146,9 @@ export default function MiniForum() {
 
       {/* HERO */}
       <section className="text-center py-24 px-6">
-        <h1 className="max-w-3xl mx-auto font-playfair italic text-[52px] text-[#5E6F69] mb-5">
-          Every voice deserves to be heard and understood
+        <h1 className="font-serif italic font-semibold text-5xl text-[#6B7C72] text-center">
+          Every voice deserves to be 
+          <br/>heard and understood
         </h1>
 
         <p className="text-gray-500 mb-8 text-[15px]">
@@ -174,7 +179,8 @@ export default function MiniForum() {
   </h2>
 
   <Link 
-  href="/himtalks/mini-forum/form-forum"
+  href="/himtalks/mini-forum/form-forum#comment"
+ onClick={(e) => e.stopPropagation()}
   className="block"
 >
     <div className="bg-white rounded-[24px] shadow-md p-6 md:p-8 hover:shadow-lg transition cursor-pointer">
@@ -202,10 +208,11 @@ export default function MiniForum() {
       </p>
 
       {/* META */}
-      <span className="text-sm text-gray-400">
+      <button>
+      <span className="hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
         💬 {latest.comment_count} Komentar • {timeAgo(latest.created_at)}
       </span>
-
+</button>
     </div>
   </Link>
 

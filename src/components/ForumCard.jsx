@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -29,6 +30,7 @@ function timeAgo(date) {
 }
 
 export default function ForumCard({ forum }) {
+  const router = useRouter();
   const slug = `${forum.id}-${slugify(forum.title)}`;
 
   const isClosed = (() => {
@@ -39,65 +41,64 @@ export default function ForumCard({ forum }) {
   })();
 
   return (
-  <Link 
-  href="/himtalks/mini-forum/form-forum"
-  className="block"
->
-      <div className="bg-white rounded-2xl shadow-md p-5 relative border border-gray-100 
-                      hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
+    <div
+      onClick={() => router.push("/himtalks/mini-forum/form-forum#comment")}
+      className="bg-white rounded-2xl shadow-md p-5 relative border border-gray-100 
+                 hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer"
+    >
+      {/* CLOSED */}
+      {isClosed && (
+        <span className="absolute top-4 right-4 bg-[#C2A88D] text-white text-xs px-3 py-1 rounded-full">
+          Closed
+        </span>
+      )}
 
-        {/* CLOSED */}
-        {isClosed && (
-          <span className="absolute top-4 right-4 bg-[#C2A88D] text-white text-xs px-3 py-1 rounded-full">
-            Closed
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
+          <span>Himtalks</span>
+          <span>•</span>
+          <span>{timeAgo(forum.created_at)}</span>
+        </div>
+
+        {!isClosed && (
+          <span className="text-xs border px-3 py-1 rounded-full text-gray-500">
+            19.00 - 21.00 WIB
           </span>
         )}
+      </div>
 
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-            <span>Himtalks</span>
-            <span>•</span>
-            <span>{timeAgo(forum.created_at)}</span>
-          </div>
+      {/* TITLE */}
+      <h2 className="text-xl font-serif text-[#5E6F64] mb-2">{forum.title}</h2>
 
-          {!isClosed && (
-            <span className="text-xs border px-3 py-1 rounded-full text-gray-500">
-              19.00 - 21.00 WIB
-            </span>
-          )}
-        </div>
+      {/* DESC */}
+      <p className="text-gray-500 text-sm mb-4 line-clamp-2">{forum.content}</p>
 
-        {/* TITLE */}
-        <h2 className="text-xl font-serif text-[#5E6F64] mb-2">
-          {forum.title}
-        </h2>
+      {/* IMAGE */}
+      <div className="overflow-hidden rounded-xl mb-4">
+        <Image
+          src={forum.image}
+          width={500}
+          height={300}
+          className="w-full h-[180px] object-cover"
+          alt=""
+        />
+      </div>
 
-        {/* DESC */}
-        <p className="text-gray-500 text-sm mb-4 line-clamp-2">
-          {forum.content}
-        </p>
-
-        {/* IMAGE */}
-        <div className="overflow-hidden rounded-xl mb-4">
-          <Image
-            src={forum.image}
-            width={500}
-            height={300}
-            className="w-full h-[180px] object-cover"
-            alt=""
-          />
-        </div>
-
-        {/* COMMENT */}
-        <div>
+      {/* COMMENT BUTTON */}
+      <div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // jangan trigger click parent
+            router.push("/himtalks/mini-forum/form-forum#comment");
+          }}
+        >
           <span className="inline-flex items-center gap-2 bg-[#EAEAEA] text-[#2f3e39] px-4 py-2 rounded-full text-sm">
             💬 {forum.comment_count} Komentar
           </span>
-        </div>
-
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }
