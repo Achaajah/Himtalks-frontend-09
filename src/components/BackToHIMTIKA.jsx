@@ -1,5 +1,5 @@
 "use client";
-// import "../app/globals.css"
+import "./../app/himtalks/globals.css";
 
 export default function BackToHIMTIKA() {    
     return (

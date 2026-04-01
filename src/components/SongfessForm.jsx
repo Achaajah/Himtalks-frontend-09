@@ -324,68 +324,70 @@ const validateTimeInput = (name, value) => {
 
   return (
     <>
-      <section className="relative pt-28 md:pt-36 pb-28 px-6 sm:px-16 md:px-16 lg:px-28 bg-dual text-black transition-all duration-500 selection:bg-purple selection:text-white">
-        {/* ...existing hero/heading... */}
-<Image
-  src="/songfess/image2.svg"
-  width="210"
-  height="256"
-  alt="bear-purple-illustrasion"
-  className="absolute w-[100px] h-[100px] top-10 left-5 z-10
-  sm:top-12 sm:left-10 sm:w-[100px] sm:h-[100px]
-  md:top-16 md:left-16 md:w-[100px] md:h-[200px]
-  lg:top-62 lg:left-85
-  transition-all duration-500"
-/>
-        <Image
-          src="/songfess/image3.svg"
-          width="105"
-          height="128"
-          alt="bear-yellow-illustrasion"
-          className="absolute top-[320px] z-10 right-0 sm:top-52 sm:right-0 md:top-72 md:right-5 lg:top-68 lg:right-85 transition-all duration-500"
-        />
-
-        <h1 className="font-[Caveat] font-bold max-w-md text-5xl md:max-w-xl lg:max-w-full sm:text-6xl md:text-[64px] lg:text-7xl text-[#5F6F6C] mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
+      <section className="pt-28 md:pt-36 lg:pt-42 pb-28 px-6 sm:px-16 md:px-16 lg:px-28 bg-primaryBG text-black transition-all duration-500 selection:bg-primary selection:text-white">
+        <h1 className="font-playfair italic font-bold max-w-80 md:max-w-full text-4xl md:text-5xl xl:text-6xl text-darkSage tracking-tight mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
           Send your songfess on Himtalks
         </h1>
-        <p className="font-medium text-sm md:text-base text-center text-[#5F6F6C] leading-6 sm:leading-7 mt-7 lg:mt-8 max-w-sm sm:max-w-md lg:max-w-3xl flex justify-center mx-auto transition-all duration-500">
+        <p className="w-[80%] md:max-w-3xl text-center font-cormorant font-semibold text-base sm:text-lg lg:text-xl xl:text-2xl text-darkSage mt-6 md:mt-8 mx-auto leading-5 sm:leading-6">
           Jangan simpan ceritamu sendiri. Biarkan musik menjadi jembatan untuk
           menyampaikan perasaanmu.
         </p>
-        <div className="relative z-10 bg-[#7D9A8B] w-full max-w-[520px] mt-24 md:mt-16 px-8 py-10 text-white rounded-2xl mx-auto">
+        <div className="relative z-10 bg-[#7D9A8B] w-[90%] sm:max-w-140 mt-24 md:mt-20 px-5 sm:px-8 py-10 text-white rounded-2xl mx-auto">
+          {/* Existing SVG/Image components */}
+          <Image
+              src="/chatanonym/bird-ca-1.svg"
+              width="210"
+              height="256"
+              alt="bird-illustrasion"
+              className="absolute w-30 sm:w-50 h-50 z-10 -top-25 -left-12 sm:-top-21 sm:-left-20 transition-all duration-500"
+          />
+          <Image
+              src="/chatanonym/bird-ca-2.svg"
+              width="105"
+              height="128"
+              alt="bird-illustrasion"
+              className="absolute w-30 sm:w-50 h-50 z-10 -top-25 -right-12 sm:-top-21 sm:-right-20 transition-all duration-500"
+          />
           <AnimatePresence>
             {submitStatus === "success" && (
               <motion.div
-                className="z-20 top-24 sticky mb-4 p-3 bg-green-200 text-green-800 rounded-md"
+                className="z-20 top-8 right-8 left-8 absolute p-3 bg-green-200 text-green-800 rounded-md"
                 initial={{ opacity: 0, y: -10 }} // Mulai dari transparan dan agak ke atas
                 animate={{ opacity: 1, y: 0 }} // Muncul dengan smooth
                 exit={{ opacity: 0, y: -10 }} // Menghilang dengan smooth
                 transition={{ ease: "easeInOut", duration: 0.5 }} // Efek ease-in-out selama 0.5 detik
               >
-                Pesan berhasil terkirim!
+                Songfess berhasil terkirim!
               </motion.div>
             )}
             {submitStatus === "error" && (
               <motion.div
-                className="z-20 top-24 sticky mb-4 p-3 bg-red-200 text-red-800 rounded-md"
+                className="z-20 top-8 right-8 left-8 absolute bg-red-200 text-red-800 rounded-md"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ ease: "easeInOut", duration: 0.5 }}
               >
-                Gagal mengirim pesan. Silakan coba lagi.
+                Gagal mengirim songfess. Silakan coba lagi.
               </motion.div>
             )}
           </AnimatePresence>
           <form onSubmit={handleSubmit}>
-            <div className="w-full">
+            <div className="w-full font-poppins">
               <div className="mb-6">
-                <h3 className="font-handlee font-bold text-xl font-[Plus Jakarta Sans] cursor-default selection:bg-white selection:text-[#5F6F6C]">
-                  ♫ Send ur Songfess ♬
+                <h3 className="text-center font-cormorant italic text-2xl sm:text-3xl mb-2 font-semibold">
+                Send ur Songfess
                 </h3>
+                <Image
+                    src="/chatanonym/underline-title.svg"
+                    width={500}
+                    height={429}
+                    alt="illustration"
+                    className="w-80 lg:w-88 mx-auto select-none"
+                />
               </div>
-              <div className="mb-6">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
+              <div className="mb-3 sm:mb-6">
+                <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-textMain">
                   Enter ur name
                 </label>
                 <input
@@ -396,11 +398,11 @@ const validateTimeInput = (name, value) => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-medium text-xs sm:text-sm text-textMain rounded-md bg-white p-2 sm:p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-textMain/50 placeholder:italic hover:placeholder-textMain/90 selection:bg-textMain selection:text-white"
                 />
               </div>
-              <div className="mb-6">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
+              <div className="mb-3 sm:mb-6">
+                <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-textMain">
                   Recipient name
                 </label>
                 <input
@@ -411,20 +413,19 @@ const validateTimeInput = (name, value) => {
                   onChange={handleChange}
                   placeholder="Masukkan nama penerima ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-black rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-medium text-xs sm:text-sm text-textMain rounded-md bg-white p-2 sm:p-[11px] focus:outline-none focus:bg-white focus:placeholder-white  placeholder:text-textMain/50 placeholder:italic hover:placeholder-textMain/90 selection:bg-textMain selection:text-white"
                 />
               </div>
               <div className="relative">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
+                <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-textMain">
                   Choose song
                 </label>
                 <Combobox value={selected} onChange={handleSelectSong}>
                   <div className="relative w-full mt-1">
-                    {/* Input Field */}
-                    <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white shadow-md text-left focus:outline-none focus:ring-2 focus:ring-text-[#5F6F6C] sm:text-sm">
+                    <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white shadow-md text-left focus:outline-none focus:ring-2 focus:ring-textMain sm:text-sm">
                       <div className="flex justify-between sm:gap-0 items-center w-full">
                         <Combobox.Input
-                          className="w-full font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                          className="w-full font-medium text-xs sm:text-sm text-textMain rounded-md bg-white p-2 sm:p-[11px] focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-textMain/50 placeholder:italic hover:placeholder-textMain/90 selection:bg-textMain selection:text-white"
                           displayValue={(song) =>
                             song
                               ? `${song.name} • ${song.artists.map((a) => a.name).join(", ")}`
@@ -437,7 +438,7 @@ const validateTimeInput = (name, value) => {
                           {({ open }) => (
                             <ChevronDownIcon
                               className={clsx(
-                                "group size-4 fill-darkPurple transition-transform duration-500",
+                                "group size-4 fill-textMain transition-transform duration-500",
                                 { "rotate-180": open },
                               )}
                               aria-hidden="true"
@@ -504,7 +505,7 @@ const validateTimeInput = (name, value) => {
                                     </div>
                                     {selected && (
                                       <span
-                                        className={`${active ? "text-white" : "text-[#5F6F6C]"}`}
+                                        className={`${active ? "text-white" : "text-textMain"}`}
                                       >
                                         <CheckIcon
                                           className="h-5 w-5"
@@ -524,7 +525,7 @@ const validateTimeInput = (name, value) => {
                 </Combobox>
               </div>
 
-              <div className="mb-6 mt-2">
+              <div className="mb-3 sm:mb-6 mt-2">
                 <div
                   onClick={() => {
                     if (!selected) return;
@@ -534,11 +535,11 @@ const validateTimeInput = (name, value) => {
                   // if (!selected?.preview_url) return; // Jangan lanjut kalau tidak ada preview
                   // handlePlayPause();
 
-                  className={`relative rounded-md flex flex-col cursor-pointer select-none py-2 pl-2 pr-5 group ${selected ? (isPlaying ? "bg-gradient-to-r from-white via-[#F9BCBB] to-[#F37199] transition-colors duration-500" : "bg-white") : "bg-gradient-to-r from-white via-slate-200 to-slate-400"}`}
+                  className={`relative rounded-md flex flex-col cursor-pointer select-none py-2 pl-2 pr-5 group ${selected ? (isPlaying ? "bg-linear-to-r from-white via-[#F9BCBB] to-[#F37199] transition-colors duration-500" : "bg-white") : "bg-linear-to-r from-white via-slate-200 to-slate-400"}`}
                 >
                   <div className="flex w-full items-center gap-1 md:gap-3">
                     {/* Gambar Lagu */}
-                    <div className="relative max-w-12 max-h-12 flex-shrink-0">
+                    <div className="relative max-w-12 max-h-12 shrink-0">
                       <Image
                         src={
                           songToShow.album.images[0].url ||
@@ -568,7 +569,7 @@ const validateTimeInput = (name, value) => {
                     <div className="flex justify-between gap-2 sm:gap-0 items-center w-full min-w-0">
                       {/* Judul dan Artist */}
                       <div
-                        className={`ml-1 flex flex-col ${isPlaying ? "w-full flex-grow" : "w-full flex-none"} min-w-0`}
+                        className={`ml-1 flex flex-col ${isPlaying ? "w-full grow" : "w-full flex-none"} min-w-0`}
                       >
                         <p
                           className={`truncate text-xs md:text-sm font-medium text-black max-w-full overflow-hidden whitespace-nowrap`}
@@ -600,8 +601,8 @@ const validateTimeInput = (name, value) => {
                 </div>
               </div>
 
-              <div className="mb-6 mt-6 relative">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
+              <div className="mb-3 sm:mb-6 mt-4 sm:mt-6 relative">
+                <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-textMain">
                   Song start minute (e.g. 00.00)
                 </label>
                 <input
@@ -612,7 +613,7 @@ const validateTimeInput = (name, value) => {
                   value={formData.startTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-medium text-xs sm:text-sm text-textMain rounded-md bg-white p-2 sm:p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-textMain/50 placeholder:italic hover:placeholder-textMain/90 selection:bg-textMain selection:text-white"
                 />
                 {errors.startTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -621,8 +622,8 @@ const validateTimeInput = (name, value) => {
                 )}
               </div>
 
-              <div className="mb-6 relative">
-                <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-[#5F6F6C]">
+              <div className="mb-3 sm:mb-6 relative">
+                <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-textMain">
                   Song end minute (e.g. 00.30)
                 </label>
                 <input
@@ -633,7 +634,7 @@ const validateTimeInput = (name, value) => {
                   value={formData.endTime}
                   onChange={handleTimeChange}
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white"
+                  className="w-full mt-1 font-medium text-xs sm:text-sm text-textMain rounded-md bg-white p-2 sm:p-[11px]  focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-textMain/50 placeholder:italic hover:placeholder-textMain/90 selection:bg-textMain selection:text-white"
                 />
                 {errors.endTime && (
                   <p className="absolute text-red-300 font-bold text-xs mt-1">
@@ -641,8 +642,8 @@ const validateTimeInput = (name, value) => {
                   </p>
                 )}
               </div>
-              <div className="mb-6">
-                <label className="text-white text-sm">Message</label>
+              <div className="mb-3 sm:mb-6">
+                <label className="text-white text-xs sm:text-sm">Message</label>
                 <textarea
                   ref={textareaRef}
                   rows={1}
@@ -651,20 +652,20 @@ const validateTimeInput = (name, value) => {
                   onChange={handleMessageChange}
                   placeholder="Type your message ..."
                   required
-                  className="w-full mt-1 font-[Plus Jakarta Sans] font-medium text-sm text-[#5F6F6C] rounded-md bg-white p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-[#5F6F6C]/50 placeholder:italic hover:placeholder-darkPurple/90 selection:bg-darkPurple selection:text-white resize-none overflow-hidden"
+                  className="w-full mt-1 font-medium text-xs sm:text-sm text-textMain rounded-md bg-white p-2 sm:p-[11px] border-white focus:outline-none focus:bg-white focus:placeholder-white placeholder:text-textMain/50 placeholder:italic hover:placeholder-textMain/90 selection:bg-textMain selection:text-white resize-none overflow-hidden"
                 />
               </div>
-              <div className="flex max-w-64 w-full gap-4">
+              <div className="flex w-full gap-4 font-poppins text-sm sm:text-base">
                 <button
                   onClick={handleDiscard}
                   type="reset"
-                  className={`selection:bg-white selection:text-[#5F6F6C] transition-all duration-500 font-[Poppins] rounded-md w-full font-medium hover:text-[#5F6F6C] py-2 ${isClicked ? "border-2 border-[#5F6F6C80] bg-[#5F6F6C80] hover:bg-[#5F6F6C80]  hover:text-white text-white rounded-lg" : "text-white rounded-lg hover:bg-white active:bg-[#5F6F6C80] active:text-white active:border-[#5F6F6C80] hover:text-[#5F6F6C] hover:border-white border-2 border-purple"}`}
+                  className={`selection:bg-white selection:text-textMain transition-all duration-500 rounded-md w-full font-medium hover:text-textMain py-1 sm:py-2 ${isClicked ? "border border-accent bg-accent hover:bg-accent  text-darkSage rounded-lg" : "text-white rounded-lg hover:bg-white active:bg-[#5F6F6C80] active:text-white active:border-[#5F6F6C80] hover:text-textMain hover:border-white border border-purple"}`}
                 >
                   Discard
                 </button>
                 <button
                   type="submit"
-                  className="text-white font-[Poppins] rounded-md w-full bg-purple font-medium hover:bg-white hover:text-[#5F6F6C] py-2 transition-all duration-500 selection:bg-white selection:text-purple"
+                  className="text-white rounded-md w-full bg-darkSage font-medium hover:bg-white hover:text-textMain py-2 transition-all duration-500 selection:bg-white selection:text-purple"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}

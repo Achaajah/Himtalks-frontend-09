@@ -12,17 +12,18 @@ export default function Footer() {
   }, []);
   return (
     <>
-      <footer className="bg-[#839E8F] pt-9 lg:pt-12 pb-8 lg:pb-11 px-6 sm:px-16 md:px-16 lg:px-28 selection:bg-white selection:text-[#A8BFA3] transition-all duration-500">
-        <div className="lg:container transition-all duration-500">
+      <footer className="bg-primary pt-9 lg:pt-12 pb-8 lg:pb-11 px-10 sm:px-16 md:px-16 lg:px-20 xl:px-28 selection:bg-white selection:text-[#A8BFA3] transition-all duration-500">
+        <div className="transition-all duration-500">
           <div className="lg:flex lg:justify-between transition-all duration-500">
-            <div className="w-full lg:w-5/12 mb-8 font-medium text-[#F6E7BA] flex items-start justify-center lg:justify-normal transition-all duration-500">              <div className="">
+            <div className="w-full lg:w-5/12 mb-8 font-medium text-ranting flex items-start justify-center lg:justify-normal transition-all duration-500">              
+              <div className="">
                 <div className="flex flex-col justify-center items-center gap-4 mb-5">
                   <img
-                    src="/logo/logo.svg"
+                    src="/logo/himtalks-logo.webp"
                     alt="Logo HIMTALKS"
-                    className="w-[240px] h-[160px] sm:w-[260px] sm:h-[170px] select-none"
+                    className="w-60 h-40 sm:w-65 sm:h-42 select-none"
                   />
-                  <h2 className="font-[Plus Jakarta Sans] tracking-wide font-semibold text-yellowBright text-5xl leading-none">
+                  <h2 className="font-poppins tracking-wide font-medium lg:font-semibold text-yellowBright text-4xl md:text-5xl leading-none">
                     Himtalks
                   </h2>
                 </div>
@@ -31,7 +32,7 @@ export default function Footer() {
                   <Link
                     href="https://www.instagram.com/himtalks_?igsh=MW5tYm1iNG9udDB3dA=="
                     target="_blank"
-                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-purple hover:border-none"
+                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-primary hover:border-none"
                   >
                     <svg
                       role="img"
@@ -49,7 +50,7 @@ export default function Footer() {
                   <Link
                                     href="https://twitter.com"
                                     target="_blank"
-                                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-purple"
+                                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-primary"
                                     >
                                     <svg 
                                         role="img"
@@ -68,7 +69,7 @@ export default function Footer() {
                   <Link
                     href="https://www.linkedin.com/company/himtika/"
                     target="_blank"
-                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-purple"
+                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-primary"
                   >
                     <svg
                       role="img"
@@ -97,7 +98,7 @@ export default function Footer() {
                   <Link
                     href="https://www.youtube.com/@himtikaofficial4428"
                     target="_blank"
-                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-purple"
+                    className="w-10 h-10 mr-3 rounded-full flex justify-center items-center bg-white/20 text-white hover:bg-white hover:text-primary"
                   >
                     <svg
                       role="img"
@@ -115,7 +116,7 @@ export default function Footer() {
                   <Link
                     href="https://www.tiktok.com/@himtika_unsika"
                     target="_blank"
-                    className="w-10 h-10 rounded-full flex justify-center items-center bg-white/20  text-white hover:bg-white hover:text-purple"
+                    className="w-10 h-10 rounded-full flex justify-center items-center bg-white/20  text-white hover:bg-white hover:text-primary"
                   >
                     <svg
                       role="img"
@@ -137,140 +138,146 @@ export default function Footer() {
                 </div>
               </div>
             </div>
-<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full lg:w-7/12 gap-8 transition-all duration-500">
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full lg:w-7/12 gap-8 transition-all duration-500">
+              {/* Tentang Kami */}
+              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start lg:justify-end transition-all duration-500">
+                <div>
+                  <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
+                    Tentang Kami
+                  </h3>
+                  <ul className="text-sm sm:text-base font-playfair">
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/struktur-organisasi" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Struktur Organisasi
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/sejarah-himtika" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Sejarah
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/logo-himtika" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Logo
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/galeri-himtika" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Galeri
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/grand-design-himtika-2024" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Grand Design
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/visi-misi" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Visi Misi
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="https://himtika.cs.unsika.ac.id/kontak-kami" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500">
+                        Kontak Kami
+                      </Link>
+                    </li>
+                    
+                  </ul>
+                </div>
+              </div>
 
-  {/* Tentang Kami */}
-  <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start transition-all duration-500">
-    <div>
-      <h3 className="font-bold text-white text-xl mb-6">
-        Tentang Kami
-      </h3>
-      <ul className="text-base">
-        <Link
-          href="/"
-          className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-        >
-          <li>Berita</li>
-        </Link>
-        <li>
-          <Link
-            href="/"
-            className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-          >
-            Artikel HIMTIKA
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/"
-            className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-          >
-            Beasiswa
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/"
-            className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-          >
-            Kegiatan Mahasiswa
-          </Link>
-        </li>
-      </ul>
-    </div>
-  </div>
+              {/* Media */}
+              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-end transition-all duration-500">
+                <div>
+                  <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
+                    Media
+                  </h3>
+                  <ul className="text-sm sm:text-base font-playfair">
+                    <Link
+                      href="https://www.instagram.com/himtika_unsika/" target="_blank"
+                      className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500"
+                    >
+                      <li>Berita</li>
+                    </Link>
+                    <li>
+                      <Link
+                        href="https://www.instagram.com/himtika_unsika/" target="_blank"
+                        className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500"
+                      >
+                        Artikel HIMTIKA
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="https://www.instagram.com/cnc_himtika/" target="_blank"
+                        className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500"
+                      >
+                        Info Lomba
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="https://www.instagram.com/himtika_unsika/" target="_blank"
+                        className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting antialiased transform origin-left transition-all duration-500"
+                      >
+                        Kegiatan Mahasiswa
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
-  {/* Media */}
-  <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start transition-all duration-500">
-    <div>
-      <h3 className="font-bold text-white text-xl mb-6">
-        Media
-      </h3>
-      <ul className="text-base">
-        <Link
-          href="https://www.instagram.com/himtika_unsika/"
-          className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-        >
-          <li>Berita</li>
-        </Link>
-        <li>
-          <Link
-            href="https://www.instagram.com/himtika_unsika/"
-            className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-          >
-            Artikel HIMTIKA
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="https://www.instagram.com/himtika_unsika/"
-            className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-          >
-            Beasiswa
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="https://www.instagram.com/himtika_unsika/"
-            className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 antialiased transform origin-left transition-all duration-500"
-          >
-            Kegiatan Mahasiswa
-          </Link>
-        </li>
-      </ul>
-    </div>
-  </div>
+              {/* Event */}
+              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start sm:justify-end lg:justify-center transition-all duration-500">
+                <div>
+                  <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">Event</h3>
+                  <ul className="text-sm sm:text-base font-playfair">
+                    <li><Link href="https://himtika.cs.unsika.ac.id/open-project/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Open Project</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/hgtc/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">HGTC</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/semantik_9/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">SEMANTIK 9.0</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/pekan-it/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">PEKAN IT</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/lkmmpd/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">LKMM-PD</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/diesnatalis/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Diesnatalis</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/it-bootcamp/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">IT Bootcamp</Link></li>
+                  </ul>
+                </div>
+              </div>
 
-  {/* Event */}
-  <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start transition-all duration-500">
-    <div>
-      <h3 className="font-bold text-white text-xl mb-6">Event</h3>
-      <ul className="text-base">
-        <li><Link href="https://himtika.cs.unsika.ac.id/open-project/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Open Project</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/hgtc/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">HGTC</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/semantik_9/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">SEMANTIK 9.0</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/pekan-it/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">PEKAN IT</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/lkmmpd/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">LKMM-PD</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/diesnatalis/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Diesnatalis</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/it-bootcamp/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">IT Bootcamp</Link></li>
-      </ul>
-    </div>
-  </div>
+              {/* Aplikasi Publik */}
+              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-end md:justify-start lg:justify-end transition-all duration-500">
+                <div>
+                  <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
+                    Aplikasi Publik
+                  </h3>
+                  <ul className="text-sm sm:text-base font-playfair">
+                    <li><Link href="https://himtalks.vercel.app/himtalks" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">HIMTALKS</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/himtika-awards/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">HIMTIKA Award</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/studyclub-2024/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Study Club</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/media-partner/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Media Partner</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/corporation/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Corporation</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/corporation/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Studio IT</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/hikode/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Hikode</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/kalender/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Kalender</Link></li>
+                    <li><Link href="https://himtika.cs.unsika.ac.id/dosen/" target="_blank" className="inline-block mb-2 sm:mb-4 hover:scale-125 hover:text-ranting transform origin-left transition-all duration-500">Profil Tenaga Pendidik</Link></li>
+                  </ul>
+                </div>
+              </div>
 
-  {/* Aplikasi Publik */}
-  <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start transition-all duration-500">
-    <div>
-      <h3 className="font-bold text-white text-xl mb-6">
-        Aplikasi Publik
-      </h3>
-      <ul className="text-base">
-        <li><Link href="https://himtalks.vercel.app/himtalks" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">HIMTALKS</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/himtika-awards/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">HIMTIKA Award</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/studyclub-2024/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Study Club</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/media-partner/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Media Partner</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/corporation/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Corporation</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/corporation/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Studio IT</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/hikode/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Hikode</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/kalender/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Kalender</Link></li>
-        <li><Link href="https://himtika.cs.unsika.ac.id/dosen/" target="_blank" className="inline-block text-base mb-4 hover:scale-125 hover:text-gray-900 transform origin-left transition-all duration-500">Profil Tenaga Pendidik</Link></li>
-      </ul>
-    </div>
-  </div>
-
-</div>
+            </div>
           </div>
 
           <div className="w-full pt-6 lg:pt-8 border-t-2 border-white transition-all duration-500">
-            <p className="font-medium text-base text-white text-center">
+            <p className="sm:font-medium text-sm sm:text-base text-white text-center">
               Licensed, Registered, and Authorized by
               <span className="flex gap-2 mt-1 items-center justify-center">
                 <Image
-                  src="/logo/img-himtika.svg"
+                  src="/logo/HIMTIKA.png"
                   width="40"
                   height="40"
                   alt="HIMTIKA"
                 />
-                HIMTIKA
+                HIMTIKA 2026
               </span>
             </p>
           </div>

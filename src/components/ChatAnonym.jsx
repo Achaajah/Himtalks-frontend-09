@@ -31,38 +31,6 @@ export default function ChatAnonym() {
     const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
     const textareaRef = useRef(null);
 
-    // 🔥 EFFECT LOADING (TAMBAHAN)
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 800);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    // 🔥 LOADING UI (TAMBAHAN)
-    if (loading) {
-        return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
-                
-                <Image
-                    src="/New folder/burung-mikir.svg"
-                    width={200}
-                    height={200}
-                    alt="loading"
-                    className="mb-4 animate-bounce"
-                />
-
-                <div className="w-10 h-10 border-4 border-[#5E6F69] border-t-transparent rounded-full animate-spin"></div>
-
-                <p className="mt-4 text-[#5E6F69] text-sm">
-                    Menyiapkan diskusi...
-                </p>
-
-            </div>
-        );
-    }
-
     // ================= KODE LU (GA DIUBAH) =================
 
     const handleChangeDiscard = (e) => {
@@ -143,34 +111,30 @@ export default function ChatAnonym() {
 
     return (
         <>
-            <section className=" relative pt-36 pb-28 px-6 lg:px-28 bg-[#F3EDE4] text-[#5E6F64]">
-                {/* Existing SVG/Image components */}
-<Image
-  src="/songfess/image2.svg"
-  width="210"
-  height="256"
-  alt="bear-purple-illustrasion"
-  className="absolute w-[200px] h-[200px] top-10 left-5 z-10
-  sm:top-12 sm:left-10 sm:w-[100px] sm:h-[100px]
-  md:top-16 md:left-16 md:w-[100px] md:h-[200px]
-  lg:top-60 lg:left-90
-  transition-all duration-500"
-/>
-        <Image
-          src="/songfess/image3.svg"
-          width="105"
-          height="128"
-          alt="bear-yellow-illustrasion"
-          className="absolute top-[320px] z-10 right-0 sm:top-52 sm:right-0 md:top-72 md:right-5 lg:top-66 lg:right-90 transition-all duration-500"
-        />
-                <h1 className="font-serif italic font-semibold text-5xl text-[#6B7C72] text-center">
+            <section className="pt-34 lg:pt-44 pb-28 px-6 lg:px-28 bg-primaryBG text-[#5E6F64] selection:bg-darkSage selection:text-white">
+                <h1 className="font-playfair italic font-bold max-w-70 md:max-w-full text-4xl md:text-5xl xl:text-6xl text-darkSage mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
                     Speak freely, stay anonymous
                 </h1>
-<p className="text-center text-[#7A8B80] mt-6 max-w-xl mx-auto">
-Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
-</p>
+                <p className="w-[80%] text-center font-cormorant font-semibold text-lg sm:text-xl text-darkSage mt-6 md:mt-8 mx-auto leading-6">
+                    Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
+                </p>
 
-                <div className="bg-[#7F9A8C] w-full max-w-[500px] mt-16 p-8 text-white rounded-2xl mx-auto shadow-lg">
+                <div className="relative bg-[#7D9A8B] w-[90%] sm:w-full sm:max-w-125 mt-18 md:mt-20 pt-12 pb-8 px-5 sm:px-8 py-10 text-white rounded-2xl mx-auto shadow-lg">
+                    {/* Existing SVG/Image components */}
+                    <Image
+                        src="/chatanonym/bird-ca-1.svg"
+                        width="210"
+                        height="256"
+                        alt="bird-illustrasion"
+                        className="absolute w-30 sm:w-50 h-50 z-10 -top-25 -left-12 sm:-top-20 sm:-left-20 transition-all duration-500"
+                    />
+                    <Image
+                        src="/chatanonym/bird-ca-2.svg"
+                        width="105"
+                        height="128"
+                        alt="bird-illustrasion"
+                        className="absolute w-30 sm:w-50 h-50 z-10 -top-25 -right-12 sm:-top-20 sm:-right-20 transition-all duration-500"
+                    />
                     <AnimatePresence>
                         {submitStatus === 'success' && (
                             <motion.div 
@@ -196,46 +160,53 @@ Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
                         )}
                     </AnimatePresence>
                     <form onSubmit={handleSubmit}>
-                            <div className="w-full ">
-                                <div className="mb-6">
-                                    <h3 className="text-center font-serif italic text-xl mb-6">
+                            <div className="w-full font-poppins">
+                                <div className="mb-3 sm:mb-6">
+                                    <h3 className="text-center font-cormorant italic text-xl sm:text-2xl md:text-3xl mb-2 font-semibold">
                                     Send ur Anonym Chat
                                     </h3>
+                                    <Image
+                                        src="/chatanonym/underline-title.svg"
+                                        width={500}
+                                        height={429}
+                                        alt="illustration"
+                                        className="w-80 lg:w-88 mx-auto select-none"
+                                    />
                                 </div>
-                                <div className="mb-6">
-                                    <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">Enter ur name</label>
+                                <div className="mb-3 sm:mb-6">
+                                    <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-darkSage">Enter ur name</label>
                                     <input
                                     type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChangeDiscard}
-                                    placeholder="Enter your name"
-                                    className="w-full mt-2 rounded-md bg-white text-gray-700 p-3 text-sm focus:outline-none"
+                                    placeholder="Enter your name..."
+                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-xs sm:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
                                     />
                                 </div>
-                                <div className="mb-6 relative">
-                                    <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">Recipient name</label>
+                                <div className="mb-3 sm:mb-6 relative">
+                                    <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-darkSage">Recipient name</label>
                                     <input
                                     type="text"
                                     name="recipient"
                                     value={formData.recipient}
                                     onChange={handleChangeDiscard}
-                                    placeholder="Enter recipient name"
-                                    className="w-full mt-2 rounded-md bg-white text-gray-700 p-3 text-sm focus:outline-none"
+                                    placeholder="Enter recipient name..."
+                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-xs sm:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
                                     />
                                 </div>
-                                <div className="mb-6 relative">
-                                    <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">Message category</label>
+                                <div className="mb-3 sm:mb-6 relative">
+                                    <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-darkSage">Message category</label>
                                     <Listbox value={selected} onChange={setSelected}>
                                         {/* Existing Listbox implementation */}
                                         {({ open }) => (
                                             <div>
                                                 <ListboxButton
-                                               className={clsx(
-                                                "relative w-full bg-white text-gray-700 rounded-md p-3 mt-1 text-sm text-left",
-                                                selected
-                                                ? "font-semibold"
-                                                : "text-gray-400 italic"
+                                                    className={clsx(
+                                                    "relative w-full mt-1 sm:mt-2 p-2 sm:p-3 bg-white text-gray-500 rounded-md text-xs sm:text-sm text-left",
+                                                    selected
+                                                    ? "font-medium"
+                                                    : "text-gray-400 italic"
                                                 )}
                                                 >
                                                 {selected ? selected.name : "Pilih kategori ..."}
@@ -263,9 +234,9 @@ Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
                                                                 <ListboxOption
                                                                     key={person.id}
                                                                     value={person}
-                                                                    className="group flex cursor-pointer items-center gap-2 rounded-lg py-2 px-3 select-none data-[focus]:bg-gray-100"
+                                                                    className="group flex cursor-pointer items-center gap-2 rounded-lg py-2 px-3 select-none data-focus:bg-gray-100"
                                                                 >
-                                                                    <CheckIcon className="invisible size-5 text-gray-600 group-data-[selected]:visible" />
+                                                                    <CheckIcon className="invisible size-5 text-gray-600 group-data-selected:visible" />
                                                                    <div className="text-sm text-gray-700">{person.name}</div>
                                                                 </ListboxOption>
                                                             ))}
@@ -276,8 +247,8 @@ Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
                                         )}
                                     </Listbox>
                                 </div>
-                                <div className="mb-6 relative">
-                                    <label className="text-white font-normal text-sm font-[Plus Jakarta Sans] selection:bg-white selection:text-darkPurple">
+                                <div className="mb-3 sm:mb-6 relative">
+                                    <label className="text-white font-normal text-xs sm:text-sm selection:bg-white selection:text-darkSage">
                                         Message
                                     </label>
                                     <textarea
@@ -288,16 +259,16 @@ Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
                                         required
                                         value={message}
                                         onChange={handleChange}
-                                        className="w-full mt-2 rounded-md bg-white text-gray-700 p-3 text-sm resize-none focus:outline-none"
+                                        className="w-full mt-1 sm:mt-2 p-2 sm:p-3 rounded-md bg-white text-gray-700 text-xs sm:text-sm resize-none focus:outline-none"
                                         rows={1}
                                     />      
                                 </div>
-                                <div className="flex max-w-64 w-full gap-4">
+                                <div className="flex w-full gap-4 font-poppins">
                                     <button 
                                         onClick={handleDiscard} 
                                         type="button" 
                                         name="discard" 
-                                        className={`selection:bg-white selection:text-darkPurple transition-all duration-500 font-[Poppins] rounded-md w-full border border-white text-white py-2 rounded-md hover:bg-white hover:text-[#7F9A8C] transition }`} 
+                                        className="selection:bg-white selection:text-darkSage text-sm sm:text-base bg-darkSage/50 transition-all duration-500 rounded-md w-full border border-white text-white py-2 hover:bg-white hover:text-darkSage" 
                                     >
                                         Discard
                                     </button>
@@ -305,7 +276,7 @@ Kirimkan pesanmu tanpa mengungkap identitas melalui fitur Pesan Anonim
                                         type="submit" 
                                         name="submit" 
                                         disabled={isSubmitting}
-                                        className="w-full bg-[#5F6F65] text-white py-2 rounded-md hover:bg-[#4F5E56] transition"
+                                        className="w-full bg-darkSage text-white text-sm sm:text-base py-2 rounded-md border border-darkSage hover:bg-[#4F5E56] hover:border hover:border-white transition-all duration-500"
                                     >
                                         {isSubmitting ? "Mengirim..." : "Submit"}
                                     </button>

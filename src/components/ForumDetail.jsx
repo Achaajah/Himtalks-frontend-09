@@ -177,7 +177,7 @@ if (loading) {
               const el = document.getElementById("comment");
               if (el) {
                 el.scrollIntoView({ behavior: "smooth" });}}}
-            className="bg-[#839E8F] rounded-2xl shadow-md p-2 relative border border-gray-100 
+            className="bg-primary rounded-2xl shadow-md p-2 relative border border-gray-100 
             hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
             💬 {comments.length} Komentar
             </button>
@@ -502,7 +502,7 @@ className="bg-white p-5 rounded-2xl shadow flex flex-col gap-4">
       {/* MODAL */}
       {showAvatarModal && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-[#EDEBE7] w-[500px] max-w-[90%] p-6 rounded-3xl">
+          <div className="bg-[#EDEBE7] w-125 max-w-[90%] p-6 rounded-3xl">
 
             <div className="flex justify-between mb-6">
               <h2 className="text-[#5E6F64] font-serif">

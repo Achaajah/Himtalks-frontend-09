@@ -11,7 +11,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 const links = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "/himtalks" },
   { name: "Songfess", path: "/himtalks/songfess" },
   { name: "Chat Anonym", path: "/himtalks/chat-anonym" },
   { name: "Mini Forum", path: "/himtalks/mini-forum" },
@@ -66,16 +66,16 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="w-full fixed px-6 py-5 bg-[#839E8F] text-white z-20 transition-all sm:px-16 lg:px-28 lg:py-6">
+    <header className="w-full font-cormorant fixed px-6 py-5 bg-primary text-white z-20 transition-all sm:px-16 lg:px-20 xl:px-28 lg:py-6 shadow-lg">
       <div className="flex justify-between items-center">
 
-{/* Logo */}
-<Link
-  href="/"
-  className={`${cormorant.className} font-bold text-2xl md:text-3xl lg:text-4xl tracking-wider text-[#F6E7BA]`}
-  >
-  Himtalks
-</Link>
+        {/* Logo */}
+        <Link
+          href="/himtalks"
+          className="font-bold text-2xl md:text-3xl lg:text-4xl text-ranting"
+          >
+          Himtalks
+        </Link>
 
         <div ref={navRef}>
           {/* Hamburger */}
@@ -86,17 +86,17 @@ export default function Header() {
               className="block lg:hidden"
             >
               <span
-                className={`w-7 h-[3px] my-[5px] rounded-full block bg-white origin-top-left transition duration-300 ${
-                  isOpen ? "rotate-45 translate-x-2 -translate-y-[2px]" : ""
+                className={`w-7 h-0.75 my-1.25 rounded-full block bg-white origin-top-left transition duration-300 ${
+                  isOpen ? "rotate-45 translate-x-2 -translate-y-0.5" : ""
                 }`}
               ></span>
               <span
-                className={`w-7 h-[3px] my-[5px] rounded-full block bg-white transition duration-300 ${
+                className={`w-7 h-0.75 my-1.25 rounded-full block bg-white transition duration-300 ${
                   isOpen ? "scale-0" : ""
                 }`}
               ></span>
               <span
-                className={`w-7 h-[3px] my-[5px] rounded-full block bg-white origin-bottom-left transition duration-300 ${
+                className={`w-7 h-0.75 my-1.25 rounded-full block bg-white origin-bottom-left transition duration-300 ${
                   isOpen ? "-rotate-45 translate-x-2" : ""
                 }`}
               ></span>
@@ -112,19 +112,19 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.25 }}
-                  className="absolute transform p-6 bg-[#F5F1E8] shadow-lg rounded-xl left-5 right-5 sm:left-16 sm:right-16 top-[77px] md:top-20"
+                  className="absolute transform p-4 sm:p-6 bg-white shadow-lg rounded-xl left-5 right-5 sm:left-16 sm:right-16 top-19.25 md:top-20"
                 >
-                  <ul className="flex flex-col items-center gap-4 text-center">
+                  <ul className="flex flex-col items-center gap-3 sm:gap-4 text-center">
                     {links.map((link, index) => {
                       const isActive =
                         link.path === pathname ||
-                        pathname.startsWith(link.path);
+                        (link.path.startsWith("/himtalks/songfess") && pathname.startsWith(link.path));
 
                       return (
                         <Link
                           href={link.path}
                           key={index}
-                          className={`w-full rounded-lg py-2 text-lg transition
+                          className={`w-full rounded-lg py-1 sm:py-2 text-lg transition
                           ${
                             isActive
                               ? "bg-[#7A918D] text-white"
@@ -144,7 +144,7 @@ export default function Header() {
           {/* Desktop Menu */}
           {isDesktop && (
             <nav>
-              <ul className="flex gap-[60px] text-center">
+              <ul className="flex gap-15 text-center">
                 {links.map((link, index) => {
                   const isActive =
                     link.path === pathname ||
@@ -154,7 +154,7 @@ export default function Header() {
                     <li key={index}>
                       <Link
                         href={link.path}
-                        className={`text-lg font-medium transition ${
+                        className={`text-xl font-semibold transition italic ${
                           isActive
                             ? "underline underline-offset-4"
                             : "hover:opacity-80"
