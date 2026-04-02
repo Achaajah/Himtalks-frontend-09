@@ -268,9 +268,9 @@ export default function Footer() {
           </div>
 
           <div className="w-full pt-6 lg:pt-8 border-t-2 border-white transition-all duration-500">
-            <p className="sm:font-medium text-sm sm:text-base text-white text-center">
+            <p className="sm:font-medium font-poppins text-sm sm:text-base text-white text-center">
               Licensed, Registered, and Authorized by
-              <span className="flex gap-2 mt-1 items-center justify-center">
+              <span className="flex gap-2 mt-1 font-semibold items-center justify-center">
                 <Image
                   src="/logo/HIMTIKA.png"
                   width="40"

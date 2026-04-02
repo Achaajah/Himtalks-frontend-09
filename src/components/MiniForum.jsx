@@ -11,8 +11,6 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-
-
 /*  SLUG */
 function slugify(text) {
   return text
@@ -44,10 +42,10 @@ function timeAgo(date) {
 const dummyForums = [
   {
     id: 1,
-    title: "Bagaimana cara menjaga kesehatan mental?",
+    title: "Bagaimana cara menjaga kesehatan mental? Bbelajar efektif untuk mahasiswa normal ga sih? Wong aku dibully mulu aku dibully mulu loh yha ah shibal sekiya baka janai no kana baka baka",
     content:
       "Diskusi tentang pentingnya menjaga kesehatan mental di tengah kesibukan.",
-    image: "/New folder/forum burung.svg",
+    image: "/miniforum/hsr.png",
     author: "Anonymous",
     created_at: new Date(Date.now() - 1000 * 60 * 5),
     comment_count: 12,
@@ -56,16 +54,16 @@ const dummyForums = [
     id: 2,
     title: "Tips belajar efektif untuk mahasiswa",
     content: "Share cara belajar kalian biar ga burnout...",
-    image: "/New folder/forum burung.svg",
+    image: "/miniforum/bg-forum-card.webp",
     author: "Anon",
     created_at: new Date(Date.now() - 1000 * 60 * 30),
     comment_count: 5,
   },
   {
     id: 3,
-    title: "Overthinking tiap malam, normal ga sih?",
-    content: "Sering banget kepikiran hal-hal kecil sampe susah tidur...",
-    image: "/New folder/forum burung.svg",
+    title: "Overthinking tiap malam, normal ga sih? Wong aku dibully mulu loh yha ah shibal sekiya baka janai no kana baka baka",
+    content: "Sering banget kepikiran hal-hal kecil sampe susah tidur, tapi bangsad sih emang tugas kimak ini maderfaker banget. Lu kalo muncul jangan rameannn kucayy",
+    image: "/miniforum/bg-forum-card.webp",
     author: "User123",
     created_at: new Date(Date.now() - 1000 * 60 * 60),
     comment_count: 8,
@@ -74,7 +72,7 @@ const dummyForums = [
     id: 4,
     title: "Gimana cara konsisten ngoding?",
     content: "Udah niat tiap hari tapi suka males di tengah jalan 😭",
-    image: "/New folder/forum burung.svg",
+    image: "/miniforum/bg-forum-card.webp",
     author: "DevNewbie",
     created_at: new Date(Date.now() - 1000 * 60 * 120),
     comment_count: 3,
@@ -83,7 +81,7 @@ const dummyForums = [
     id: 5,
     title: "Circle pertemanan makin kecil, wajar?",
     content: "Makin dewasa kok makin sedikit temen ya...",
-    image: "/New folder/forum burung.svg",
+    image: "/miniforum/bg-forum-card.webp",
     author: "Anon",
     created_at: new Date(Date.now() - 1000 * 60 * 240),
     comment_count: 10,
@@ -92,7 +90,7 @@ const dummyForums = [
     id: 6,
     title: "Produktif tapi capek, solusi?",
     content: "Kerja terus tapi burnout juga 😩",
-    image: "/New folder/forum burung.svg",
+    image: "/miniforum/bg-forum-card.webp",
     author: "Worker",
     created_at: new Date(Date.now() - 1000 * 60 * 360),
     comment_count: 6,
@@ -118,131 +116,176 @@ export default function MiniForum() {
     }, 1200); // delay 1.2 detik
   }, []);
 
-  /*  LOADING (TETEP SAMA) */
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F3EEE6]">
-
-        <Image
-          src="/New folder/burung-mikir.svg"
-          width={200}
-          height={200}
-          alt="loading"
-          className="mb-4 animate-bounce"
-        />
-
-        <div className="w-10 h-10 border-4 border-[#5E6F69] border-t-transparent rounded-full animate-spin"></div>
-
-        <p className="mt-4 text-[#5E6F69] text-sm">
-          Menyiapkan diskusi...
-        </p>
-
-      </div>
-    );
-  }
-
   return (
-    <main className="bg-[#F3EEE6] min-h-screen">
+    <main className="bg-primaryBG pt-10 md:pt-20 px-6 sm:px-16 lg:px-20 selection:bg-primary selection:text-white">
 
       {/* HERO */}
-      <section className="text-center py-24 px-6">
-        <h1 className="font-serif italic font-semibold text-5xl text-[#6B7C72] text-center">
-          Every voice deserves to be 
-          <br/>heard and understood
+      <section className="text-center py-24">
+        <h1 className="font-playfair font-medium italic text-darkSage text-3xl md:text-5xl lg:text-6xl max-w-5xl mx-auto leading-tight tracking-tighter">
+          Every voice deserves to be heard and understood
         </h1>
 
-        <p className="text-gray-500 mb-8 text-[15px]">
+        <p className="font-cormorant font-semibold text-darkSage mt-6 text-sm md:text-2xl">
           Let your thoughts find their place here
         </p>
 
-        <Link href="/himtalks/mini-forum/browse-forum">
-          <button className="bg-[#5E6F69] text-white px-7 py-3 rounded-full shadow-sm hover:opacity-90 transition">
+        {/* Button */}
+        <div className="mt-8">
+          <button
+            onClick={() => {
+              const featureSection = document.getElementById("latest-discussion");
+              if (featureSection) {
+              featureSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="font-poppins inline-block font-light bg-darkSage text-white text-xs sm:text-sm md:text-lg px-6 py-2 sm:px-8 sm:py-3 rounded-lg hover:bg-[#667b77] hover:-translate-y-1 transition duration-500"
+          >
             Start Discussion!
           </button>
-        </Link>
+        </div>
 
         <div className="mt-14 flex justify-center">
           <Image
-            src="/New folder/forum burung.svg"
+            src="/miniforum/forum-hero.webp"
             width={320}
             height={220}
             alt="birds"
+            className="w-65 md:w-85 lg:w-130"
           />
         </div>
       </section>
 
       {/* LATEST */}
-<section className="max-w-5xl mt-20 mx-auto px-6 pb-16">
-
-  <h2 className="text-[32px] italic font-playfair text-[#5E6F69] mb-10 text-center">
-    Latest Discussion
-  </h2>
-
-  <Link 
-  href="/himtalks/mini-forum/form-forum#comment"
- onClick={(e) => e.stopPropagation()}
-  className="block"
->
-    <div className="bg-white rounded-[24px] shadow-md p-6 md:p-8 hover:shadow-lg transition cursor-pointer">
-
-      {/* IMAGE */}
-      {latest.image && (
-        <div className="relative w-full h-[240px] mb-5">
-          <Image
-            src={latest.image}
-            alt="latest"
-            fill
-            className="object-cover rounded-2xl"
-          />
-        </div>
-      )}
-
-      {/* TITLE */}
-      <h3 className="text-xl font-semibold mb-2">
-        {latest.title}
-      </h3>
-
-      {/* CONTENT */}
-      <p className="text-sm text-gray-500 mb-4">
-        {latest.content}
-      </p>
-
-      {/* META */}
-      <button>
-      <span className="hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
-        💬 {latest.comment_count} Komentar • {timeAgo(latest.created_at)}
-      </span>
-</button>
-    </div>
-  </Link>
-
-</section>
-
-      {/* RECENT */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-
-        <h2 className="text-[32px] italic font-playfair text-[#5E6F69] mb-10">
-          Recent Discussions
+      <section id="latest-discussion" className="mt-20 mx-auto pb-16 lg:pb-24">
+        <h2 className="text-3xl md:text-5xl font-bold italic font-playfair text-darkSage mb-10 lg:mb-13 text-center">
+          Latest Discussion
         </h2>
 
-        <Swiper
-          modules={[Navigation]}
-          navigation
-          spaceBetween={20}
-          slidesPerView={1.2}
-          grabCursor={true}
-          breakpoints={{
-            640: { slidesPerView: 1.5 },
-            768: { slidesPerView: 2.2 },
-            1024: { slidesPerView: 3 },
-          }}
-        >
-          {recent.map((forum) => (
-            <SwiperSlide key={forum.id}>
-              <ForumCard forum={forum} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {latest && (
+          <div className="flex justify-center w-full md:max-w-[90%] mx-auto">
+            <div
+              onClick={(e) => {
+                    e.stopPropagation();
+                    router.push("/himtalks/mini-forum/form-forum#comment");
+                  }}
+              /* STYLE DISAMAIN DENGAN FORUMCARD */
+              className="bg-white w-full rounded-2xl shadow-lg p-5 relative border border-gray-100 hover:-translate-y-2 transition duration-300 cursor-pointer selection:bg-darkSage selection:text-white"
+            >
+              {/* HEADER (Himtalks + Time) */}
+              <div className="flex justify-between items-center mb-3 md:mb-5 font-poppins">
+                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-gray-500">
+                  <div className="w-5 h-5 md:w-6 md:h-6 bg-gray-300 rounded-full"></div>
+                  <span className="text-black">Himtalks</span>
+                  <span>•</span>
+                  <span>{timeAgo(latest.created_at)}</span>
+                </div>
+
+                <span className="text-xs border px-2 md:px-3 py-0.5 md:py-1 rounded-full text-gray-500">
+                  19.00 - 21.00 WIB
+                </span>
+              </div>
+
+              {/* TITLE */}
+              <div className="h-fit flex items-center mb-3 lg:mb-5">
+                <h2 className="text-lg md:text-xl lg:text-2xl 2xl:max-w-[80%] font-cormorant font-semibold tracking-tighter text-justify text-darkSage leading-5 md:leading-7 line-clamp-2 overflow-hidden text-ellipsis wrap-break-word">
+                  {latest.title}
+                </h2>
+              </div>
+
+              {/* DESC / CONTENT */}
+              <p className="font-poppins tracking-tighter text-gray-500 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2 text-ellipsis">
+                {latest.content}
+              </p>
+
+              {/* IMAGE */}
+              <div className="overflow-hidden rounded-xl mb-4">
+                <Image
+                  src={latest.image}
+                  width={800} // Dibikin lebih lebar karena ini latest (utama)
+                  height={400}
+                  className="w-full h-48 md:h-80 lg:h-100 xl:h-120 object-cover hover:scale-105 transition-transform duration-300"
+                  alt="latest discussion"
+                />
+              </div>
+
+              {/* COMMENT BUTTON STYLE */}
+              <div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push("/himtalks/mini-forum/form-forum#comment");
+                  }}
+                >
+                  <span className="font-poppins inline-flex items-center gap-1 md:gap-2 bg-darkSage text-white hover:bg-white hover:text-darkSage px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm border border-darkSage transition-all duration-500">
+                    <svg className="fill-current" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9.5 4C6.232 4 3.5 6.419 3.5 9.5C3.5 10.722 3.935 11.847 4.662 12.755L4.018 15.118C3.99507 15.208 3.99746 15.3026 4.0249 15.3913C4.05233 15.48 4.10376 15.5595 4.17348 15.6208C4.24321 15.6822 4.32853 15.723 4.42003 15.739C4.51153 15.7549 4.60565 15.7452 4.692 15.711L7.492 14.545C7.6144 14.4939 7.7115 14.3964 7.76195 14.2737C7.8124 14.1511 7.81205 14.0134 7.761 13.891C7.70995 13.7686 7.61236 13.6715 7.48971 13.6211C7.36706 13.5706 7.2294 13.5709 7.107 13.622L5.251 14.395L5.696 12.765C5.71784 12.6849 5.71941 12.6007 5.70055 12.5198C5.6817 12.439 5.64302 12.3641 5.588 12.302C4.903 11.528 4.5 10.555 4.5 9.5C4.5 7.059 6.693 5 9.5 5C11.81 5 13.71 6.398 14.305 8.253C11.125 8.347 8.5 10.73 8.5 13.75C8.5 16.831 11.232 19.25 14.5 19.25C15.247 19.2509 15.9885 19.123 16.692 18.872L19.308 19.962C19.684 20.118 20.09 19.762 19.982 19.368L19.338 17.005C20.0866 16.085 20.4967 14.936 20.5 13.75C20.5 10.943 18.233 8.686 15.358 8.306C14.758 5.814 12.335 4 9.5 4ZM9.5 13.75C9.5 11.309 11.693 9.25 14.5 9.25C17.307 9.25 19.5 11.309 19.5 13.75C19.5 14.805 19.097 15.778 18.412 16.552C18.357 16.6141 18.3183 16.689 18.2994 16.7698C18.2806 16.8507 18.2822 16.9349 18.304 17.015L18.749 18.645L16.893 17.872C16.7725 17.8218 16.6372 17.8208 16.516 17.869C15.8738 18.1213 15.1899 18.2506 14.5 18.25C11.693 18.25 9.5 16.192 9.5 13.75Z" />
+                    </svg>
+                    <span>{latest.comment_count} Komentar</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </section>
+
+      {/* RECENT */}
+      <section className="mx-auto pb-24">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold italic font-playfair text-darkSage">
+            Recent Discussions
+          </h2>
+          <Link href="/himtalks/mini-forum/browse-forum" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl  text-darkSage font-cormorant font-extrabold tracking-tight w-fit hover:translate-x-1 sm:hover:translate-x-2 transition-all duration-500">
+              <span>Continue Exploring</span>
+              <svg className="w-3 h-3 sm:w-4.5 sm:h-4.5" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.99228 2.6244C5.89394 2.72492 5.83887 2.85995 5.83887 3.00057C5.83887 3.1412 5.89394 3.27623 5.99228 3.37674L11.4731 8.99999L5.99404 14.6232C5.89622 14.7237 5.84148 14.8583 5.84148 14.9985C5.84148 15.1387 5.89622 15.2734 5.99404 15.3738C6.04158 15.423 6.09852 15.4621 6.16149 15.4888C6.22445 15.5155 6.29215 15.5293 6.36054 15.5293C6.42894 15.5293 6.49663 15.5155 6.5596 15.4888C6.62256 15.4621 6.67951 15.423 6.72705 15.3738L12.556 9.39198C12.658 9.28699 12.715 9.14637 12.715 8.99999C12.715 8.8536 12.658 8.71298 12.556 8.608L6.72529 2.62616C6.67775 2.57698 6.62081 2.53788 6.55784 2.51117C6.49488 2.48447 6.42718 2.4707 6.35879 2.4707C6.29039 2.4707 6.2227 2.48447 6.15973 2.51117C6.09677 2.53788 6.03982 2.57698 5.99228 2.62616V2.6244Z" fill="#5F6F6C"/>
+              </svg>
+          </Link>
+        </div>
+
+        {/* WRAPPER RELATIVE UNTUK NAVIGASI */}
+        <div className="relative group lg:px-4 2xl:px-10 lg:pt-5"> {/* Beri padding samping agar tombol tidak tertutup card */}
+          <button className="swiper-prev-custom absolute left-0 md:-left-10 2xl:left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 md:p-3 hover:bg-darkSage hover:text-white transition-all duration-300 disabled:opacity-0 hidden lg:flex">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="rotate-180">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <button className="swiper-next-custom absolute right-0 md:-right-10 2xl:right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 md:p-3 hover:bg-darkSage hover:text-white transition-all duration-300 disabled:opacity-0 hidden lg:flex">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <div className="w-full 2xl:w-[93%] mx-auto py-2">  
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                nextEl: ".swiper-next-custom",
+                prevEl: ".swiper-prev-custom",
+              }}
+              spaceBetween={16}
+              slidesPerView={1.1}
+              grabCursor={true}
+              breakpoints={{
+                480: { slidesPerView: 1.2, spaceBetween: 18 },
+                640: { slidesPerView: 1.4, spaceBetween: 20 },
+                768: { slidesPerView: 1.6, spaceBetween: 22 },
+                1024: { slidesPerView: 1.8, spaceBetween: 25 },
+                1280: { slidesPerView: 2.5, spaceBetween: 27 },
+              }}
+            >
+              {recent.map((forum) => (
+                <SwiperSlide className="py-5" key={forum.id}>
+                  <ForumCard forum={forum} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+
+        
 
       </section>
 

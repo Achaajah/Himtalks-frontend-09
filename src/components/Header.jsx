@@ -148,7 +148,7 @@ export default function Header() {
                 {links.map((link, index) => {
                   const isActive =
                     link.path === pathname ||
-                    pathname.startsWith(link.path);
+                    (link.path.startsWith("/himtalks/songfess") && pathname.startsWith(link.path));
 
                   return (
                     <li key={index}>
