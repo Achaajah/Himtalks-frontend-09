@@ -12,10 +12,10 @@ export default function Footer() {
   }, []);
   return (
     <>
-      <footer className="bg-primary pt-9 lg:pt-12 pb-8 lg:pb-11 px-10 sm:px-16 md:px-16 lg:px-20 xl:px-28 selection:bg-white selection:text-[#A8BFA3] transition-all duration-500">
+      <footer className="bg-primary pt-9 lg:pt-12 pb-8 lg:pb-11 px-10 sm:px-16 md:px-16 lg:px-20 xl:px-22 selection:bg-white selection:text-[#A8BFA3] transition-all duration-500">
         <div className="transition-all duration-500">
           <div className="lg:flex lg:justify-between transition-all duration-500">
-            <div className="w-full lg:w-5/12 mb-8 font-medium text-ranting flex items-start justify-center lg:justify-normal transition-all duration-500">              
+            <div className="w-full lg:w-4/12 mb-8 font-medium text-ranting flex items-start justify-center lg:justify-normal transition-all duration-500">              
               <div className="">
                 <div className="flex flex-col justify-center items-center gap-4 mb-5">
                   <img
@@ -139,9 +139,9 @@ export default function Footer() {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full lg:w-7/12 gap-8 transition-all duration-500">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full lg:w-8/12 gap-8 transition-all duration-500">
               {/* Tentang Kami */}
-              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start lg:justify-end transition-all duration-500">
+              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start lg:justify-start transition-all duration-500">
                 <div>
                   <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
                     Tentang Kami
