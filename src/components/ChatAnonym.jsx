@@ -111,7 +111,7 @@ export default function ChatAnonym() {
 
     return (
         <>
-            <section className="pt-34 lg:pt-44 pb-28 px-6 lg:px-28 bg-primaryBG text-[#5E6F64] selection:bg-darkSage selection:text-white">
+            <section className="pt-34 lg:pt-44 pb-28 px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 bg-primaryBG text-[#5E6F64] selection:bg-darkSage selection:text-white">
                 <h1 className="font-playfair italic font-bold max-w-70 md:max-w-full text-4xl md:text-5xl xl:text-6xl text-darkSage mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
                     Speak freely, stay anonymous
                 </h1>
@@ -181,7 +181,7 @@ export default function ChatAnonym() {
                                     value={formData.name}
                                     onChange={handleChangeDiscard}
                                     placeholder="Enter your name..."
-                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-xs sm:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
+                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-[10px] sm:text-xs md:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
                                     />
                                 </div>
                                 <div className="mb-3 sm:mb-6 relative">
@@ -192,7 +192,7 @@ export default function ChatAnonym() {
                                     value={formData.recipient}
                                     onChange={handleChangeDiscard}
                                     placeholder="Enter recipient name..."
-                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-xs sm:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
+                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-[10px] sm:text-xs md:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
                                     />
                                 </div>
                                 <div className="mb-3 sm:mb-6 relative">
@@ -203,7 +203,7 @@ export default function ChatAnonym() {
                                             <div>
                                                 <ListboxButton
                                                     className={clsx(
-                                                    "relative w-full mt-1 sm:mt-2 p-2 sm:p-3 bg-white text-gray-500 rounded-md text-xs sm:text-sm text-left",
+                                                    "relative w-full mt-1 sm:mt-2 p-2 sm:p-3 bg-white text-gray-500 rounded-md text-[10px] sm:text-xs md:text-sm text-left",
                                                     selected
                                                     ? "font-medium"
                                                     : "text-gray-400 italic"
@@ -234,10 +234,10 @@ export default function ChatAnonym() {
                                                                 <ListboxOption
                                                                     key={person.id}
                                                                     value={person}
-                                                                    className="group flex cursor-pointer items-center gap-2 rounded-lg py-2 px-3 select-none data-focus:bg-gray-100"
+                                                                    className="group flex cursor-pointer items-center gap-2 rounded-lg py-1 px-2 sm:py-1.5 sm:px-2.5 md:py-2 md:px-3 select-none data-focus:bg-gray-100"
                                                                 >
                                                                     <CheckIcon className="invisible size-5 text-gray-600 group-data-selected:visible" />
-                                                                   <div className="text-sm text-gray-700">{person.name}</div>
+                                                                   <div className="text-[10px] sm:text-xs md:text-sm text-gray-700">{person.name}</div>
                                                                 </ListboxOption>
                                                             ))}
                                                         </ListboxOptions>
@@ -268,7 +268,7 @@ export default function ChatAnonym() {
                                         onClick={handleDiscard} 
                                         type="button" 
                                         name="discard" 
-                                        className="selection:bg-white selection:text-darkSage text-sm sm:text-base bg-darkSage/50 transition-all duration-500 rounded-md w-full border border-white text-white py-2 hover:bg-white hover:text-darkSage" 
+                                        className="selection:bg-white selection:text-darkSage text-[10px] sm:text-xs md:text-sm lg:text-base bg-darkSage/50 transition-all duration-500 rounded-md w-full border border-white text-white py-2 hover:bg-white hover:text-darkSage" 
                                     >
                                         Discard
                                     </button>
@@ -276,7 +276,7 @@ export default function ChatAnonym() {
                                         type="submit" 
                                         name="submit" 
                                         disabled={isSubmitting}
-                                        className="w-full bg-darkSage text-white text-sm sm:text-base py-2 rounded-md border border-darkSage hover:bg-[#4F5E56] hover:border hover:border-white transition-all duration-500"
+                                        className="w-full bg-darkSage text-white text-[10px] sm:text-xs md:text-sm lg:text-base py-2 rounded-md border border-darkSage hover:bg-[#4F5E56] hover:border hover:border-white transition-all duration-500"
                                     >
                                         {isSubmitting ? "Mengirim..." : "Submit"}
                                     </button>

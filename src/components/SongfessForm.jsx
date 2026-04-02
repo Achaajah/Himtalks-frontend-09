@@ -324,7 +324,7 @@ const validateTimeInput = (name, value) => {
 
   return (
     <>
-      <section className="pt-28 md:pt-36 lg:pt-42 pb-28 px-6 sm:px-16 md:px-16 lg:px-28 bg-primaryBG text-black transition-all duration-500 selection:bg-primary selection:text-white">
+      <section className="pt-28 md:pt-36 lg:pt-42 pb-28 px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 bg-primaryBG text-black transition-all duration-500 selection:bg-primary selection:text-white">
         <h1 className="font-playfair italic font-bold max-w-80 md:max-w-full text-4xl md:text-5xl xl:text-6xl text-darkSage tracking-tight mt-4 mb-4 sm:mb-2 transition-all duration-500 mx-auto text-center">
           Send your songfess on Himtalks
         </h1>

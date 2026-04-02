@@ -117,7 +117,7 @@ export default function MiniForum() {
   }, []);
 
   return (
-    <main className="bg-primaryBG pt-10 md:pt-20 px-6 sm:px-16 lg:px-26 selection:bg-primary selection:text-white">
+    <main className="bg-primaryBG pt-10 md:pt-20 px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 selection:bg-primary selection:text-white">
 
       {/* HERO */}
       <section className="text-center py-24">

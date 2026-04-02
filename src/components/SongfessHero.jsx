@@ -8,7 +8,7 @@ export default function SongfessHero() {
   // ================= KODE LU (UTUH) =================
 
   return (
-    <section className="pt-40 pb-24 px-6 bg-primaryBG text-center">
+    <section className="pt-40 pb-24 px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 bg-primaryBG text-center">
       {/* TITLE */}
       <h1 className="font-playfair font-medium italic text-darkSage text-3xl md:text-5xl lg:text-6xl max-w-5xl mx-auto leading-tight tracking-tighter">
         Even the toughest feelings can be shared in unique and meaningful ways.

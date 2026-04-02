@@ -18,6 +18,7 @@ const router = useRouter();
   const [comments, setComments] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [isExpanded, setIsExpanded] = useState(false); // untuk state lihat selengkapnya
+  const [isExpanded2, setIsExpanded2] = useState(false); // untuk state lihat selengkapnya
 
   const [username, setUsername] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -84,6 +85,8 @@ const router = useRouter();
         title: "Benarkah Hitler orang Bekasi? Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
         content:
           "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
+        ringkasan: 
+          "Laillahaillallah Muhammadur Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet ",
         image: "/miniforum/hsr.png",
       });
 
@@ -129,20 +132,23 @@ const router = useRouter();
   const previewText = forum.content?.substring(0, 150); // Ambil 150 karakter pertama
   const isLongText = forum.content?.length > 150; // Cek apakah teks emang panjang bange
 
+  const previewRingkasan = forum.ringkasan?.substring(0, 120); 
+  const isRingkasanLong = forum.ringkasan?.length > 120;
+
   return (
-    <section className="bg-primaryBG mt-9 md:mt-16 min-h-screen px-6 lg:px-24 py-16">
-      <Link href="/himtalks/mini-forum" className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl lg:text-3xl mb-6 md:mb-8 sm:mb-10 text-darkSage font-cormorant font-extrabold tracking-tight w-fit hover:-translate-x-2 transition-all duration-500">
+    <section className="bg-primaryBG mt-9 md:mt-12 lg:mt-16 min-h-screen px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 py-16">
+      <Link href="/himtalks/mini-forum" className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl lg:text-3xl mb-6 md:mb-8 text-darkSage font-cormorant font-extrabold tracking-tight w-fit hover:-translate-x-2 transition-all duration-500">
         <svg className="w-2 h-4 md:w-3 md:h-6" width="12" height="24" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M9.99965 19.438L8.95465 20.5L1.28865 12.71C1.10415 12.5197 1.00098 12.2651 1.00098 12C1.00098 11.7349 1.10415 11.4803 1.28865 11.29L8.95465 3.5L9.99965 4.563L2.68165 12L9.99965 19.438Z" fill="#5F6F6C"/>
         </svg>
         <span>Return to discussion list</span>
       </Link>
 
-      <div className="grid lg:grid-cols-4 gap-8 font-poppins">
+      <div className="grid lg:grid-cols-5 2xl:grid-cols-4 gap-6 md:gap-6 2xl:gap-8 font-poppins">
         {/* LEFT */}
-        <div className="lg:col-span-3 space-y-4 md:space-y-6">
+        <div className="lg:col-span-3 2xl:col-span-3 space-y-4 md:space-y-6">
           {/* POST */}
-          <div className="bg-white p-4 sm:p-5 md:px-7 md:py-6 rounded-2xl md:rounded-3xl shadow-md">
+          <div className="bg-white p-4 sm:p-5 md:px-7 md:py-6 rounded-2xl xl:rounded-3xl shadow-md">
             {/* HEADER */}
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs 2xl:text-sm text-gray-500">
@@ -157,11 +163,11 @@ const router = useRouter();
               </div>
             </div>
 
-            <h1 className="text-base md:text-lg lg:text-xl xl:text-2xl font-cormorant font-semibold tracking-tighter text-justify text-darkSage leading-4.5 md:leading-6 lg:leading-7 mb-4 md:mb-3">
+            <h1 className="text-base md:text-lg lg:text-xl xl:text-2xl font-cormorant font-semibold tracking-tighter text-justify text-darkSage leading-4.5 md:leading-6 2xl:leading-7 mb-4 md:mb-3">
               {forum.title}
             </h1>
 
-            <p className="font-poppins text-[9px] md:text-xs lg:text-sm mb-3 md:mb-4 text-gray-600">
+            <p className="font-poppins text-[9px] md:text-xs xl:text-sm mb-3 md:mb-4 text-gray-600">
               {/* Tampilkan teks penuh kalau isExpanded true, kalau false tampilkan potongan teks */}
               {isExpanded ? forum.content : previewText}
 
@@ -200,10 +206,118 @@ const router = useRouter();
             </button>
           </div>
 
+          {/* RINGKASAN */}
+          <div className=" lg:hidden bg-white p-4 md:p-5 rounded-2xl shadow">
+            <div className="flex items-center gap-2 mb-2.5 md:mb-4">
+              <Image
+                src="/miniforum/ringkasan-diskusi.svg"
+                width={20}
+                height={20}
+                className="w-5 h-5"
+                alt=""
+              />
+              <h3 className="text-darkSage text-lg md:text-xl font-cormorant font-bold tracking-tighter">
+                Ringkasan Diskusi
+              </h3>
+            </div>
 
+            <p className="text-justify md:text-left text-xs md:text-sm text-gray-600">
+              {/* Tampilkan teks penuh kalau isExpanded true, kalau false tampilkan potongan teks */}
+              {isExpanded2 ? forum.ringkasan : previewRingkasan}
+
+              {/* Tombol cuma muncul kalau teksnya emang panjang */}
+              {isRingkasanLong && (
+                <span 
+                  onClick={() => setIsExpanded2(!isExpanded2)} 
+                  className="text-[#5E6F64] font-semibold cursor-pointer ml-1 hover:underline"
+                >
+                  {isExpanded2 ? "... Lihat lebih sedikit" : "... Lihat Selengkapnya"}
+                </span>
+              )}
+            </p>
+          </div>
+
+          <div className="lg:hidden bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+              {/* IMAGE */}
+              <Image
+                src="/miniforum/panduan-diskusi-bg.webp"
+                width={400}
+                height={200}
+                className="w-full h-40 2xl:h-50 object-cover"
+                alt=""
+              />
+
+              {/* HEADER */}
+              <button
+                onClick={() => setOpen(!open)}
+                className="w-full flex items-center justify-between px-4 py-3 bg-gray-100"
+              >
+                <div className="flex items-center gap-2">
+                  <Image
+                    src="/miniforum/panduan-diskusi.svg"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                    alt=""
+                  />
+                  <h3 className="text-darkSage text-xl font-cormorant font-bold tracking-tighter">
+                    Panduan Diskusi
+                  </h3>
+                </div>
+
+                {open ? (
+                  <span className="text-gray-500">▲</span>
+                ) : (
+                  <span className="text-gray-500">▼</span>
+                )}
+              </button>
+
+              {/* CONTENT */}
+              {open && (
+                <div className="font-poppins px-4 pt-3 pb-4 lg:px-5 lg:py-4 text-xs lg:text-sm text-gray-600">
+                  <ul className="space-y-2 list-disc pl-5">
+                    <li>
+                      <span className="font-semibold">
+                        Saling Menghargai:
+                      </span>{" "}
+                      Setiap suara berhak didengar dan dipahami.
+                    </li>
+
+                    <li>
+                      <span className="font-semibold">
+                        Fokus Tema:
+                      </span>{" "}
+                      Pastikan pendapatmu sesuai dengan tema mingguan.
+                    </li>
+
+                    <li>
+                      <span className="font-semibold">
+                        No Hate Speech:
+                      </span>{" "}
+                      Jaga ruang diskusi tetap nyaman dan aman.
+                    </li>
+
+                    <li>
+                      <span className="font-semibold">
+                        Berkomentar yang Sopan:
+                      </span>{" "}
+                      Tidak menggunakan kata yang tidak senonoh.
+                    </li>
+
+                    <li>
+                      Namamu anonim, jadi tidak wajib memasukkan nama asli.
+                    </li>
+
+                    <li>
+                      Bersifat statis, kamu akan menginput username lagi jika kembali.
+                    </li>
+                  </ul>
+                </div>
+              )}
+          </div>
 
           {/* INPUT */}
-          <div id="comment" className="bg-white px-4 py-3 md:p-5 rounded-2xl shadow-md flex flex-col gap-3 md:gap-4">
+          <div id="comment" className="bg-white px-4 py-3 md:p-5 rounded-2xl xl:rounded-3xl shadow-md flex flex-col gap-3 md:gap-4">
 
             {/* HEADER */}
             <div className="flex justify-between items-center">
@@ -333,7 +447,7 @@ const router = useRouter();
           </div>
 
           {/* COMMENTS */}
-          <div className="bg-white px-4 py-3 md:p-5 rounded-2xl shadow">
+          <div className="bg-white px-4 pt-3 pb-4 md:p-5 rounded-2xl xl:rounded-3xl shadow-md">
             <div className="flex justify-between items-center mb-5 md:mb-8">
               <h3 className="text-darkSage font-semibold font-cormorant tracking-tighter text-lg sm:text-xl md:text-2xl">
                 Pikiran yang Dibagikan
@@ -472,9 +586,9 @@ const router = useRouter();
         </div>
 
         {/* RIGHT SIDEBAR */}
-        <div className="space-y-6 sticky top-26 self-start">
+        <div className="lg:col-span-2 2xl:col-span-1 space-y-6 sticky top-26 self-start">
           {/* RINGKASAN */}
-          <div className=" bg-white p-4 md:p-5 rounded-2xl shadow">
+          <div className=" hidden lg:block bg-white p-4 md:p-5 rounded-2xl shadow">
             <div className="flex items-center gap-2 mb-2.5 md:mb-4">
               <Image
                 src="/miniforum/ringkasan-diskusi.svg"
@@ -488,37 +602,29 @@ const router = useRouter();
               </h3>
             </div>
 
-            <p className="text-justify md:text-left text-xs md:text-sm text-gray-600 leading-relaxed">
-              {isOpen ? (
-                <>
-                  Lorem ipsum dolor sit amet consectetur. Viverra adipiscing amet tortor massa.
-                  Sodales id ullamcorper eget id etiam nibh magna pellentesque mauris.
-                  Quam elementum amet id libero. Lorem ipsum dolor sit amet consectetur.
-                  Viverra adipiscing amet tortor massa. Sodales id ullamcorper eget id etiam
-                  nibh magna pellentesque mauris. Quam elementum amet id libero.
-                </>
-              ) : (
-                <>
-                  Lorem ipsum dolor sit amet consectetur. Viverra adipiscing amet tortor massa...
-                </>
+            <p className="text-justify md:text-left text-xs md:text-sm text-gray-600">
+              {/* Tampilkan teks penuh kalau isExpanded true, kalau false tampilkan potongan teks */}
+              {isExpanded2 ? forum.ringkasan : previewRingkasan}
+
+              {/* Tombol cuma muncul kalau teksnya emang panjang */}
+              {isRingkasanLong && (
+                <span 
+                  onClick={() => setIsExpanded2(!isExpanded2)} 
+                  className="text-[#5E6F64] font-semibold cursor-pointer ml-1 hover:underline"
+                >
+                  {isExpanded2 ? "... Lihat lebih sedikit" : "... Lihat Selengkapnya"}
+                </span>
               )}
             </p>
-
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-sm mt-2 text-[#5E6F64] font-medium hover:opacity-70 transition"
-            >
-              → {isOpen ? "Tutup" : "Lihat Selengkapnya"}
-            </button>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+          <div className="hidden lg:block bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
               {/* IMAGE */}
               <Image
                 src="/miniforum/panduan-diskusi-bg.webp"
                 width={400}
                 height={200}
-                className="w-full h-30 2xl:h-50 object-cover"
+                className="w-full h-40 2xl:h-50 object-cover"
                 alt=""
               />
 
@@ -549,7 +655,7 @@ const router = useRouter();
 
               {/* CONTENT */}
               {open && (
-                <div className="font-poppins px-5 py-4 text-sm text-gray-600">
+                <div className="font-poppins px-4 py-3 md:px-5 md:py-4 text-xs md:text-sm text-gray-600">
                   <ul className="space-y-2 list-disc pl-5">
                     <li>
                       <span className="font-semibold">
@@ -592,7 +698,7 @@ const router = useRouter();
           </div>
 
           {/* CARA LAIN */}
-          <div className="pt-3">
+          <div className="pt-2.5 md:pt-3">
             <div className="flex items-center gap-3 mb-4">
               <Image
                 src="/miniforum/pesawat-kertas.svg"
@@ -618,16 +724,16 @@ const router = useRouter();
                       width={140} // Sesuaikan lebarnya agar proporsional
                       height={140} // Sesuaikan tingginya
                       alt="Songfess"
-                      className="object-cover h-full"
+                      className="object-cover w-25 lg:w-30 lg:h-30 xl:w-35 xl:h-35 h-full"
                     />
                   </div>
 
                   {/* CONTAINER TEKS */}
-                  <div className="flex-1 pb-2"> {/* pb-2 biar teks agak naik dikit sejajar bunga */}
-                    <h3 className="font-playfair italic font-medium text-darkSage text-3xl mb-3">
+                  <div className="flex-1 pb-2 pr-2"> {/* pb-2 biar teks agak naik dikit sejajar bunga */}
+                    <h3 className="font-playfair italic font-medium text-darkSage text-xl xl:text-3xl mb-2 md:mb-3">
                       Songfess
                     </h3>
-                    <p className="font-poppins text-sm text-gray-500 max-w-45">
+                    <p className="font-poppins text-xs xl:text-sm text-gray-500 max-w-45">
                       Ekspresikan perasaanmu melalui lagu!
                     </p>
                   </div>
@@ -644,16 +750,16 @@ const router = useRouter();
                       width={140}
                       height={140}
                       alt="Chat Anonym"
-                      className="object-cover h-full"
+                      className="object-cover w-25 lg:w-30 lg:h-30 xl:w-35 xl:h-35 h-full"
                     />
                   </div>
 
                   {/* CONTAINER TEKS */}
-                  <div className="flex-1 pb-2"> {/* pb-2 biar teks agak naik dikit sejajar bunga */}
-                    <h3 className="font-playfair italic font-medium text-darkSage text-3xl mb-3">
+                  <div className="flex-1 pb-2 pr-2"> {/* pb-2 biar teks agak naik dikit sejajar bunga */}
+                    <h3 className="font-playfair italic font-medium text-darkSage text-xl xl:text-3xl mb-2 md:mb-3">
                       Chat Anonym
                     </h3>
-                    <p className="font-poppins text-sm text-gray-500 max-w-45">
+                    <p className="font-poppins text-xs xl:text-sm text-gray-500 max-w-45">
                       Kirimkan pesanmu tanpa mengungkap identitas!
                     </p>
                   </div>

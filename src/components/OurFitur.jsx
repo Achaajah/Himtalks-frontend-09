@@ -87,7 +87,7 @@ export default function OurFitur(){
   }
 
   return (
-    <section id="fitur-kami" className="pt-24 pb-32 px-7 md:px-16 lg:px-28 bg-primaryBG text-[#3F4F44]">
+    <section id="fitur-kami" className="pt-24 pb-32 px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 bg-primaryBG text-darkSage">
 
       {/* Title */}
       <div className="w-full text-center mb-10 sm:mb-13 md:mb-16">

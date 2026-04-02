@@ -66,7 +66,7 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="w-full font-cormorant fixed px-6 py-5 bg-primary text-white z-20 transition-all sm:px-16 lg:px-20 xl:px-28 lg:py-6 shadow-lg">
+    <header className="w-full font-cormorant fixed py-5 bg-primary text-white z-20 transition-all px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 lg:py-6 shadow-lg">
       <div className="flex justify-between items-center">
 
         {/* Logo */}

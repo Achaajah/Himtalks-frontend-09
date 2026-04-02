@@ -45,7 +45,7 @@ export default function Hero() {
   // ================= KODE LU (TIDAK DIUBAH) =================
 
   return (
-    <section className="pt-34 pb-32 px-6 sm:px-16 md:px-12 lg:pt-38 bg-primaryBG text-[#3F4F44] transition-all duration-500 selection:bg-darkSage selection:text-white">
+    <section className="pt-34 pb-32 px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 lg:pt-38 bg-primaryBG text-[#3F4F44] transition-all duration-500 selection:bg-darkSage selection:text-white">
       {/* Title */}
       <h1
         className="font-playfair italic font-bold text-5xl sm:text-6xl lg:text-7xl text-darkSage text-center 
