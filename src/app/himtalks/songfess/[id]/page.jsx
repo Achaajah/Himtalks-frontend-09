@@ -321,7 +321,7 @@ export default function SongfessDetailPage() {
                     </p>
                     <div className="rounded-lg bg-primary/50 max-w-96 mx-auto p-3 mt-7 md:mt-9">
                       {/* menyimpan detail lagu */}
-                      <div className="w-full flex items-start md:items-center md:items-end gap-4">
+                      <div className="w-full flex items-start md:items-center lg:items-end gap-4">
                         {/* Image Song */}
                         <div>
                           <Image
