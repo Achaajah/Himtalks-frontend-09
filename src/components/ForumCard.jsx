@@ -47,7 +47,7 @@ export default function ForumCard({ forum }) {
     >
       {/* CLOSED */}
       {isClosed && (
-        <span className="absolute top-4 right-4 bg-[#C2A88D] text-white text-xs px-3 py-1 rounded-full">
+        <span className="absolute top-3 right-3 md:top-4 md:right-4 bg-[#C2A88D] text-white text-[9px] md:text-xs 2xl:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded-full">
           Closed
         </span>
       )}
@@ -69,7 +69,7 @@ export default function ForumCard({ forum }) {
       </div>
 
       {/* TITLE */}
-      <div className="h-10 md:h-12 lg:h-14 flex items-center mb-3">
+      <div className="h-10 md:h-12 lg:h-14 flex items-center mb-2 md:mb-3">
         <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl font-cormorant font-semibold tracking-tighter text-justify text-darkSage leading-4.5 md:leading-6 lg:leading-7 line-clamp-2 overflow-hidden text-ellipsis wrap-break-word">{forum.title}</h2>
       </div>
 
