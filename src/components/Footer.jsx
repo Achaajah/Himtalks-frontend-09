@@ -141,7 +141,7 @@ export default function Footer() {
             
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full lg:w-8/12 gap-8 transition-all duration-500">
               {/* Tentang Kami */}
-              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start lg:justify-start transition-all duration-500">
+              <div className="w-full mb-8 text-white flex justify-start lg:justify-start transition-all duration-500">
                 <div>
                   <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
                     Tentang Kami
@@ -188,7 +188,7 @@ export default function Footer() {
               </div>
 
               {/* Media */}
-              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-end transition-all duration-500">
+              <div className="w-full mb-8 text-white flex justify-end transition-all duration-500">
                 <div>
                   <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
                     Media
@@ -229,7 +229,7 @@ export default function Footer() {
               </div>
 
               {/* Event */}
-              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-start sm:justify-end lg:justify-center transition-all duration-500">
+              <div className="w-full mb-8 text-white flex justify-start sm:justify-end lg:justify-center transition-all duration-500">
                 <div>
                   <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">Event</h3>
                   <ul className="text-sm sm:text-base font-playfair">
@@ -245,7 +245,7 @@ export default function Footer() {
               </div>
 
               {/* Aplikasi Publik */}
-              <div className="w-full mb-8 font-[Plus Jakarta Sans] text-white flex justify-end md:justify-start lg:justify-end transition-all duration-500">
+              <div className="w-full mb-8 text-white flex justify-end md:justify-start lg:justify-end transition-all duration-500">
                 <div>
                   <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
                     Aplikasi Publik
