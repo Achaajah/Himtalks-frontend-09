@@ -11,7 +11,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function SongfessForm() {
   // Tambahan Raika
@@ -467,14 +467,14 @@ const validateTimeInput = (name, value) => {
                             <Combobox.Option
                               key={song.id}
                               className={({ active }) =>
-                                `relative cursor-pointer select-none py-2 px-4 ${active ? "bg-purple text-white" : "text-gray-900"}`
+                                `relative cursor-pointer select-none py-2 px-4 ${active ? "bg-darkSage text-white" : "text-gray-900"}`
                               }
                               value={song}
                             >
                               {({ selected, active }) => (
                                 <div className="flex items-center gap-2 md:gap-3">
                                   {/* Gambar Lagu */}
-                                  <div className="w-12 h-12 flex-shrink-0">
+                                  <div className="w-12 h-12 shrink-0">
                                     <Image
                                       src={
                                         song.album.images[0]?.url ||
@@ -530,8 +530,8 @@ const validateTimeInput = (name, value) => {
                 <div
                   onClick={() => {
                     if (!selected) return;
-                    handlePlayPause();
-                  }}
+                      handlePlayPause();
+                    }}
                   // if (selected) handlePlayPause();
                   // if (!selected?.preview_url) return; // Jangan lanjut kalau tidak ada preview
                   // handlePlayPause();

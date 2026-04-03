@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function SongfessBrowse() {
     const controls = useAnimation();

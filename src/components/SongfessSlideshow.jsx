@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function SongfessSlideshow() {
     const controls = useAnimation();
     const containerRef = useRef(null);
@@ -12,7 +14,7 @@ export default function SongfessSlideshow() {
     useEffect(() => {
         async function fetchSongfessData(){
             try {
-                const res = await fetch(`http://localhost:8080/songfess`);
+                const res = await fetch(`${API_BASE}/songfess`);
                 if(!res.ok){
                     throw new Error(`HTTP Error ${res.status}`);
                 }

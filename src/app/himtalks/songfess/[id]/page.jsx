@@ -6,7 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useState, Fragment, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function SongfessDetailPage() {
   const [songfessList, setSongfessList] = useState([]);

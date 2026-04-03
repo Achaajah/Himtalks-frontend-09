@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from 'clsx'
 
 // API base URL
-const API_BASE = "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 // object untuk isi dropdown Kategori Pesan
 const pilihan = [
@@ -191,7 +191,7 @@ export default function ChatAnonym() {
                                     value={formData.recipient}
                                     onChange={handleChangeDiscard}
                                     placeholder="Enter recipient name..."
-                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-[10px] sm:text-xs md:text-sm rounded-md bg-white text-gray-700  focus:outline-none"
+                                    className="w-full mt-1 sm:mt-2 p-2 sm:p-3 font-medium text-[10px] sm:text-xs md:text-sm rounded-md bg-white text-gray-700 focus:outline-none"
                                     />
                                 </div>
                                 <div className="mb-3 sm:mb-6 relative">
@@ -202,7 +202,7 @@ export default function ChatAnonym() {
                                             <div>
                                                 <ListboxButton
                                                     className={clsx(
-                                                    "relative w-full mt-1 sm:mt-2 p-2 sm:p-3 bg-white text-gray-500 rounded-md text-[10px] sm:text-xs md:text-sm text-left",
+                                                    "relative w-full mt-1 sm:mt-2 p-2 sm:p-3 bg-white text-gray-500 rounded-md text-[10px] sm:text-xs md:text-sm text-left focus:outline-none",
                                                     selected
                                                     ? "font-medium"
                                                     : "text-gray-400 italic"
@@ -236,7 +236,7 @@ export default function ChatAnonym() {
                                                                     className="group flex cursor-pointer items-center gap-2 rounded-lg py-1 px-2 sm:py-1.5 sm:px-2.5 md:py-2 md:px-3 select-none data-focus:bg-gray-100"
                                                                 >
                                                                     <CheckIcon className="invisible size-5 text-gray-600 group-data-selected:visible" />
-                                                                   <div className="text-[10px] sm:text-xs md:text-sm text-gray-700">{person.name}</div>
+                                                                    <div className="text-[10px] sm:text-xs md:text-sm text-gray-700">{person.name}</div>
                                                                 </ListboxOption>
                                                             ))}
                                                         </ListboxOptions>

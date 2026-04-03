@@ -141,7 +141,7 @@ export default function Footer() {
             
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full lg:w-8/12 gap-8 transition-all duration-500">
               {/* Tentang Kami */}
-              <div className="w-full mb-8 text-white flex justify-start lg:justify-start transition-all duration-500">
+              <div className="w-full mb-8 text-white flex justify-start lg:justify-start xl:justify-end transition-all duration-500">
                 <div>
                   <h3 className="font-poppins font-medium md:font-semibold text-white text-base sm:text-lg md:text-xl mb-6">
                     Tentang Kami

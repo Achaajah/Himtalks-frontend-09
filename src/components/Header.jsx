@@ -154,7 +154,7 @@ export default function Header() {
                     <li key={index}>
                       <Link
                         href={link.path}
-                        className={`text-xl font-semibold transition italic ${
+                        className={`text-xl lg:font-medium transition italic ${
                           isActive
                             ? "underline underline-offset-4"
                             : "hover:opacity-80"
