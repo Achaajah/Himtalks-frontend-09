@@ -38,64 +38,7 @@ function timeAgo(date) {
   return `${days} hari lalu`;
 }
 
-/*  FULL DUMMY DATA */
-const dummyForums = [
-  {
-    id: 1,
-    title: "Bagaimana cara menjaga kesehatan mental? Bbelajar efektif untuk mahasiswa normal ga sih? Wong aku dibully mulu aku dibully mulu loh yha ah shibal sekiya baka janai no kana baka baka",
-    content:
-      "Diskusi tentang pentingnya menjaga kesehatan mental di tengah kesibukan.",
-    image: "/miniforum/hsr.png",
-    author: "Anonymous",
-    created_at: new Date(Date.now() - 1000 * 60 * 5),
-    comment_count: 12,
-  },
-  {
-    id: 2,
-    title: "Tips belajar efektif untuk mahasiswa",
-    content: "Share cara belajar kalian biar ga burnout...",
-    image: "/miniforum/bg-forum-card.webp",
-    author: "Anon",
-    created_at: new Date(Date.now() - 1000 * 60 * 30),
-    comment_count: 5,
-  },
-  {
-    id: 3,
-    title: "Overthinking tiap malam, normal ga sih? Wong aku dibully mulu loh yha ah shibal sekiya baka janai no kana baka baka",
-    content: "Sering banget kepikiran hal-hal kecil sampe susah tidur, tapi bangsad sih emang tugas kimak ini maderfaker banget. Lu kalo muncul jangan rameannn kucayy",
-    image: "/miniforum/bg-forum-card.webp",
-    author: "User123",
-    created_at: new Date(Date.now() - 1000 * 60 * 60),
-    comment_count: 8,
-  },
-  {
-    id: 4,
-    title: "Gimana cara konsisten ngoding?",
-    content: "Udah niat tiap hari tapi suka males di tengah jalan 😭",
-    image: "/miniforum/bg-forum-card.webp",
-    author: "DevNewbie",
-    created_at: new Date(Date.now() - 1000 * 60 * 120),
-    comment_count: 3,
-  },
-  {
-    id: 5,
-    title: "Circle pertemanan makin kecil, wajar?",
-    content: "Makin dewasa kok makin sedikit temen ya...",
-    image: "/miniforum/bg-forum-card.webp",
-    author: "Anon",
-    created_at: new Date(Date.now() - 1000 * 60 * 240),
-    comment_count: 10,
-  },
-  {
-    id: 6,
-    title: "Produktif tapi capek, solusi?",
-    content: "Kerja terus tapi burnout juga 😩",
-    image: "/miniforum/bg-forum-card.webp",
-    author: "Worker",
-    created_at: new Date(Date.now() - 1000 * 60 * 360),
-    comment_count: 6,
-  },
-];
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function MiniForum() {
   const router = useRouter();
@@ -104,16 +47,31 @@ export default function MiniForum() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    //  FAKE LOADING (BIAR KAYAK ADA API)
-    setTimeout(() => {
-      const sorted = [...dummyForums].sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-      );
+    async function fetchForums() {
+      try {
+        const res = await fetch(`${API_BASE}/forums`);
+        if (!res.ok) throw new Error("Failed to load forums");
+        const data = await res.json();
+        
+        let sorted = data.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
 
-      setLatest(sorted[0]);
-      setRecent(sorted.slice(1, 6)); // tetap 5 card
-      setLoading(false);
-    }, 1200); // delay 1.2 detik
+        // API gives `image_url` but code expects `image`. We standardize it here.
+        sorted = sorted.map(f => ({ ...f, image: f.image_url || f.image }));
+
+        if (sorted.length > 0) {
+          setLatest(sorted[0]);
+          setRecent(sorted.slice(1, 6)); // up to 5 items
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchForums();
   }, []);
 
   return (
@@ -166,15 +124,16 @@ export default function MiniForum() {
             <div
               onClick={(e) => {
                     e.stopPropagation();
-                    router.push("/himtalks/mini-forum/form-forum#comment");
+                    const slug = `${latest.id}-${slugify(latest.title)}`;
+                    router.push(`/himtalks/mini-forum/${slug}#comment`);
                   }}
               /* STYLE DISAMAIN DENGAN FORUMCARD */
               className="bg-white w-full rounded-2xl shadow-lg p-5 relative border border-gray-100 hover:-translate-y-2 transition duration-300 cursor-pointer selection:bg-darkSage selection:text-white"
             >
               {/* HEADER (Himtalks + Time) */}
               <div className="flex justify-between items-center mb-3 md:mb-5 font-poppins">
-                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-gray-500">
-                  <div className="w-5 h-5 md:w-6 md:h-6 bg-gray-300 rounded-full"></div>
+                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm lg:text-base text-gray-500 font-poppins mb-3 md:mb-4">
+                  <img src="/logo/himtalks-logo.webp" alt="Himtalks" className="w-5 h-5 md:w-6 md:h-6 object-cover rounded-full" />
                   <span className="text-black">Himtalks</span>
                   <span>•</span>
                   <span>{timeAgo(latest.created_at)}</span>
@@ -198,21 +157,26 @@ export default function MiniForum() {
               </p>
 
               {/* IMAGE */}
-              <div className="overflow-hidden rounded-xl mb-4">
-                <Image
-                  src={latest.image}
-                  width={800} // Dibikin lebih lebar karena ini latest (utama)
-                  height={400}
-                  className="w-full h-48 md:h-80 lg:h-100 xl:h-120 object-cover hover:scale-105 transition-transform duration-300"
-                  alt="latest discussion"
-                />
-              </div>
+              {latest.image_url || latest.image ? (
+                <div className="overflow-hidden rounded-xl mb-4">
+                  <Image
+                    src={latest.image_url || latest.image}
+                    width={800} // Dibikin lebih lebar karena ini latest (utama)
+                    height={400}
+                    className="w-full h-48 md:h-80 lg:h-100 xl:h-120 object-cover hover:scale-105 transition-transform duration-300"
+                    alt="latest discussion"
+                  />
+                </div>
+              ) : (
+                <div className="rounded-xl mb-4 w-full h-48 md:h-80 lg:h-100 xl:h-120 bg-gray-200"></div>
+              )}
 
               {/* COMMENT BUTTON STYLE */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  router.push("/himtalks/mini-forum/form-forum#comment");
+                  const slug = `${latest.id}-${slugify(latest.title)}`;
+                  router.push(`/himtalks/mini-forum/${slug}#comment`);
                 }}
               >
                 <span className="font-poppins inline-flex items-center gap-1 md:gap-2 bg-darkSage text-white hover:bg-white hover:text-darkSage px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm border border-darkSage transition-all duration-500">

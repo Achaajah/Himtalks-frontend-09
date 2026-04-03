@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { songfessData } from "@/components/SongfessSlideshow"; // sementara
 import { useParams } from "next/navigation";
 import { Dialog, Transition } from "@headlessui/react";
 import { useState, Fragment, useRef, useEffect } from "react";
@@ -10,120 +9,39 @@ import html2canvas from "html2canvas";
 const API_BASE = "http://localhost:8080";
 
 export default function SongfessDetailPage() {
-  // const [songfess, setSongfess] = useState(null);
-  // const [error, setError] = useState(null)
-  // const [loading, setLoading] = useState(true);
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [isHover, setIsHover] = useState(false);
-  // const timeoutRef = useRef(null);
-  // const modalRef = useRef(null);
-
-  // const params = useParams();
-  // const { id } = params;
-
-  // // Fetch data dari API
-  //   useEffect(() => {
-  //     async function fetchSongfessData() {
-  //         try {
-  //             const response = await fetch(`${API_BASE}/songfess`);
-  //             // const response = await fetch(`/api/songfess`);
-  //             if (!response.ok) {
-  //                 throw new Error(`HTTP error! Status: ${response.status}`);
-  //             }
-  //             const data = await response.json();
-              
-  //             // Transform data sesuai kebutuhan komponen
-  //             const transformedData = data.map(item => ({
-  //                 id: item.id,
-  //                 to: item.recipient_name || "Anonymous", // Sesuaikan dengan struktur API
-  //                 message: item.content,
-  //                 songTitle: item.song_title,
-  //                 artist: item.artist,
-  //                 date: new Date(item.created_at).toLocaleDateString('id-ID', {
-  //                     year: 'numeric',
-  //                     month: 'long',
-  //                     day: 'numeric'
-  //                 }),
-  //                 image: item.album_art || "/songfess/image-default-spotify.png" // Gunakan fallback jika tidak ada
-  //             }));
-              
-  //             setSongfess(transformedData);
-  //             setLoading(false);
-  //         } catch (err) {
-  //             console.error("Error fetching songfess data:", err);
-  //             setError(err.message);
-  //             setLoading(false);
-  //         }
-  //     }
-
-  //     fetchSongfessData();
-  //   }, []);
-
-  // const downloadImage = async () => {
-  //   if (modalRef.current){
-  //     const canvas = await html2canvas(modalRef.current, { useCORS: true, scale: 2 });
-  //     const imgData = canvas.toDataURL("image/png");
-
-  //     const link = document.createElement("a");
-  //     link.href = imgData;
-
-  //     const songfessItem = songfess.find((item) => item.id === id);
-  //     const fileName = `${songfessItem ? songfessItem.recipient_name + "-songfess-card" : "songfess-card"}.png`;
-  //     link.download = fileName;
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //   }
-  // };
-
-  // const handleMouseEnter = () => {
-  //   {/*batalin timeout sebelumnya biar tidak kepending*/}
-  //   clearTimeout(timeoutRef.current);
-  //   setIsHover(true);
-  // };
-
-  // const handleMouseLeave = () => {
-  //   {/*bikin delay 1 detik*/}
-  //   timeoutRef.current = setTimeout(() => {
-  //       setIsHover(false);
-  //   }, 700);
-  // };
-
-  // const closeModal = () => {
-  //   setIsOpen(false);
-  // };
-
-  // const openModal = () => {
-  //   setIsOpen(true);
-  // };
-
-  // useEffect(() => {
-  //   const fetchSongfess = async () => {
-  //     try {
-  //       const response = await fetch(`${API_BASE}/songfess/${id}`);
-  //       if (!response.ok) throw new Error("Failed to fetch data");
-  //       const data = await response.json();
-  //       setSongfess(data);
-  //     } catch (error) {
-  //       console.error("Error fetching songfess:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchSongfess();
-  // }, [id]);
-
-  // if (loading || !songfess) {
-  //   return <h1 className="text-2xl mt-10">Loading...</h1>;
-  // }
-
+  const [songfessList, setSongfessList] = useState([]);
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const timeoutRef = useRef(null);
   const modalRef = useRef(null);
-  
+
   const params = useParams();
   const { id } = params;
+
+  // Fetch data dari API
+    useEffect(() => {
+      async function fetchSongfessData() {
+          try {
+              const response = await fetch(`${API_BASE}/songfess`);
+              // const response = await fetch(`/api/songfess`);
+              if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              const data = await response.json();
+              
+              setSongfessList(data);
+              setLoading(false);
+          } catch (err) {
+              console.error("Error fetching songfess data:", err);
+              setError(err.message);
+              setLoading(false);
+          }
+      }
+
+      fetchSongfessData();
+    }, []);
 
   const downloadImage = async () => {
     if (modalRef.current){
@@ -133,8 +51,8 @@ export default function SongfessDetailPage() {
       const link = document.createElement("a");
       link.href = imgData;
 
-      const songfessItem = songfessData.find((item) => item.id === id);
-      const fileName = `${songfessItem ? songfessItem.to + "-songfess-card" : "songfess-card"}.png`;
+      const songfessItem = songfessList.find((item) => item.id.toString() === id);
+      const fileName = `${songfessItem ? songfessItem.recipient_name + "-songfess-card" : "songfess-card"}.png`;
       link.download = fileName;
       document.body.appendChild(link);
       link.click();
@@ -163,7 +81,11 @@ export default function SongfessDetailPage() {
     setIsOpen(true);
   };
 
-  const songfess = songfessData.find((item) => item.id === id);
+  if (loading) {
+    return <h1 className="text-2xl mt-10">Loading...</h1>;
+  }
+
+  const songfess = songfessList.find((item) => item.id.toString() === id);
 
   if (!songfess) {
     return <h1 className="text-2xl mt-10">Songfess tidak ditemukan</h1>;
@@ -312,7 +234,7 @@ export default function SongfessDetailPage() {
                 ref={modalRef}
                 className={`relative bg-white w-full max-w-[849px] p-8 rounded-xl shadow-md text-center mx-auto transition-all duration-1000`} >
                   <div className="max-w-[547px] mx-auto ">
-                    <Dialog.Title className="text-3xl md:text-4xl lg:text-5xl leading-none font-playfair font-normal italic">
+                      <Dialog.Title className="text-3xl md:text-4xl lg:text-5xl leading-none font-playfair font-normal italic">
                         Hello, <span className="font-extrabold tracking-tight block md:inline">{songfess.recipient_name || "Anonymous"}</span>
                     </Dialog.Title>
                     <p className="font-poppins text-[10px] sm:text-xs md:text-sm lg:text-base font-medium mt-4 sm:mt-6 md:mt-8">

@@ -293,6 +293,7 @@ const validateTimeInput = (name, value) => {
           song_title: selected.name,
           artist: selected.artists.map((a) => a.name).join(", "),
           album_art: selected.album.images[0]?.url || "",
+          preview_url: selected.preview_url || "",
           start_time: convertToSeconds(formData.startTime),
           end_time: convertToSeconds(formData.endTime),
           sender_name: formData.name,

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { songfessData } from "./SongfessSlideshow"; // INI CUMA BUAT TES LOGIC SEARCH DI FE (HAPUS AJA KALO UDAH DI BE) -RAIKA
 import { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 
@@ -17,9 +16,8 @@ export default function SongfessBrowse() {
     const [isFocused,setIsFocused] = useState(false);
     const [value,setValue] = useState("");
 
-    const [filteredData, setFilteredData] = useState(songfessData); // INI CUMA BUAT TES LOGIC SEARCH DI FE (HAPUS AJA KALO UDAH DI BE) -RAIKA
-    // const [songfessData,setSongfessData] = useState([]);
-    // const [filteredData,setFilteredData] = useState([]);
+    const [songfessData,setSongfessData] = useState([]);
+    const [filteredData,setFilteredData] = useState([]);
 
     const [isSearching,setIsSearching] = useState(false);
     const [loading,setLoading] = useState(true);
@@ -27,51 +25,52 @@ export default function SongfessBrowse() {
 
     /* ================= FETCH DATA ================= (INI KODE BE YANG UDAH ADA, INI DIKOMEN BIAR GAK ERROR AJA PAS TESTING DI FE) */ 
 
-    // useEffect(()=>{
-    //     async function fetchSongfessData(){
-    //         try {
-    //             const res = await fetch(`${API_BASE}/songfess`);
-    //             if(!res.ok){
-    //                 throw new Error(`HTTP Error ${res.status}`);
-    //             }
+    useEffect(()=>{
+        async function fetchSongfessData(){
+            try {
+                const res = await fetch(`${API_BASE}/songfess`);
+                if(!res.ok){
+                    throw new Error(`HTTP Error ${res.status}`);
+                }
 
-    //             const data = await res.json();
-    //             const transformed = data.map(item=>({
-    //                 id:item.id,
-    //                 to:item.recipient_name || "Anonymous",
-    //                 message:item.content || "",
-    //                 songTitle:item.song_title || "",
-    //                 artist:item.artist || "",
-    //                 image:item.album_art || "/songfess/image-song-example.png",
-    //             }));
+                const data = await res.json();
+                const transformed = data.map(item=>({
+                    id:item.id,
+                    to:item.recipient_name || "Anonymous",
+                    message:item.content || "",
+                    songTitle:item.song_title || "",
+                    artist:item.artist || "",
+                    image:item.album_art || "/songfess/image-default-spotify.png",
+                }));
 
-    //             setSongfessData(transformed);
-    //             setFilteredData(transformed);
-    //             setLoading(false);
-    //         } catch(err) {
-    //             console.error(err);
-    //             setError(err.message);
-    //             setLoading(false);
-    //         }
-    //     }
+                setSongfessData(transformed);
+                setFilteredData(transformed);
+                setLoading(false);
+            } catch(err) {
+                console.error(err);
+                setError(err.message);
+                setLoading(false);
+            }
+        }
 
-    //     fetchSongfessData();
-    // },[]);
+        fetchSongfessData();
+    },[]);
 
     /* ================= AUTO SCROLL ================= */
 
     useEffect(()=>{
-        // Cek lebar layar: Kalau di bawah 768px (md), kita anggap lebarnya 300px + gap
         const isMobile = window.innerWidth < 768;
         const cardWidth = isMobile ? 320 : 420; // 320px (lebar card + space-x-6)
         
-        const totalWidth = songfessData.length * cardWidth;
+        const baseSetWidth = filteredData.length * cardWidth;
+        const windowWidth = window.innerWidth;
+        const distance = windowWidth + baseSetWidth;
         const speed = isMobile ? 60 : 90; // Mobile dibikin lebih lambat dikit biar enak dibaca
-        const duration = totalWidth / speed;
+        const duration = distance / speed;
 
-        if (!isSearching && songfessData.length > 0) {
+        if (!isSearching && filteredData.length > 0) {
             controls.start({
-                x: ["100vw", `-${totalWidth}px`], 
+                x: [windowWidth, -baseSetWidth], 
                 transition: {
                     repeat: Infinity,
                     repeatType: "loop",
@@ -85,7 +84,7 @@ export default function SongfessBrowse() {
         }
 
         return () => controls.stop();
-    },[songfessData,isSearching,controls]);
+    },[filteredData,isSearching,controls]);
 
 
 
@@ -168,7 +167,7 @@ export default function SongfessBrowse() {
                     id="floatingInput"
                     placeholder=" "
                     value={value}
-                    onChange={handleInteraction} // INI UBAH AJA KE handleSearch
+                    onChange={handleSearch} // INI UBAH AJA KE handleSearch
                     onFocus={()=>setIsFocused(true)}
                     onBlur={()=>setIsFocused(false)}
                     className="w-full rounded-full px-5 py-3 md:px-6 md:py-4 text-xs sm:text-base border-2 bg-white border-[#ddd] focus:border-primary text-darkSage outline-none"
@@ -196,12 +195,12 @@ export default function SongfessBrowse() {
                     ref={containerRef}
                     className="flex space-x-4 md:space-x-6"
                     animate={controls}
-                    initial={{ x: "100vw" }}
-                    style={{ width: filteredData.length > 0 ? "max-content" : "auto" }}
+                    initial={{ x: "100vw" }} // initial styling only, animate overrides this
+                    style={{ width: "max-content" }}
                 >
                     {filteredData.length > 0 ? (
                         filteredData.map((songfess, index) => (
-                            <Link key={songfess.id} href={`/himtalks/songfess/${songfess.id}`} passHref>
+                            <Link key={`${songfess.id}-${index}`} href={`/himtalks/songfess/${songfess.id}`} passHref>
                                 <motion.div
                                     key={index}
                                     className="w-70 md:w-100 shrink-0 bg-white rounded-2xl shadow-md"

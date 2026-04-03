@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import ForumCard from "@/components/ForumCard";
 import clsx from 'clsx'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 const sortOptions = [
   { id: 1, name: 'Terbaru', value: 'newest' },
   { id: 2, name: 'Terlama', value: 'oldest' },
@@ -17,55 +19,32 @@ export default function ForumBrowse() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(sortOptions[0]);
   const [isFocused,setIsFocused] = useState(false);
-  const [value,setValue] = useState("");
-
-  // 🔥 LOADING STATE
   const [loading, setLoading] = useState(true);
+  const [topics, setTopics] = useState([]);
 
-  // 🔥 SIMULASI LOADING (BIAR KELIATAN)
+  // 🔥 FETCH DATA
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000); // 1 detik
-
-    return () => clearTimeout(timer);
+    async function fetchForums() {
+      try {
+        const res = await fetch(`${API_BASE}/forums`);
+        if (!res.ok) throw new Error("Gagal fetch forum");
+        const data = await res.json();
+        
+        // Map data to standardize image field
+        const formatted = data.map(f => ({
+          ...f,
+          image: f.image_url || f.image
+        }));
+        
+        setTopics(formatted);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchForums();
   }, []);
-
-  // 🔥 DUMMY DATA
-  const topics = [
-    {
-      id: 1,
-      title: "Benarkah Hitler Orang Bekasi? Benarkah Fasilkom Banyak Femboy Benarkah Fasilkom Banyak Femboy Benarkah Fasilkom Banyak Femboy",
-      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
-      created_at: new Date(),
-      image: "/miniforum/hsr.png",
-      comment_count: 67,
-    },
-    {
-      id: 2,
-      title: "Kalian Buka Puasa Pakai Apa?",
-      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
-      created_at: new Date(Date.now() - 60 * 60 * 1000),
-      image: "/miniforum/hsr.png",
-      comment_count: 67,
-    },
-    {
-      id: 3,
-      title: "Gimana Cara Dapat IPK 5?",
-      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
-      created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
-      image: "/miniforum/hsr.png",
-      comment_count: 67,
-    },
-    {
-      id: 4,
-      title: "Benarkah Fasilkom Banyak Femboy?",
-      content: "Lorem ipsum dolor sit amet consectetur. Integer proin imperdie...",
-      created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
-      image: "/miniforum/hsr.png",
-      comment_count: 67,
-    },
-  ];
 
   // 🔍 SEARCH
   const filteredTopics = topics.filter((topic) =>
@@ -117,13 +96,13 @@ export default function ForumBrowse() {
           <label
               htmlFor="floatingInput"
               className={`absolute left-4 transition-all py-0.5 px-2 rounded-xl bg-white duration-700 
-                  ${isFocused || value ? "-top-2.5 text-xs text-darkSage" : "top-3 md:top-4.5 text-xs sm:text-sm text-darkSage"}`}
+                  ${isFocused || search ? "-top-2.5 text-xs text-darkSage" : "top-3 md:top-4.5 text-xs sm:text-sm text-darkSage"}`}
           >
               Enter the topic title
           </label>
 
           <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-primary p-1.5 md:p-2 rounded-full flex items-center justify-center hover:scale-105 transition cursor-pointer">
-              <button type="button" onClick={() => handleSearch({ target: { value } })}>
+              <button type="button" onClick={() => {/* No-op since search works in real-time */}}>
                   <Image src="/icons/search.svg" width={16} height={16} alt="Search icon"/>
               </button>
           </div>

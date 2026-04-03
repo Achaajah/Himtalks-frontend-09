@@ -4,93 +4,42 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-export const songfessData = [
-    {
-        id: "1",
-        to: "Jokowi Pramono",
-        message: "kamu mau ga jadi kadiv aku",
-        songTitle: 'To the Infinity Castle - Muzan vs Hashira Theme (from "Demon Slayer") - Cover',
-        artist: "Cigarettes After Sex",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "2",
-        to: "Ademaman",
-        message: "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstu",
-        songTitle: "Apocalypse",
-        artist: "Cigarettes After Sex",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "3",
-        to: "Raisa",
-        message: "Setiap lihat kamu, aku jadi inget lagu 'Could It Be'",
-        songTitle: "Could It Be",
-        artist: "Raisa",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "4",
-        to: "Dinda",
-        message: "Aku pengen nyanyiin 'Beautiful in White' buat kamu",
-        songTitle: "Beautiful in White",
-        artist: "Shane Filan",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "5",
-        to: "Andi",
-        message: "Dari awal ketemu, aku udah tau kamu 'Perfect'",
-        songTitle: "Perfect",
-        artist: "Ed Sheeran",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "6",
-        to: "Nabila",
-        message: "Lagu 'Yellow' selalu ngingetin aku ke kamu",
-        songTitle: "Yellow",
-        artist: "Coldplay",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "7",
-        to: "Budi",
-        message: "Kamu itu ibarat 'Fix You' dalam hidupku",
-        songTitle: "Fix You",
-        artist: "Coldplay",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-    {
-        id: "8",
-        to: "Siti",
-        message: "Seandainya aku bisa nyanyiin 'Just the Way You Are' buat kamu tiap hari LALA LALA LALLAA LALA ALAA",
-        songTitle: "Just the Way You Are",
-        artist: "Bruno Mars",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-        },
-    {
-        id: "9",
-        to: "Rizky",
-        message: "Kalau hidup ini lagu, kamu itu 'Shape of You'",
-        songTitle: "Shape of You",
-        artist: "Ed Sheeran",
-        date: "January 32, 2025",
-        image: "/songfess/image-default-spotify.png",
-    },
-];
-
 export default function SongfessSlideshow() {
     const controls = useAnimation();
     const containerRef = useRef(null);
+    const [songfessData, setSongfessData] = useState([]);
+    
+    useEffect(() => {
+        async function fetchSongfessData(){
+            try {
+                const res = await fetch(`http://localhost:8080/songfess`);
+                if(!res.ok){
+                    throw new Error(`HTTP Error ${res.status}`);
+                }
+
+                const data = await res.json();
+                const transformed = data.map((item, index)=>({
+                    id: item.id.toString(),
+                    to: item.recipient_name || "Anonymous",
+                    message: item.content || "",
+                    songTitle: item.song_title || "",
+                    artist: item.artist || "",
+                    date: new Date(item.created_at).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric"
+                    }),
+                    image: item.album_art || "/songfess/image-default-spotify.png",
+                }));
+
+                setSongfessData(transformed);
+            } catch(err) {
+                console.error(err);
+            }
+        }
+
+        fetchSongfessData();
+    }, []);
 
     useEffect(() => {
         // LOGIC ANIMASI: Hanya jalan kalau ada data
@@ -99,12 +48,14 @@ export default function SongfessSlideshow() {
             const isMobile = window.innerWidth < 768;
             const cardWidth = isMobile ? 320 : 420; // 320px (lebar card + space-x-6)
             
-            const totalWidth = songfessData.length * cardWidth;
+            const baseSetWidth = songfessData.length * cardWidth;
+            const windowWidth = window.innerWidth;
+            const distance = windowWidth + baseSetWidth;
             const speed = isMobile ? 60 : 90; // Mobile dibikin lebih lambat dikit biar enak dibaca
-            const duration = totalWidth / speed;
+            const duration = distance / speed;
 
             controls.start({
-                x: ["100vw", `-${totalWidth}px`],
+                x: [windowWidth, -baseSetWidth],
                 transition: { 
                     repeat: Infinity, 
                     duration: duration, 
@@ -116,22 +67,23 @@ export default function SongfessSlideshow() {
             controls.stop();
             controls.set({ x: 0 });
         }
-    }, [controls]);
+
+        return () => controls.stop();
+    }, [controls, songfessData]);
 
     return (
         <section className="px-6 lg:px-24 pb-28 bg-primaryBG">
             <div className={`relative w-full mx-auto overflow-hidden p-5 flex ${songfessData.length === 0 ? "justify-center" : ""}`}>
                 <motion.div
                     ref={containerRef}
-                    // className tetap seperti punya kamu, tapi width dinamis
                     className="flex space-x-4 md:space-x-6"
                     animate={controls}
-                    initial={{ x: "100vw" }}
-                    style={{ width: songfessData.length > 0 ? "max-content" : "auto" }}
+                    initial={{ x: "100vw" }} // initial styling only, animate overrides this
+                    style={{ width: "max-content" }}
                 >
                 {songfessData.length > 0 ? (
                     songfessData.map((songfess, index) => (
-                        <Link key={songfess.id} href={`/himtalks/songfess/${songfess.id}`} passHref>
+                        <Link key={`${songfess.id}-${index}`} href={`/himtalks/songfess/${songfess.id}`} passHref>
                             <motion.div
                                 key={index}
                                 className="w-70 md:w-100 shrink-0 bg-white rounded-2xl shadow-md"
