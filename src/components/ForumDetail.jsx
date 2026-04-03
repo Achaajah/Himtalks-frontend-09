@@ -9,7 +9,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
-export default function ForumDetail() {
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+function timeAgo(date) {
+  if (!date) return "-";
+  const now = new Date();
+  const past = new Date(date);
+  const diff = Math.floor((now - past) / 1000);
+  const minutes = Math.floor(diff / 60);
+  const hours = Math.floor(diff / 3600);
+  const days = Math.floor(diff / 86400);
+
+  if (minutes < 1) return "Baru saja";
+  if (minutes < 60) return `${minutes} menit lalu`;
+  if (hours < 24) return `${hours} jam lalu`;
+  return `${days} hari lalu`;
+}
+
+export default function ForumDetail({ forumId }) {
 const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(true);
@@ -23,6 +40,7 @@ const router = useRouter();
   const [username, setUsername] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [avatar, setAvatar] = useState(null);
   const [tempAvatar, setTempAvatar] = useState(null);
@@ -80,31 +98,41 @@ const router = useRouter();
     });
   };
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setForum({
-        title: "Benarkah Hitler orang Bekasi? Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
-        content:
-          "Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis.",
-        ringkasan: 
-          "Laillahaillallah Muhammadur Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet consectetur. Ut cras aliquet sit lorem nulla cras aliquet eget. Vel sit lacus phasellus viverra quis. Lorem ipsum dolor sit amet ",
-        image: "/miniforum/hsr.png",
-      });
+    async function fetchData() {
+      if (!forumId) return;
+      setLoading(true);
+      try {
+        const resForum = await fetch(`${API_BASE}/forums/${forumId}`);
+        if (resForum.ok) {
+          const data = await resForum.json();
+          // Adjust image field name -> API has image_url
+          setForum({ ...data, image: data.image_url });
+        }
 
-      setComments(
-        Array.from({ length: 25 }, (_, i) => ({
-          id: i,
-          user: ["Burung Berkicau", "Harimau Pagi", "MBG Enjoyer"][i % 3],
-          time: `${i + 1} jam lalu`,
-          text: "Lorem ipsum dolor sit amet consectetur.",
-          avatar: avatarList[i % avatarList.length],
-        }))
-      );
+        const resComments = await fetch(`${API_BASE}/forums/${forumId}/comments`);
+        if (resComments.ok) {
+          const dataComments = await resComments.json();
+          // Map API to state structure
+          setComments(
+            dataComments.map((c) => ({
+              id: c.id,
+              user: c.name || "Anonymous",
+              time: timeAgo(c.created_at),
+              text: c.content,
+              avatar: c.avatar_id && c.avatar_id.startsWith("/avatar/") ? c.avatar_id : "/miniforum/avatar-default.png", // fallback
+              rawTime: new Date(c.created_at).getTime()
+            }))
+          );
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-      setLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timer);
-  }, []);
+    fetchData();
+  }, [forumId]);
 
   const handleStartTyping = () => {
     if (!avatar) return alert("Pilih avatar dulu ya!");
@@ -112,19 +140,46 @@ const router = useRouter();
     setIsTyping(true);
   };
 
-  const handleSendComment = () => {
+  const handleSendComment = async () => {
     if (!commentText.trim()) return;
+    setIsSubmitting(true);
 
-    const newComment = {
-      id: Date.now(),
-      user: username,
-      avatar,
-      time: "baru saja",
-      text: commentText,
-    };
+    try {
+      const res = await fetch(`${API_BASE}/forums/${forumId}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: username || "Anonymous",
+          avatar_id: avatar, // we just send the path e.g., /avatar/1.png
+          content: commentText,
+        }),
+      });
 
-    setComments([newComment, ...comments]);
-    setCommentText("");
+      if (res.ok) {
+        const c = await res.json();
+        const newComment = {
+          id: c.id,
+          user: c.name || "Anonymous",
+          avatar: c.avatar_id,
+          time: "Baru saja",
+          rawTime: Date.now(),
+          text: c.content,
+        };
+
+        setComments([newComment, ...comments]);
+        setCommentText("");
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || "Gagal mengirim komentar!");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Gagal mengirim komentar!");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!forum) return null;
@@ -132,8 +187,9 @@ const router = useRouter();
   const previewText = forum.content?.substring(0, 150); // Ambil 150 karakter pertama
   const isLongText = forum.content?.length > 150; // Cek apakah teks emang panjang bange
 
-  const previewRingkasan = forum.ringkasan?.substring(0, 120); 
-  const isRingkasanLong = forum.ringkasan?.length > 120;
+  const contentToUse = forum.ringkasan || forum.content;
+  const previewRingkasan = contentToUse?.substring(0, 120); 
+  const isRingkasanLong = contentToUse?.length > 120;
 
   return (
     <section className="bg-primaryBG mt-9 md:mt-12 lg:mt-16 min-h-screen px-6 sm:px-16 lg:px-20 xl:px-23 2xl:px-28 py-16">
@@ -151,11 +207,11 @@ const router = useRouter();
           <div className="bg-white p-4 sm:p-5 md:px-7 md:py-6 rounded-2xl xl:rounded-3xl shadow-md">
             {/* HEADER */}
             <div className="flex justify-between items-center mb-3">
-              <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs 2xl:text-sm text-gray-500">
-                <div className="w-4 h-4 md:w-5 md:h-5 lg:w-8 lg:h-8 bg-gray-300 rounded-full"></div>
+              <div className="flex items-center gap-1 md:gap-2 text-[10px] md:text-xs lg:text-sm text-gray-400 font-poppins">
+                <img src="/logo/himtalks-logo.webp" alt="Himtalks" className="w-4 h-4 md:w-5 md:h-5 lg:w-8 lg:h-8 object-cover rounded-full" />
                 <span className="text-black">Himtalks</span>
                 <span>•</span>
-                <span className="tracking-tighter">5 mnt ago</span>
+                <span className="tracking-tighter">{timeAgo(forum.created_at)}</span>
               </div>
 
               <div className="text-[9px] leading-4 md:text-xs 2xl:text-sm border px-2 md:px-3 py-0.5 md:py-1 rounded-full text-gray-500">
@@ -207,6 +263,7 @@ const router = useRouter();
           </div>
 
           {/* RINGKASAN */}
+          {(forum.ringkasan || forum.content) && (
           <div className=" lg:hidden bg-white p-4 md:p-5 rounded-2xl shadow">
             <div className="flex items-center gap-2 mb-2.5 md:mb-4">
               <Image
@@ -223,7 +280,7 @@ const router = useRouter();
 
             <p className="text-justify md:text-left text-xs md:text-sm text-gray-600">
               {/* Tampilkan teks penuh kalau isExpanded true, kalau false tampilkan potongan teks */}
-              {isExpanded2 ? forum.ringkasan : previewRingkasan}
+              {isExpanded2 ? (forum.ringkasan || forum.content) : previewRingkasan}
 
               {/* Tombol cuma muncul kalau teksnya emang panjang */}
               {isRingkasanLong && (
@@ -236,6 +293,7 @@ const router = useRouter();
               )}
             </p>
           </div>
+          )}
 
           <div className="lg:hidden bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
               {/* IMAGE */}
@@ -588,6 +646,7 @@ const router = useRouter();
         {/* RIGHT SIDEBAR */}
         <div className="lg:col-span-2 2xl:col-span-1 space-y-6 sticky top-26 self-start">
           {/* RINGKASAN */}
+          {(forum.ringkasan || forum.content) && (
           <div className=" hidden lg:block bg-white p-4 md:p-5 rounded-2xl shadow">
             <div className="flex items-center gap-2 mb-2.5 md:mb-4">
               <Image
@@ -604,7 +663,7 @@ const router = useRouter();
 
             <p className="text-justify md:text-left text-xs md:text-sm text-gray-600">
               {/* Tampilkan teks penuh kalau isExpanded true, kalau false tampilkan potongan teks */}
-              {isExpanded2 ? forum.ringkasan : previewRingkasan}
+              {isExpanded2 ? (forum.ringkasan || forum.content) : previewRingkasan}
 
               {/* Tombol cuma muncul kalau teksnya emang panjang */}
               {isRingkasanLong && (
@@ -617,6 +676,7 @@ const router = useRouter();
               )}
             </p>
           </div>
+          )}
 
           <div className="hidden lg:block bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
               {/* IMAGE */}

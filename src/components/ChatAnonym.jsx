@@ -17,8 +17,7 @@ const pilihan = [
 
 export default function ChatAnonym() {
 
-    // 🔥 TAMBAHAN LOADING (AMAN)
-    const [loading, setLoading] = useState(true);
+    // State form and UI
 
     const [isClicked, setIsClicked] = useState(false);
     const [selected, setSelected] = useState(null);

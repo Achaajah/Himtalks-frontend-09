@@ -42,7 +42,7 @@ export default function ForumCard({ forum }) {
 
   return (
     <div
-      onClick={() => router.push("/himtalks/mini-forum/form-forum#comment")}
+      onClick={() => router.push(`/himtalks/mini-forum/${slug}#comment`)}
       className="bg-white rounded-2xl shadow-lg p-3 md:p-5 relative border border-gray-100 hover:-translate-y-2 transition duration-300 cursor-pointer selection:bg-darkSage selection:text-white"
     >
       {/* CLOSED */}
@@ -55,7 +55,7 @@ export default function ForumCard({ forum }) {
       {/* HEADER */}
       <div className="flex justify-between items-center mb-3 lg:mb-5 font-poppins">
         <div className="flex items-center gap-1 md:gap-2 text-[9px] md:text-xs 2xl:text-sm text-gray-500">
-          <div className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-gray-300 rounded-full"></div>
+          <img src="/logo/himtalks-logo.webp" alt="Himtalks" className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 object-cover rounded-full" />
           <span className="text-black">Himtalks</span>
           <span>•</span>
           <span className="tracking-tighter">{timeAgo(forum.created_at)}</span>
@@ -77,22 +77,26 @@ export default function ForumCard({ forum }) {
       <p className="font-poppins text-[10px] md:text-xs lg:text-sm mb-3 md:mb-4 tracking-tighter text-gray-500 line-clamp-1">{forum.content}</p>
 
       {/* IMAGE */}
-      <div className="overflow-hidden rounded-xl mb-3 sm:mb-4">
-        <Image
-          src={forum.image}
-          width={500}
-          height={300}
-          className="w-full h-40 sm:h-48 md:h-56 xl:h-65 2xl:h-60 object-cover"
-          alt=""
-        />
-      </div>
+      {forum.image_url || forum.image ? (
+        <div className="overflow-hidden rounded-xl mb-3 sm:mb-4">
+          <Image
+            src={forum.image_url || forum.image} // Backend field support
+            width={500}
+            height={300}
+            className="w-full h-40 sm:h-48 md:h-56 xl:h-65 2xl:h-60 object-cover"
+            alt=""
+          />
+        </div>
+      ) : (
+        <div className="rounded-xl mb-3 sm:mb-4 w-full h-40 sm:h-48 md:h-56 xl:h-65 2xl:h-60 bg-gray-200"></div>
+      )}
 
       {/* COMMENT BUTTON */}
       <div>
         <button
           onClick={(e) => {
             e.stopPropagation(); // jangan trigger click parent
-            router.push("/himtalks/mini-forum/form-forum#comment");
+            router.push(`/himtalks/mini-forum/${slug}#comment`);
           }}
         >
           <span className="font-poppins inline-flex items-center gap-1 md:gap-2 bg-darkSage text-white hover:bg-white hover:text-darkSage px-3 py-1 md:px-4 md:py-1.5 xl:py-2 rounded-full text-[10px] md:text-xs lg:text-sm border border-darkSage transition-all duration-500">
